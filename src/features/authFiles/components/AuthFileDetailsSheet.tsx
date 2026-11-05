@@ -20,7 +20,7 @@ import {
 } from '@/features/authFiles/constants';
 import { MAX_CREDENTIAL_WEIGHT } from '@/utils/credentialWeight';
 import { AuthFileExcludedModelsField } from './AuthFileExcludedModelsField';
-import { AuthFileCodexVersionField } from './AuthFileCodexVersionField';
+import { AuthFileCodexIdentityField } from './AuthFileCodexIdentityField';
 import { AuthFilePolicyFields } from './AuthFilePolicyFields';
 import { credentialPolicyError, readCredentialPolicy } from '../credentialPolicy';
 import styles from './AuthFileDetailsSheet.module.scss';
@@ -288,10 +288,12 @@ export function AuthFileDetailsSheet(props: AuthFileDetailsSheetProps) {
                     </div>
                   )}
                   {supportsAuthFileCodexVersion(editor.providerKey) && (
-                    <AuthFileCodexVersionField
-                      value={editor.codexVersion}
+                    <AuthFileCodexIdentityField
+                      originator={editor.codexOriginator}
+                      version={editor.codexVersion}
                       disabled={disableControls || editor.saving || !editor.json}
-                      onChange={(value) => onChange('codexVersion', value)}
+                      onOriginatorChange={(value) => onChange('codexOriginator', value)}
+                      onVersionChange={(value) => onChange('codexVersion', value)}
                     />
                   )}
                   <AuthFileExcludedModelsField

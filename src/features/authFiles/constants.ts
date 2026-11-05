@@ -244,6 +244,11 @@ export const readAuthFileCodexVersion = (value: Record<string, unknown>): string
   return typeof raw === 'string' ? raw.trim() : '';
 };
 
+export const readAuthFileCodexOriginator = (value: Record<string, unknown>): string => {
+  const raw = value.codex_originator;
+  return typeof raw === 'string' ? raw.trim() : '';
+};
+
 export const supportsAuthFileSiwc = (providerKey: string): boolean =>
   normalizeProviderKey(providerKey) === 'codex';
 

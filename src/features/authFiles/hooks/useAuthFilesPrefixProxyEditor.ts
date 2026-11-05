@@ -27,6 +27,7 @@ import {
   supportsAuthFileUsingApi,
   supportsAuthFileCodexVersion,
   readAuthFileCodexVersion,
+  readAuthFileCodexOriginator,
 } from '@/features/authFiles/constants';
 import {
   parseCredentialWeightText,
@@ -55,6 +56,7 @@ export type PrefixProxyEditorField =
   | 'websockets'
   | 'usingApi'
   | 'useSiwc'
+  | 'codexOriginator'
   | 'codexVersion'
   | 'note'
   | 'excludedModelsText'
@@ -87,6 +89,8 @@ export type PrefixProxyEditorState = {
   useSiwcTouched: boolean;
   usingApi: boolean;
   usingApiTouched: boolean;
+  codexOriginator: string;
+  codexOriginatorTouched: boolean;
   codexVersion: string;
   codexVersionTouched: boolean;
   note: string;
@@ -384,6 +388,14 @@ export const buildAuthFileFieldsPatch = (
     }
   }
 
+  if (supportsAuthFileCodexVersion(editor.providerKey) && editor.codexOriginatorTouched) {
+    const nextCodexOriginator = editor.codexOriginator.trim();
+    if (nextCodexOriginator !== readAuthFileCodexOriginator(original)) {
+      // Empty clears the per-account pin so the account follows the default client.
+      patch.codex_originator = nextCodexOriginator;
+    }
+  }
+
   if (supportsAuthFileCodexVersion(editor.providerKey) && editor.codexVersionTouched) {
     const nextCodexVersion = editor.codexVersion.trim();
     if (nextCodexVersion !== readAuthFileCodexVersion(original)) {
@@ -567,6 +579,8 @@ export function useAuthFilesPrefixProxyEditor(
       useSiwcTouched: false,
       usingApi: false,
       usingApiTouched: false,
+      codexOriginator: '',
+      codexOriginatorTouched: false,
       codexVersion: '',
       codexVersionTouched: false,
       note: '',
@@ -625,6 +639,9 @@ export function useAuthFilesPrefixProxyEditor(
       const codexVersion = supportsAuthFileCodexVersion(providerKey)
         ? readAuthFileCodexVersion(json)
         : '';
+      const codexOriginator = supportsAuthFileCodexVersion(providerKey)
+        ? readAuthFileCodexOriginator(json)
+        : '';
       const note = typeof json.note === 'string' ? json.note : '';
       const excludedModelsText = readExcludedModels(json).join('\n');
       const headers = json.headers;
@@ -660,6 +677,8 @@ export function useAuthFilesPrefixProxyEditor(
           useSiwcTouched: false,
           usingApi,
           usingApiTouched: false,
+          codexOriginator,
+          codexOriginatorTouched: false,
           codexVersion,
           codexVersionTouched: false,
           note,
@@ -727,6 +746,9 @@ export function useAuthFilesPrefixProxyEditor(
       }
       if (field === 'usingApi') {
         return { ...prev, usingApi: Boolean(value), usingApiTouched: true };
+      }
+      if (field === 'codexOriginator') {
+        return { ...prev, codexOriginator: String(value), codexOriginatorTouched: true };
       }
       if (field === 'codexVersion') {
         return { ...prev, codexVersion: String(value), codexVersionTouched: true };
