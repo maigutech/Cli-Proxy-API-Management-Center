@@ -503,6 +503,16 @@ const buildPrefixProxyUpdatedText = (
     next.use_siwc = patch.use_siwc;
   }
 
+  if (patch.codex_originator !== undefined) {
+    if (patch.codex_originator) next.codex_originator = patch.codex_originator;
+    else delete next.codex_originator;
+  }
+
+  if (patch.codex_version !== undefined) {
+    if (patch.codex_version) next.codex_version = patch.codex_version;
+    else delete next.codex_version;
+  }
+
   return JSON.stringify(next);
 };
 
