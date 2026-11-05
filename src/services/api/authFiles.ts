@@ -45,6 +45,7 @@ export type AuthFileFieldsPatch = {
   websockets?: boolean;
   using_api?: boolean;
   use_siwc?: boolean;
+  codex_originator?: string;
   codex_version?: string;
   note?: string;
   excluded_models?: string[];
@@ -562,11 +563,16 @@ export const authFilesApi = {
   patchFields: (name: string, fields: AuthFileFieldsPatch) =>
     apiClient.patch('/credentials/fields', { name, ...fields }),
 
-  // Codex versions an operator may assign to an account (version dropdown).
+  // Codex client identities and versions an operator may assign to an account
+  // (client-type + version dropdowns).
   getCodexVersions: () =>
-    apiClient.get<{ versions?: string[]; default?: string; minimum?: string }>(
-      '/credentials/codex-versions'
-    ),
+    apiClient.get<{
+      originators?: string[];
+      default_originator?: string;
+      versions?: string[];
+      default?: string;
+      minimum?: string;
+    }>('/credentials/codex-versions'),
 
   requestManualRefresh: async (name: string, authIndex?: string): Promise<void> => {
     // The refresh response may include tokens. Never return it to callers.
