@@ -2,6 +2,11 @@ import { useEffect, useId, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { authFilesApi } from '@/services/api';
 
+// Known client identities, used as a fallback so the client dropdown stays
+// usable even if the gateway's /credentials/codex-versions endpoint fails. The
+// gateway remains the source of truth and overrides this on success.
+const FALLBACK_ORIGINATORS = ['codex-tui', 'codex_cli_rs'];
+
 interface AuthFileCodexIdentityFieldProps {
   /** Currently pinned client identity (originator); empty = follow the gateway default. */
   originator: string;
@@ -28,7 +33,7 @@ export function AuthFileCodexIdentityField({
 }: AuthFileCodexIdentityFieldProps) {
   const { t } = useTranslation();
   const baseId = useId();
-  const [originators, setOriginators] = useState<string[]>([]);
+  const [originators, setOriginators] = useState<string[]>(FALLBACK_ORIGINATORS);
   const [defaultOriginator, setDefaultOriginator] = useState('');
   const [versions, setVersions] = useState<string[]>([]);
   const [defaultVersion, setDefaultVersion] = useState('');
@@ -39,7 +44,10 @@ export function AuthFileCodexIdentityField({
       .getCodexVersions()
       .then((data) => {
         if (cancelled) return;
-        setOriginators(Array.isArray(data?.originators) ? data.originators.filter(Boolean) : []);
+        const fetchedOriginators = Array.isArray(data?.originators)
+          ? data.originators.filter(Boolean)
+          : [];
+        if (fetchedOriginators.length > 0) setOriginators(fetchedOriginators);
         setDefaultOriginator(
           typeof data?.default_originator === 'string' ? data.default_originator : ''
         );
