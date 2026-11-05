@@ -16,9 +16,11 @@ import {
   supportsAuthFileSiwc,
   supportsAuthFileUsingApi,
   supportsAuthFileWebsockets,
+  supportsAuthFileCodexVersion,
 } from '@/features/authFiles/constants';
 import { MAX_CREDENTIAL_WEIGHT } from '@/utils/credentialWeight';
 import { AuthFileExcludedModelsField } from './AuthFileExcludedModelsField';
+import { AuthFileCodexVersionField } from './AuthFileCodexVersionField';
 import { AuthFilePolicyFields } from './AuthFilePolicyFields';
 import { credentialPolicyError, readCredentialPolicy } from '../credentialPolicy';
 import styles from './AuthFileDetailsSheet.module.scss';
@@ -284,6 +286,13 @@ export function AuthFileDetailsSheet(props: AuthFileDetailsSheetProps) {
                       />
                       <div className="hint">{t('auth_files.using_api_hint')}</div>
                     </div>
+                  )}
+                  {supportsAuthFileCodexVersion(editor.providerKey) && (
+                    <AuthFileCodexVersionField
+                      value={editor.codexVersion}
+                      disabled={disableControls || editor.saving || !editor.json}
+                      onChange={(value) => onChange('codexVersion', value)}
+                    />
                   )}
                   <AuthFileExcludedModelsField
                     fileName={editor.fileName}
