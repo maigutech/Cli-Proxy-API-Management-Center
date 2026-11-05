@@ -236,6 +236,14 @@ export const applyAuthFileWebsockets = (
   return next;
 };
 
+export const supportsAuthFileCodexVersion = (providerKey: string): boolean =>
+  normalizeProviderKey(providerKey) === 'codex';
+
+export const readAuthFileCodexVersion = (value: Record<string, unknown>): string => {
+  const raw = value.codex_version;
+  return typeof raw === 'string' ? raw.trim() : '';
+};
+
 export const supportsAuthFileSiwc = (providerKey: string): boolean =>
   normalizeProviderKey(providerKey) === 'codex';
 

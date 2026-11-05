@@ -25,6 +25,8 @@ import {
   supportsAuthFileSiwc,
   supportsAuthFileWebsockets,
   supportsAuthFileUsingApi,
+  supportsAuthFileCodexVersion,
+  readAuthFileCodexVersion,
 } from '@/features/authFiles/constants';
 import {
   parseCredentialWeightText,
@@ -53,6 +55,7 @@ export type PrefixProxyEditorField =
   | 'websockets'
   | 'usingApi'
   | 'useSiwc'
+  | 'codexVersion'
   | 'note'
   | 'excludedModelsText'
   | 'headersText';
@@ -84,6 +87,8 @@ export type PrefixProxyEditorState = {
   useSiwcTouched: boolean;
   usingApi: boolean;
   usingApiTouched: boolean;
+  codexVersion: string;
+  codexVersionTouched: boolean;
   note: string;
   noteTouched: boolean;
   excludedModelsText: string;
@@ -379,6 +384,14 @@ export const buildAuthFileFieldsPatch = (
     }
   }
 
+  if (supportsAuthFileCodexVersion(editor.providerKey) && editor.codexVersionTouched) {
+    const nextCodexVersion = editor.codexVersion.trim();
+    if (nextCodexVersion !== readAuthFileCodexVersion(original)) {
+      // Empty clears the per-account pin so the account follows the default.
+      patch.codex_version = nextCodexVersion;
+    }
+  }
+
   if (supportsAuthFileSiwc(editor.providerKey) && editor.useSiwcTouched) {
     if (editor.useSiwc !== readAuthFileUseSiwc(original)) {
       patch.use_siwc = editor.useSiwc;
@@ -554,6 +567,8 @@ export function useAuthFilesPrefixProxyEditor(
       useSiwcTouched: false,
       usingApi: false,
       usingApiTouched: false,
+      codexVersion: '',
+      codexVersionTouched: false,
       note: '',
       noteTouched: false,
       excludedModelsText: '',
@@ -607,6 +622,9 @@ export function useAuthFilesPrefixProxyEditor(
         ? readAuthFileWebsockets(json)
         : false;
       const usingApi = supportsAuthFileUsingApi(providerKey) ? readAuthFileUsingApi(json) : false;
+      const codexVersion = supportsAuthFileCodexVersion(providerKey)
+        ? readAuthFileCodexVersion(json)
+        : '';
       const note = typeof json.note === 'string' ? json.note : '';
       const excludedModelsText = readExcludedModels(json).join('\n');
       const headers = json.headers;
@@ -642,6 +660,8 @@ export function useAuthFilesPrefixProxyEditor(
           useSiwcTouched: false,
           usingApi,
           usingApiTouched: false,
+          codexVersion,
+          codexVersionTouched: false,
           note,
           noteTouched: false,
           excludedModelsText,
@@ -707,6 +727,9 @@ export function useAuthFilesPrefixProxyEditor(
       }
       if (field === 'usingApi') {
         return { ...prev, usingApi: Boolean(value), usingApiTouched: true };
+      }
+      if (field === 'codexVersion') {
+        return { ...prev, codexVersion: String(value), codexVersionTouched: true };
       }
       if (field === 'note') return { ...prev, note: String(value), noteTouched: true };
       if (field === 'excludedModelsText') {
