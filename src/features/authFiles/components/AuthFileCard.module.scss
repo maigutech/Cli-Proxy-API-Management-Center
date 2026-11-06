@@ -210,6 +210,65 @@
   color: var(--viz-failure);
 }
 
+/* ---------- 降智探针 badge ---------- */
+
+.probeRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: $font-mono;
+}
+
+.probeLabel {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.probeBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.4;
+  border: 1px solid transparent;
+}
+
+.probeDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.probeVerdict {
+  opacity: 0.72;
+  font-weight: 500;
+}
+
+.probe_ok {
+  color: var(--viz-success);
+  background: color-mix(in srgb, var(--viz-success) 12%, transparent);
+  border-color: color-mix(in srgb, var(--viz-success) 32%, transparent);
+}
+
+.probe_warn {
+  color: var(--viz-warning, #c47f17);
+  background: color-mix(in srgb, var(--viz-warning, #c47f17) 14%, transparent);
+  border-color: color-mix(in srgb, var(--viz-warning, #c47f17) 34%, transparent);
+}
+
+.probe_danger {
+  color: var(--viz-failure);
+  background: color-mix(in srgb, var(--viz-failure) 13%, transparent);
+  border-color: color-mix(in srgb, var(--viz-failure) 34%, transparent);
+}
+
 /* ---------- ProviderStatusBar 注入样式（18 个契约类名） ---------- */
 
 .statusBar {

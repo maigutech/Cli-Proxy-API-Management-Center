@@ -7,6 +7,7 @@ export * from './configFile';
 export * from './apiKeys';
 export * from './providers';
 export * from './authFiles';
+export * from './codexDegradationProbe';
 export * from './oauth';
 export * from './logs';
 export * from './version';

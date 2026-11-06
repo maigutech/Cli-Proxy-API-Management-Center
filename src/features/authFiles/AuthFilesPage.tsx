@@ -44,6 +44,7 @@ import { useAuthFilesModels } from '@/features/authFiles/hooks/useAuthFilesModel
 import { useAuthFilesOauth } from '@/features/authFiles/hooks/useAuthFilesOauth';
 import { useAuthFilesPrefixProxyEditor } from '@/features/authFiles/hooks/useAuthFilesPrefixProxyEditor';
 import { useAuthFilesStatusBarCache } from '@/features/authFiles/hooks/useAuthFilesStatusBarCache';
+import { useCodexDegradationProbe } from '@/features/authFiles/hooks/useCodexDegradationProbe';
 import {
   isAuthFilesStatusFilterMode,
   isAuthFilesSortMode,
@@ -155,6 +156,7 @@ export function AuthFilesPage() {
   } = useAuthFilesData({ onFilesMutated: invalidateDerivedCaches });
 
   const statusBarCache = useAuthFilesStatusBarCache(files);
+  const codexProbe = useCodexDegradationProbe();
 
   const {
     excluded,
@@ -715,6 +717,11 @@ export function AuthFilesPage() {
                 cooldownResetting={cooldownResetting}
                 quotaFilterType={activeQuotaFilter}
                 statusBarCache={statusBarCache}
+                probeStatus={
+                  codexProbe.byAuth.get(String(file.authIndex ?? '')) ??
+                  codexProbe.byAuth.get(file.name)
+                }
+                probeEnabled={codexProbe.settings.enabled}
                 entranceDelayMs={cardEntranceDelay(index)}
                 onShowModels={showModels}
                 onDownload={handleDownload}

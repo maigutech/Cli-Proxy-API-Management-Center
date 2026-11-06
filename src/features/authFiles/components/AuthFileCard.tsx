@@ -32,6 +32,7 @@ import {
 import { deriveAuthFileIdentity } from '@/features/authFiles/identity';
 import { resolveAuthFileQuotaType } from '@/features/authFiles/logic';
 import type { AuthFileStatusBarData } from '@/features/authFiles/hooks/useAuthFilesStatusBarCache';
+import type { CodexDegradationProbeStatus } from '@/services/api/codexDegradationProbe';
 import { AuthFileQuotaSection } from '@/features/authFiles/components/AuthFileQuotaSection';
 import { AuthFileCooldownSection } from './AuthFileCooldownSection';
 import { getSiwcBindingStatus, supportsSiwcBinding } from '@/features/oauth/siwcBinding';
@@ -50,6 +51,10 @@ export type AuthFileCardProps = {
   cooldownResetting: Record<string, boolean>;
   quotaFilterType: AuthFileQuotaFilter;
   statusBarCache: Map<string, AuthFileStatusBarData>;
+  /** Codex degradation-probe state for this account, when the probe has seen it. */
+  probeStatus?: CodexDegradationProbeStatus;
+  /** Whether the degradation probe is enabled on the server. */
+  probeEnabled?: boolean;
   /** One-time entrance delay; null/undefined disables entrance motion. */
   entranceDelayMs?: number | null;
   onShowModels: (file: AuthFileItem) => void;
@@ -76,6 +81,8 @@ export function AuthFileCard(props: AuthFileCardProps) {
     cooldownResetting,
     quotaFilterType,
     statusBarCache,
+    probeStatus,
+    probeEnabled,
     entranceDelayMs,
     onShowModels,
     onDownload,
@@ -106,6 +113,65 @@ export function AuthFileCard(props: AuthFileCardProps) {
   const statusData =
     (authIndexKey && statusBarCache.get(authIndexKey)) ||
     statusBarDataFromRecentRequests(file.recentRequests ?? []);
+
+  // Codex degradation-probe (降智探针) badge: shown only for Codex accounts the
+  // probe has actually observed. Pure observability — it never changes routing.
+  const showProbe = providerKey === 'codex' && Boolean(probeStatus);
+  const probeState = probeStatus?.state ?? '';
+  const probeVerdict = probeStatus?.last_verdict ?? '';
+  const probeTone: 'ok' | 'warn' | 'danger' =
+    probeState === 'held'
+      ? 'danger'
+      : probeState === 'suspect' || probeState === 'recovering'
+        ? 'warn'
+        : 'ok';
+  const probeStateLabel = showProbe
+    ? t(`auth_files.probe_state_${probeState}`, { defaultValue: probeState })
+    : '';
+  const probeVerdictLabel = probeVerdict
+    ? t(`auth_files.probe_verdict_${probeVerdict}`, { defaultValue: probeVerdict })
+    : '';
+  const probeTooltip = (() => {
+    if (!showProbe || !probeStatus) return '';
+    const lines: string[] = [];
+    lines.push(`${t('auth_files.probe_label')}: ${probeStateLabel}`);
+    if (probeEnabled === false) lines.push(t('auth_files.probe_disabled'));
+    if (probeVerdictLabel) {
+      const prob =
+        typeof probeStatus.last_top_probability === 'number'
+          ? ` (${Math.round(probeStatus.last_top_probability * 100)}%)`
+          : '';
+      lines.push(`${t('auth_files.probe_last_verdict')}: ${probeVerdictLabel}${prob}`);
+    }
+    if (typeof probeStatus.last_replies === 'number' && probeStatus.last_replies > 0) {
+      lines.push(`${t('auth_files.probe_replies')}: ${probeStatus.last_replies}`);
+    }
+    if (probeStatus.consecutive_abnormal) {
+      lines.push(`${t('auth_files.probe_consecutive_abnormal')}: ${probeStatus.consecutive_abnormal}`);
+    }
+    if (probeStatus.consecutive_healthy) {
+      lines.push(`${t('auth_files.probe_consecutive_healthy')}: ${probeStatus.consecutive_healthy}`);
+    }
+    if (probeStatus.last_checked_at) {
+      lines.push(
+        `${t('auth_files.probe_last_checked')}: ${formatDateTimeValue(probeStatus.last_checked_at)}`
+      );
+    }
+    if (probeStatus.next_check_at) {
+      lines.push(
+        `${t('auth_files.probe_next_check')}: ${formatDateTimeValue(probeStatus.next_check_at)}`
+      );
+    }
+    if (probeStatus.hold_applied && probeStatus.held_until) {
+      lines.push(
+        `${t('auth_files.probe_held_until')}: ${formatDateTimeValue(probeStatus.held_until)}`
+      );
+    }
+    if (probeStatus.last_error) {
+      lines.push(`${t('auth_files.probe_last_error')}: ${probeStatus.last_error}`);
+    }
+    return lines.join('\n');
+  })();
 
   const rawStatusMessage = getAuthFileStatusMessage(file);
   const hasStatusWarning = hasAuthFileStatusWarning(file);
@@ -219,6 +285,18 @@ export function AuthFileCard(props: AuthFileCardProps) {
           </span>
         </div>
         <ProviderStatusBar statusData={statusData} styles={styles} />
+        {showProbe && (
+          <div className={styles.probeRow} title={probeTooltip}>
+            <span className={styles.probeLabel}>{t('auth_files.probe_label')}</span>
+            <span className={`${styles.probeBadge} ${styles[`probe_${probeTone}`]}`}>
+              <span className={styles.probeDot} aria-hidden="true" />
+              {probeStateLabel}
+              {probeVerdictLabel ? (
+                <span className={styles.probeVerdict}>· {probeVerdictLabel}</span>
+              ) : null}
+            </span>
+          </div>
+        )}
       </div>
 
       <div className={styles.metaRow}>
