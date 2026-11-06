@@ -574,6 +574,27 @@ export const authFilesApi = {
       minimum?: string;
     }>('/credentials/codex-versions'),
 
+  // Register a Codex account from a static Codex Access Token (ChatGPT Business
+  // admin console) instead of the browser OAuth flow. No refresh token: used
+  // until it expires or is revoked, then re-imported.
+  importCodexAccessToken: (payload: {
+    access_token: string;
+    account_id?: string;
+    email?: string;
+    proxy_url?: string;
+    codex_originator?: string;
+    codex_version?: string;
+  }) =>
+    apiClient.post<{
+      status?: string;
+      name?: string;
+      account_id?: string;
+      email?: string;
+      plan_type?: string;
+      expires_at?: string;
+      adopted?: boolean;
+    }>('/credentials/codex-access-token', payload),
+
   requestManualRefresh: async (name: string, authIndex?: string): Promise<void> => {
     // The refresh response may include tokens. Never return it to callers.
     await apiClient.post<unknown>('/credentials/refresh', {

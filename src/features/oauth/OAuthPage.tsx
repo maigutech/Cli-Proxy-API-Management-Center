@@ -11,6 +11,7 @@ import { ProviderTile } from './components/ProviderTile';
 import { SponsorCard, type SponsorCardSite } from './components/SponsorCard';
 import { OAuthFlowDialog, type DialogHeading } from './components/OAuthFlowDialog';
 import { VertexImportDialog } from './components/VertexImportDialog';
+import { CodexAccessTokenDialog } from './components/CodexAccessTokenDialog';
 import { SiwcBindDialog } from './components/SiwcBindDialog';
 import {
   useOAuthFlows,
@@ -18,6 +19,7 @@ import {
   type ProviderFlowState,
 } from './hooks/useOAuthFlows';
 import { useVertexImport } from './hooks/useVertexImport';
+import { useCodexAccessTokenImport } from './hooks/useCodexAccessTokenImport';
 import {
   isSponsor,
   OAUTH_PROVIDERS,
@@ -30,8 +32,13 @@ import styles from './OAuthPage.module.scss';
 /** 对话框焦点标识：Vertex 不是 OAuth 提供商，用保留 id 避免与提供商冲突。 */
 const VERTEX_DIALOG_ID = '__vertex__';
 const VERTEX_LABEL = 'Vertex AI';
+/** Codex Access Token 导入不是 OAuth 提供商，用保留 id 避免冲突。 */
+const CODEX_TOKEN_DIALOG_ID = '__codex_access_token__';
 
-type DialogTarget = { kind: 'oauth'; id: string } | { kind: 'vertex' };
+type DialogTarget =
+  | { kind: 'oauth'; id: string }
+  | { kind: 'vertex' }
+  | { kind: 'codex-token' };
 
 /**
  * OAuth 登录：提供商画廊（一屏看全）+ 聚焦的授权对话框。
@@ -70,6 +77,10 @@ export function OAuthPage() {
   });
   const vertexImport = useVertexImport({
     isFocused: () => focusedRef.current === VERTEX_DIALOG_ID,
+    onCredentialAdded: flows.recordCredentialAdded,
+  });
+  const codexTokenImport = useCodexAccessTokenImport({
+    isFocused: () => focusedRef.current === CODEX_TOKEN_DIALOG_ID,
     onCredentialAdded: flows.recordCredentialAdded,
   });
 
@@ -126,9 +137,17 @@ export function OAuthPage() {
     setDialogOpen(true);
   };
 
+  const openCodexToken = () => {
+    focusedRef.current = CODEX_TOKEN_DIALOG_ID;
+    setDialog({ kind: 'codex-token' });
+    setDialogOpen(true);
+  };
+
   const closeDialog = () => {
     if (dialog?.kind === 'oauth') flows.dismissSuccess(dialog.id);
     if (dialog?.kind === 'vertex' && vertexImport.vertex.result) vertexImport.resetForAnother();
+    if (dialog?.kind === 'codex-token' && codexTokenImport.state.result)
+      codexTokenImport.resetForAnother();
     focusedRef.current = null;
     setDialogOpen(false);
   };
@@ -218,6 +237,13 @@ export function OAuthPage() {
             index={regularCards.length + tileIndexOffset + 1}
             onOpen={openSiwc}
           />
+          <ProviderTile
+            label={t('codex_access_token.tile_label')}
+            caption={t('codex_access_token.tile_caption')}
+            icon={iconCodex}
+            index={regularCards.length + tileIndexOffset + 2}
+            onOpen={openCodexToken}
+          />
         </div>
       </section>
 
@@ -253,6 +279,21 @@ export function OAuthPage() {
         onLocationChange={vertexImport.setLocation}
         onImport={() => void vertexImport.importCredential()}
         onImportAnother={vertexImport.resetForAnother}
+        onViewAuthFiles={viewAuthFiles}
+        onClose={closeDialog}
+      />
+
+      <CodexAccessTokenDialog
+        open={dialogOpen && dialog?.kind === 'codex-token'}
+        heading={{
+          title: t('codex_access_token.title'),
+          caption: t('codex_access_token.tile_caption'),
+          icon: iconCodex,
+        }}
+        state={codexTokenImport.state}
+        onFieldChange={codexTokenImport.setField}
+        onImport={() => void codexTokenImport.importCredential()}
+        onImportAnother={codexTokenImport.resetForAnother}
         onViewAuthFiles={viewAuthFiles}
         onClose={closeDialog}
       />
