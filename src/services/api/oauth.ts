@@ -50,14 +50,23 @@ export const oauthApi = {
   startSiwcBind: (name: string, signal?: AbortSignal) =>
     apiClient.post<SiwcBindResponse>('/oauth/siwc/bind', { name }, signal ? { signal } : undefined),
 
-  startAuth: (provider: string, signal?: AbortSignal) => {
+  startAuth: (provider: string, signal?: AbortSignal, proxyUrl?: string) => {
     const providerKey = normalizeProviderForManagementPath(provider);
-    const params: Record<string, string | boolean> = { provider: providerKey };
+    const payload: Record<string, string | boolean> = { provider: providerKey };
     if (WEBUI_SUPPORTED.has(providerKey)) {
-      params.is_webui = true;
+      payload.is_webui = true;
+    }
+    const sessionProxyUrl = proxyUrl?.trim();
+    if (sessionProxyUrl) {
+      payload.proxy_url = sessionProxyUrl;
+      return apiClient.post<OAuthStartResponse>(
+        '/oauth/auth-url',
+        payload,
+        signal ? { signal } : undefined
+      );
     }
     return apiClient.get<OAuthStartResponse>('/oauth/auth-url', {
-      params,
+      params: payload,
       ...(signal ? { signal } : {}),
     });
   },

@@ -36,7 +36,7 @@ type DialogTarget = { kind: 'oauth'; id: string } | { kind: 'vertex' };
 /**
  * OAuth 登录：提供商画廊（一屏看全）+ 聚焦的授权对话框。
  *
- * 点磁贴即开始登录；对话框可随时关闭，授权在后台继续，磁贴副行实时反映进度。
+ * 点磁贴先配置当前账号的出口代理，再开始登录；对话框可随时关闭，授权在后台继续。
  * 对话框关闭后保留最后一个目标，让退出动画期间内容不消失。
  */
 export function OAuthPage() {
@@ -118,8 +118,6 @@ export function OAuthPage() {
     focusedRef.current = card.id;
     setDialog({ kind: 'oauth', id: card.id });
     setDialogOpen(true);
-    // 已有进行中/失败/刚成功的尝试 → 只是重新打开查看；否则立即开始登录
-    if (!flows.states[card.id]?.status) void flows.startAuth(card.id);
   };
 
   const openVertex = () => {
@@ -234,6 +232,8 @@ export function OAuthPage() {
           sponsor={sponsorOf(dialogCard)}
           onStart={() => void flows.startAuth(dialogCard.id)}
           onCancel={() => void flows.cancelAuth(dialogCard.id)}
+          onProxyChange={(value) => flows.setProxyInput(dialogCard.id, value)}
+          onLoginAnother={() => flows.prepareAnotherAccount(dialogCard.id)}
           onCallbackChange={(value) => flows.setCallbackInput(dialogCard.id, value)}
           onCallbackSubmit={() => void flows.submitCallback(dialogCard.id)}
           onViewAuthFiles={viewAuthFiles}

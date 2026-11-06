@@ -99,6 +99,8 @@ describe('Muse (Meta) provider and device OAuth', () => {
           supportsCallback: false,
           onStart: () => {},
           onCancel: () => {},
+          onProxyChange: () => {},
+          onLoginAnother: () => {},
           onCallbackChange: () => {},
           onCallbackSubmit: () => {},
           onViewAuthFiles: () => {},

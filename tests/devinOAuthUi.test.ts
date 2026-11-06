@@ -45,6 +45,8 @@ describe('Devin OAuth login UI', () => {
             supportsCallback: true,
             onStart: () => {},
             onCancel: () => {},
+            onProxyChange: () => {},
+            onLoginAnother: () => {},
             onCallbackChange: () => {},
             onCallbackSubmit: () => {},
             onViewAuthFiles: () => {},

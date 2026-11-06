@@ -7,6 +7,7 @@ import { notifyAuthFilesChanged } from '@/features/authFiles/authFilesEvents';
 import { createOAuthAttempts, type OAuthAttempt } from '../oauthAttempts';
 import { validateDevinCallback } from '../devinOAuth';
 import { resolveCallbackUrl } from '../callbackUrl';
+import { isValidOAuthProxyUrl } from '../proxyUrl';
 import {
   buildPluginOAuthProviderCards,
   type OAuthProviderCard,
@@ -15,6 +16,8 @@ import {
 
 export interface ProviderFlowState {
   url?: string;
+  proxyUrl?: string;
+  proxyValidation?: string;
   userCode?: string;
   state?: string;
   status?: 'waiting' | 'success' | 'error';
@@ -247,9 +250,16 @@ export function useOAuthFlows({ providerCards, isFocused }: UseOAuthFlowsOptions
     // A network error can stop polling while the server is still waiting. Require
     // explicit cancellation before replacing that Devin session.
     if (provider === 'devin' && states[provider]?.state) return;
+    const proxyUrl = (states[provider]?.proxyUrl || '').trim();
+    if (!isValidOAuthProxyUrl(proxyUrl)) {
+      updateProviderState(provider, { proxyValidation: t('auth_login.oauth_proxy_invalid') });
+      return;
+    }
     const attempt = attempts.current.begin(provider);
     updateProviderState(provider, {
       url: undefined,
+      proxyUrl,
+      proxyValidation: undefined,
       userCode: undefined,
       state: undefined,
       status: 'waiting',
@@ -264,7 +274,7 @@ export function useOAuthFlows({ providerCards, isFocused }: UseOAuthFlowsOptions
       callbackSubmitting: false,
     });
     try {
-      const res = await oauthApi.startAuth(provider, attempt.signal);
+      const res = await oauthApi.startAuth(provider, attempt.signal, proxyUrl);
       if (!attempt.isCurrent()) return;
       if (!res.state) {
         const message = t('auth_login.missing_state');
@@ -296,6 +306,18 @@ export function useOAuthFlows({ providerCards, isFocused }: UseOAuthFlowsOptions
         'error'
       );
     }
+  };
+
+  const setProxyInput = (provider: string, value: string) => {
+    updateProviderState(provider, { proxyUrl: value, proxyValidation: undefined });
+  };
+
+  const prepareAnotherAccount = (provider: string) => {
+    attempts.current.get(provider)?.invalidate();
+    setStates((prev) => ({
+      ...prev,
+      [provider]: { proxyUrl: prev[provider]?.proxyUrl || '' },
+    }));
   };
 
   const setCallbackInput = (provider: string, value: string) => {
@@ -397,6 +419,8 @@ export function useOAuthFlows({ providerCards, isFocused }: UseOAuthFlowsOptions
     startAuth,
     cancelAuth,
     submitCallback,
+    setProxyInput,
+    prepareAnotherAccount,
     setCallbackInput,
     dismissSuccess,
   };

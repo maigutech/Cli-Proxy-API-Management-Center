@@ -40,6 +40,8 @@ export interface OAuthFlowDialogProps {
   sponsor?: { url: string; label: string };
   onStart: () => void;
   onCancel: () => void;
+  onProxyChange: (value: string) => void;
+  onLoginAnother: () => void;
   onCallbackChange: (value: string) => void;
   onCallbackSubmit: () => void;
   onViewAuthFiles: () => void;
@@ -97,19 +99,26 @@ function FlowBody(props: OAuthFlowDialogProps & { view: Exclude<FlowView, 'succe
 
   if (view !== 'flow') {
     return (
-      <div className={styles.stack}>
+      <form
+        className={styles.stack}
+        onSubmit={(event) => {
+          event.preventDefault();
+          onStart();
+        }}
+      >
         <ProviderHint text={text} sponsor={props.sponsor} />
         {view === 'failed' && (
           <div className={styles.alert} role="alert">
             {text('oauth_status_error')} {state.error || ''}
           </div>
         )}
+        <ProxyField {...props} />
         <div>
-          <button type="button" className={styles.primary} onClick={onStart}>
+          <button type="submit" className={styles.primary}>
             {view === 'failed' ? t('auth_login.restart_login') : text('oauth_button')}
           </button>
         </div>
-      </div>
+      </form>
     );
   }
 
@@ -144,6 +153,43 @@ function FlowBody(props: OAuthFlowDialogProps & { view: Exclude<FlowView, 'succe
         )}
         {props.supportsCallback && <CallbackStep {...props} />}
       </ol>
+    </div>
+  );
+}
+
+function ProxyField({ state, onProxyChange }: OAuthFlowDialogProps) {
+  const { t } = useTranslation();
+  const inputId = useId();
+  const hintId = useId();
+  const errorId = useId();
+
+  return (
+    <div className={styles.proxyField}>
+      <div className={styles.proxyLabelRow}>
+        <label className={styles.stepTitle} htmlFor={inputId}>
+          {t('auth_login.oauth_proxy_label')}
+        </label>
+        <span className={styles.optional}>{t('auth_login.optional_step')}</span>
+      </div>
+      <p className={styles.stepHint} id={hintId}>
+        {t('auth_login.oauth_proxy_hint')}
+      </p>
+      <input
+        id={inputId}
+        className={`input ${styles.proxyInput}`}
+        value={state.proxyUrl || ''}
+        onChange={(event) => onProxyChange(event.target.value)}
+        placeholder={t('auth_login.oauth_proxy_placeholder')}
+        autoComplete="off"
+        spellCheck={false}
+        aria-invalid={Boolean(state.proxyValidation)}
+        aria-describedby={state.proxyValidation ? `${hintId} ${errorId}` : hintId}
+      />
+      {state.proxyValidation && (
+        <p className={styles.feedbackError} id={errorId} role="alert">
+          {state.proxyValidation}
+        </p>
+      )}
     </div>
   );
 }
@@ -346,7 +392,7 @@ function FlowStatusBar({ providerId, state, text, onStart, onCancel }: OAuthFlow
   );
 }
 
-function SuccessView({ text, onStart, onViewAuthFiles }: OAuthFlowDialogProps) {
+function SuccessView({ text, onLoginAnother, onViewAuthFiles }: OAuthFlowDialogProps) {
   const { t } = useTranslation();
   return (
     <div className={styles.result} role="status">
@@ -360,7 +406,7 @@ function SuccessView({ text, onStart, onViewAuthFiles }: OAuthFlowDialogProps) {
         <button type="button" className={styles.secondary} onClick={onViewAuthFiles}>
           {t('auth_login.view_auth_files')}
         </button>
-        <button type="button" className={styles.primary} onClick={onStart}>
+        <button type="button" className={styles.primary} onClick={onLoginAnother}>
           {t('auth_login.login_another_account')}
         </button>
       </div>
