@@ -1058,7 +1058,7 @@
     "login_another_account": "登入另一個帳號",
     "oauth_proxy_label": "出口代理",
     "oauth_proxy_hint": "可選。用於此帳號的 OAuth 權杖交換、後續重新整理與上游請求；留空則沿用伺服器代理設定。",
-    "oauth_proxy_placeholder": "http://127.0.0.1:8080",
+    "oauth_proxy_placeholder": "socks5h://user:pass@host:port",
     "oauth_proxy_invalid": "請輸入包含連接埠的有效代理網址，支援 http、https、socks5、socks5h。",
     "view_auth_files": "查看驗證檔案"
   },

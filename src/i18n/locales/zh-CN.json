@@ -994,7 +994,7 @@
     "login_another_account": "登录另一个账号",
     "oauth_proxy_label": "出口代理",
     "oauth_proxy_hint": "可选。用于该账号的 OAuth 令牌交换、后续刷新和上游请求；留空则沿用服务器代理设置。",
-    "oauth_proxy_placeholder": "http://127.0.0.1:8080",
+    "oauth_proxy_placeholder": "socks5h://user:pass@host:port",
     "oauth_proxy_invalid": "请输入包含端口的有效代理地址，支持 http、https、socks5、socks5h。",
     "view_auth_files": "查看认证文件",
     "iflow_oauth_title": "iFlow OAuth",
