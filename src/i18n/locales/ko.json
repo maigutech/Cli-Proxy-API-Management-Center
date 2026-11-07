@@ -996,6 +996,7 @@
     "oauth_proxy_label": "아웃바운드 프록시",
     "oauth_proxy_hint": "선택 사항입니다. 이 계정의 OAuth 토큰 교환, 토큰 갱신 및 업스트림 요청에 사용됩니다. 비워 두면 서버 프록시 설정을 사용합니다.",
     "oauth_proxy_placeholder": "socks5h://user:pass@host:port",
+    "oauth_browser_proxy_note": "이 단계는 브라우저에서 열리며 브라우저의 IP를 사용합니다 — 위의 송신 프록시가 아닙니다(그 프록시는 토큰 교환·갱신·업스트림 요청에만 적용). 링크를 열기 전에 같은 주거용 프록시로 이 브라우저를 라우팅하세요. 그렇지 않으면 로그인 시 전화 인증이 뜰 수 있습니다.",
     "oauth_proxy_invalid": "포트가 포함된 유효한 프록시 URL을 입력하세요. 지원 프로토콜: http, https, socks5, socks5h.",
     "view_auth_files": "인증 파일 보기",
     "iflow_oauth_title": "iFlow OAuth",

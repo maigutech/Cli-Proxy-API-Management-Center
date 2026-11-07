@@ -996,6 +996,7 @@
     "oauth_proxy_label": "Outbound proxy",
     "oauth_proxy_hint": "Optional. Used for this account's OAuth token exchange, token refreshes, and upstream requests. Leave blank to use the server proxy settings.",
     "oauth_proxy_placeholder": "socks5h://user:pass@host:port",
+    "oauth_browser_proxy_note": "This step opens in your browser and uses the browser's IP, not the egress proxy above (that only covers token exchange, refresh and upstream requests). Route this browser through the same residential proxy before opening the link, or login may trigger phone verification.",
     "oauth_proxy_invalid": "Enter a valid proxy URL with a port. Supported schemes: http, https, socks5, socks5h.",
     "view_auth_files": "View auth files",
     "iflow_oauth_title": "iFlow OAuth",

@@ -995,6 +995,7 @@
     "oauth_proxy_label": "出口代理",
     "oauth_proxy_hint": "可选。用于该账号的 OAuth 令牌交换、后续刷新和上游请求；留空则沿用服务器代理设置。",
     "oauth_proxy_placeholder": "socks5h://user:pass@host:port",
+    "oauth_browser_proxy_note": "这一步在你的浏览器里打开,走的是浏览器的 IP,不是上面填的出口代理(它只管令牌交换、刷新和上游请求)。请让浏览器也走同一个住宅代理再打开链接,否则登录可能触发手机验证。",
     "oauth_proxy_invalid": "请输入包含端口的有效代理地址，支持 http、https、socks5、socks5h。",
     "view_auth_files": "查看认证文件",
     "iflow_oauth_title": "iFlow OAuth",

@@ -913,6 +913,7 @@
     "oauth_proxy_label": "Proxy đi ra",
     "oauth_proxy_hint": "Tùy chọn. Dùng cho trao đổi token OAuth, làm mới token và các yêu cầu upstream của tài khoản này. Để trống để dùng cài đặt proxy của máy chủ.",
     "oauth_proxy_placeholder": "socks5h://user:pass@host:port",
+    "oauth_browser_proxy_note": "Bước này mở trong trình duyệt của bạn và dùng IP của trình duyệt — không phải proxy đầu ra ở trên (proxy đó chỉ dùng cho trao đổi/làm mới token và yêu cầu upstream). Hãy cho trình duyệt đi qua cùng một proxy dân cư trước khi mở liên kết, nếu không khi đăng nhập có thể bị yêu cầu xác minh điện thoại.",
     "oauth_proxy_invalid": "Nhập URL proxy hợp lệ có cổng. Các giao thức được hỗ trợ: http, https, socks5, socks5h.",
     "view_auth_files": "Xem file xác thực",
     "iflow_oauth_title": "iFlow OAuth",

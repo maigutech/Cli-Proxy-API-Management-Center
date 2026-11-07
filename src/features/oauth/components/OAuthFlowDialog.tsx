@@ -254,6 +254,7 @@ function OpenStep({ state, text }: OAuthFlowDialogProps) {
           <IconExternalLink size={14} aria-hidden="true" />
         </button>
       </div>
+      <p className={styles.stepNote}>{t('auth_login.oauth_browser_proxy_note')}</p>
     </Step>
   );
 }

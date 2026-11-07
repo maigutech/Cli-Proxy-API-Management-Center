@@ -1059,6 +1059,7 @@
     "oauth_proxy_label": "出口代理",
     "oauth_proxy_hint": "可選。用於此帳號的 OAuth 權杖交換、後續重新整理與上游請求；留空則沿用伺服器代理設定。",
     "oauth_proxy_placeholder": "socks5h://user:pass@host:port",
+    "oauth_browser_proxy_note": "這一步在你的瀏覽器裡打開,走的是瀏覽器的 IP,不是上面填的出口代理(它只管權杖交換、刷新和上游請求)。請讓瀏覽器也走同一個住宅代理再打開連結,否則登入可能觸發手機驗證。",
     "oauth_proxy_invalid": "請輸入包含連接埠的有效代理網址，支援 http、https、socks5、socks5h。",
     "view_auth_files": "查看驗證檔案"
   },

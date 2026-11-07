@@ -996,6 +996,7 @@
     "oauth_proxy_label": "Giden proxy",
     "oauth_proxy_hint": "İsteğe bağlı. Bu hesabın OAuth token değişimi, token yenilemeleri ve upstream istekleri için kullanılır. Sunucu proxy ayarlarını kullanmak için boş bırakın.",
     "oauth_proxy_placeholder": "socks5h://user:pass@host:port",
+    "oauth_browser_proxy_note": "Bu adım tarayıcınızda açılır ve tarayıcının IP'sini kullanır — yukarıdaki çıkış proxy'sini değil (o yalnızca jeton değişimi, yenileme ve upstream istekleri içindir). Bağlantıyı açmadan önce bu tarayıcıyı da aynı konut proxy'sine yönlendirin, aksi halde girişte telefon doğrulaması çıkabilir.",
     "oauth_proxy_invalid": "Bağlantı noktası içeren geçerli bir proxy URL'si girin. Desteklenen şemalar: http, https, socks5, socks5h.",
     "view_auth_files": "Kimlik Dosyalarını Gör",
     "iflow_oauth_title": "iFlow OAuth",

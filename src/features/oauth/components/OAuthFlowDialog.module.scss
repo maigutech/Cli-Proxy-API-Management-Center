@@ -271,6 +271,19 @@
   overflow-wrap: anywhere;
 }
 
+/* 登录走浏览器 IP 的提醒：琥珀告警,区别于红色报错 */
+.stepNote {
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  border-radius: 9px;
+  border: 1px solid color-mix(in srgb, var(--viz-warning, #c47f17) 30%, transparent);
+  background: color-mix(in srgb, var(--viz-warning, #c47f17) 9%, transparent);
+  color: color-mix(in srgb, var(--viz-warning, #c47f17) 78%, var(--text-primary));
+  font-size: 12px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
 /* ---------- 授权链接 ---------- */
 
 .urlField {
