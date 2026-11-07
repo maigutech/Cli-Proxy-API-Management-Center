@@ -662,6 +662,12 @@ export function MainLayout() {
           metaKey: 'nav_meta.logs',
           icon: sidebarIcons.logs,
         },
+        {
+          path: '/cyber-block',
+          labelKey: 'nav.cyber_block',
+          metaKey: 'nav_meta.cyber_block',
+          icon: sidebarIcons.routing,
+        },
       ],
     },
     {

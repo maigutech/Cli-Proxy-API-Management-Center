@@ -111,6 +111,7 @@
     "plugin_store": "Plugin Store",
     "config_management": "Config Panel",
     "logs": "Logs Viewer",
+    "cyber_block": "Cyber Block",
     "system_info": "Management Center Info"
   },
   "nav_groups": {
@@ -131,6 +132,7 @@
     "plugins": "Plugin toggles & config",
     "plugin_store": "Discover & install plugins",
     "logs": "Request tracing",
+    "cyber_block": "Cyber-policy session blocks",
     "config_management": "Gateway configuration",
     "system_info": "Runtime & diagnostics"
   },
@@ -732,6 +734,36 @@
     "failed": "Test failed",
     "direct": "direct",
     "empty_hint": "Enter a proxy to test"
+  },
+  "cyber_block": {
+    "title": "Cyber-policy Session Block",
+    "subtitle": "Protect the account pool: sessions that trip OpenAI's cyber-policy are temporarily blocked locally.",
+    "settings_title": "Settings",
+    "enabled_label": "Enable session block",
+    "ttl_label": "Block duration (minutes)",
+    "ttl_hint": "How long a session stays blocked after it trips the threshold.",
+    "threshold_label": "Hit threshold",
+    "threshold_hint": "Cyber-policy hits before a session is blocked. 1 = block on first hit.",
+    "save": "Save",
+    "save_ok": "Settings saved",
+    "save_failed": "Save failed",
+    "note": "Blocks by session id only: a new conversation gets a fresh session and is not blocked. In-memory; cleared on restart.",
+    "table_title": "Blocked sessions",
+    "blocked_count": "Blocked {{count}}",
+    "total_count": "Total {{count}}",
+    "refresh": "Refresh",
+    "loading": "Loading…",
+    "empty_title": "No sessions recorded",
+    "empty_desc": "Sessions appear here after they trip OpenAI's cyber-policy.",
+    "col_session": "Session",
+    "col_hits": "Hits",
+    "col_state": "State",
+    "col_code": "Code",
+    "col_message": "Last message",
+    "col_expires": "Blocked until",
+    "state_blocked": "Blocked",
+    "state_expired": "Expired",
+    "state_observing": "Observing"
   },
   "vertex_import": {
     "title": "Vertex JSON Login",

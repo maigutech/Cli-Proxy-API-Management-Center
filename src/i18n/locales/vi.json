@@ -111,6 +111,7 @@
     "plugin_store": "Cửa hàng Plugin",
     "config_management": "Bảng cấu hình",
     "logs": "Trình xem Log",
+    "cyber_block": "Chặn Cyber",
     "system_info": "Thông tin Trung tâm Quản lý"
   },
   "nav_groups": {
@@ -131,6 +132,7 @@
     "plugins": "Bật/tắt & cấu hình plugin",
     "plugin_store": "Khám phá & cài đặt plugin",
     "logs": "Truy vết yêu cầu",
+    "cyber_block": "Chặn phiên theo cyber-policy",
     "config_management": "Cấu hình gateway",
     "system_info": "Runtime & chẩn đoán"
   },
@@ -688,6 +690,36 @@
     "failed": "Kiểm tra thất bại",
     "direct": "kết nối trực tiếp",
     "empty_hint": "Nhập proxy để kiểm tra"
+  },
+  "cyber_block": {
+    "title": "Chặn phiên theo cyber-policy",
+    "subtitle": "Bảo vệ pool tài khoản: các phiên vi phạm cyber-policy của OpenAI bị chặn tạm thời tại máy chủ.",
+    "settings_title": "Cài đặt",
+    "enabled_label": "Bật chặn phiên",
+    "ttl_label": "Thời gian chặn (phút)",
+    "ttl_hint": "Phiên bị chặn trong bao lâu sau khi đạt ngưỡng.",
+    "threshold_label": "Ngưỡng số lần",
+    "threshold_hint": "Số lần dính cyber trước khi chặn phiên. 1 = chặn ngay lần đầu.",
+    "save": "Lưu",
+    "save_ok": "Đã lưu cài đặt",
+    "save_failed": "Lưu thất bại",
+    "note": "Chỉ chặn theo session id: hội thoại mới có session mới nên không bị chặn. Lưu trong bộ nhớ, mất khi khởi động lại.",
+    "table_title": "Phiên bị chặn",
+    "blocked_count": "Đã chặn {{count}}",
+    "total_count": "Tổng {{count}}",
+    "refresh": "Làm mới",
+    "loading": "Đang tải…",
+    "empty_title": "Chưa có phiên nào",
+    "empty_desc": "Phiên sẽ xuất hiện ở đây sau khi vi phạm cyber-policy của OpenAI.",
+    "col_session": "Phiên",
+    "col_hits": "Số lần",
+    "col_state": "Trạng thái",
+    "col_code": "Mã",
+    "col_message": "Thông báo gần nhất",
+    "col_expires": "Chặn đến",
+    "state_blocked": "Đã chặn",
+    "state_expired": "Hết hạn",
+    "state_observing": "Đang theo dõi"
   },
   "vertex_import": {
     "title": "Đăng nhập Vertex bằng JSON",

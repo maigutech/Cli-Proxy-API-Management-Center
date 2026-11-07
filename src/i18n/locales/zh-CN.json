@@ -111,6 +111,7 @@
     "plugin_store": "插件商店",
     "config_management": "配置面板",
     "logs": "日志查看",
+    "cyber_block": "Cyber 拦截",
     "system_info": "中心信息"
   },
   "nav_groups": {
@@ -131,6 +132,7 @@
     "plugins": "插件启停与配置",
     "plugin_store": "发现并安装插件",
     "logs": "请求追踪与排查",
+    "cyber_block": "Cyber 策略会话拦截",
     "config_management": "网关基础配置",
     "system_info": "运行与诊断信息"
   },
@@ -731,6 +733,36 @@
     "failed": "测试失败",
     "direct": "直连",
     "empty_hint": "填入代理后可测试"
+  },
+  "cyber_block": {
+    "title": "Cyber 策略会话拦截",
+    "subtitle": "保护号池:触发 OpenAI cyber 策略的会话会在本地被临时拦截。",
+    "settings_title": "设置",
+    "enabled_label": "启用会话拦截",
+    "ttl_label": "拦截时长(分钟)",
+    "ttl_hint": "会话达到阈值后被拦截的持续时间。",
+    "threshold_label": "命中阈值",
+    "threshold_hint": "会话被拦截前允许的 cyber 命中次数。1 = 首次命中即拦截。",
+    "save": "保存",
+    "save_ok": "设置已保存",
+    "save_failed": "保存失败",
+    "note": "仅按 session-id 拦截:新会话会用新 session,不受影响。内存存储,重启清空。",
+    "table_title": "被拦截的会话",
+    "blocked_count": "已拦截 {{count}}",
+    "total_count": "共 {{count}}",
+    "refresh": "刷新",
+    "loading": "加载中…",
+    "empty_title": "暂无会话记录",
+    "empty_desc": "会话触发 OpenAI cyber 策略后会出现在这里。",
+    "col_session": "会话",
+    "col_hits": "命中",
+    "col_state": "状态",
+    "col_code": "错误码",
+    "col_message": "最近消息",
+    "col_expires": "拦截至",
+    "state_blocked": "已拦截",
+    "state_expired": "已过期",
+    "state_observing": "观察中"
   },
   "vertex_import": {
     "title": "Vertex JSON 登录",

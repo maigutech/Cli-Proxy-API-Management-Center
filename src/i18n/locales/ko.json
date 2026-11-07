@@ -111,6 +111,7 @@
     "plugin_store": "플러그인 스토어",
     "config_management": "설정 패널",
     "logs": "로그 뷰어",
+    "cyber_block": "Cyber 차단",
     "system_info": "관리 센터 정보"
   },
   "nav_groups": {
@@ -131,6 +132,7 @@
     "plugins": "플러그인 설정 및 전환",
     "plugin_store": "플러그인 탐색 및 설치",
     "logs": "요청 추적",
+    "cyber_block": "Cyber 정책 세션 차단",
     "config_management": "게이트웨이 설정",
     "system_info": "런타임 및 진단"
   },
@@ -732,6 +734,36 @@
     "failed": "테스트 실패",
     "direct": "직접 연결",
     "empty_hint": "테스트하려면 프록시를 입력하세요"
+  },
+  "cyber_block": {
+    "title": "Cyber 정책 세션 차단",
+    "subtitle": "계정 풀 보호: OpenAI cyber 정책을 위반한 세션을 로컬에서 일시 차단합니다.",
+    "settings_title": "설정",
+    "enabled_label": "세션 차단 사용",
+    "ttl_label": "차단 시간(분)",
+    "ttl_hint": "임계값 도달 후 세션이 차단되는 시간.",
+    "threshold_label": "히트 임계값",
+    "threshold_hint": "세션 차단 전 허용되는 cyber 히트 횟수. 1 = 첫 히트에 차단.",
+    "save": "저장",
+    "save_ok": "설정 저장됨",
+    "save_failed": "저장 실패",
+    "note": "session-id 기준으로만 차단: 새 대화는 새 세션이라 차단되지 않음. 메모리 저장, 재시작 시 초기화.",
+    "table_title": "차단된 세션",
+    "blocked_count": "차단 {{count}}",
+    "total_count": "전체 {{count}}",
+    "refresh": "새로고침",
+    "loading": "불러오는 중…",
+    "empty_title": "기록된 세션 없음",
+    "empty_desc": "세션이 OpenAI cyber 정책을 위반하면 여기에 표시됩니다.",
+    "col_session": "세션",
+    "col_hits": "히트",
+    "col_state": "상태",
+    "col_code": "코드",
+    "col_message": "최근 메시지",
+    "col_expires": "차단 종료",
+    "state_blocked": "차단됨",
+    "state_expired": "만료",
+    "state_observing": "관찰 중"
   },
   "vertex_import": {
     "title": "Vertex JSON 로그인",

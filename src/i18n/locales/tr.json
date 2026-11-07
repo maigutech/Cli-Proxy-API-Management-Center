@@ -111,6 +111,7 @@
     "plugin_store": "Eklenti Mağazası",
     "config_management": "Yapılandırma Paneli",
     "logs": "Günlük Görüntüleyici",
+    "cyber_block": "Cyber Engel",
     "system_info": "Yönetim Merkezi Bilgisi"
   },
   "nav_groups": {
@@ -131,6 +132,7 @@
     "plugins": "Eklenti Anahtarları ve Yapılandırma",
     "plugin_store": "Eklentileri Keşfet ve Kur",
     "logs": "İstek İzleme",
+    "cyber_block": "Cyber-politika oturum engelleri",
     "config_management": "Ağ Geçidi Yapılandırması",
     "system_info": "Çalışma Zamanı ve Tanılama"
   },
@@ -732,6 +734,36 @@
     "failed": "Test başarısız",
     "direct": "doğrudan",
     "empty_hint": "Test için bir proxy girin"
+  },
+  "cyber_block": {
+    "title": "Cyber-politika oturum engeli",
+    "subtitle": "Hesap havuzunu koru: OpenAI cyber-politikasını ihlal eden oturumlar yerel olarak geçici engellenir.",
+    "settings_title": "Ayarlar",
+    "enabled_label": "Oturum engellemeyi etkinleştir",
+    "ttl_label": "Engel süresi (dakika)",
+    "ttl_hint": "Oturum eşiğe ulaştıktan sonra ne kadar engelli kalır.",
+    "threshold_label": "Vuruş eşiği",
+    "threshold_hint": "Bir oturum engellenmeden önceki cyber vuruşu sayısı. 1 = ilk vuruşta engelle.",
+    "save": "Kaydet",
+    "save_ok": "Ayarlar kaydedildi",
+    "save_failed": "Kaydetme başarısız",
+    "note": "Yalnızca session id ile engeller: yeni sohbet yeni oturum alır ve engellenmez. Bellekte tutulur, yeniden başlatmada sıfırlanır.",
+    "table_title": "Engellenen oturumlar",
+    "blocked_count": "Engelli {{count}}",
+    "total_count": "Toplam {{count}}",
+    "refresh": "Yenile",
+    "loading": "Yükleniyor…",
+    "empty_title": "Kayıtlı oturum yok",
+    "empty_desc": "Oturumlar OpenAI cyber-politikasını ihlal edince burada görünür.",
+    "col_session": "Oturum",
+    "col_hits": "Vuruş",
+    "col_state": "Durum",
+    "col_code": "Kod",
+    "col_message": "Son mesaj",
+    "col_expires": "Şuna kadar engelli",
+    "state_blocked": "Engelli",
+    "state_expired": "Süresi doldu",
+    "state_observing": "İzleniyor"
   },
   "vertex_import": {
     "title": "Vertex JSON Girişi",

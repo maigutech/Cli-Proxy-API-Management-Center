@@ -111,6 +111,7 @@
     "plugin_store": "插件商店",
     "config_management": "設定面板",
     "logs": "記錄檢視",
+    "cyber_block": "Cyber 攔截",
     "system_info": "中心資訊"
   },
   "nav_groups": {
@@ -131,6 +132,7 @@
     "plugins": "插件啟停與設定",
     "plugin_store": "探索並安裝插件",
     "logs": "請求追蹤與排查",
+    "cyber_block": "Cyber 策略工作階段攔截",
     "config_management": "閘道基礎設定",
     "system_info": "運行與診斷資訊"
   },
@@ -731,6 +733,36 @@
     "failed": "測試失敗",
     "direct": "直連",
     "empty_hint": "填入代理後可測試"
+  },
+  "cyber_block": {
+    "title": "Cyber 策略工作階段攔截",
+    "subtitle": "保護號池:觸發 OpenAI cyber 策略的工作階段會在本地被暫時攔截。",
+    "settings_title": "設定",
+    "enabled_label": "啟用工作階段攔截",
+    "ttl_label": "攔截時長(分鐘)",
+    "ttl_hint": "工作階段達到閾值後被攔截的持續時間。",
+    "threshold_label": "命中閾值",
+    "threshold_hint": "工作階段被攔截前允許的 cyber 命中次數。1 = 首次命中即攔截。",
+    "save": "儲存",
+    "save_ok": "設定已儲存",
+    "save_failed": "儲存失敗",
+    "note": "僅按 session-id 攔截:新工作階段會用新 session,不受影響。記憶體儲存,重啟清空。",
+    "table_title": "被攔截的工作階段",
+    "blocked_count": "已攔截 {{count}}",
+    "total_count": "共 {{count}}",
+    "refresh": "重新整理",
+    "loading": "載入中…",
+    "empty_title": "暫無工作階段記錄",
+    "empty_desc": "工作階段觸發 OpenAI cyber 策略後會出現在這裡。",
+    "col_session": "工作階段",
+    "col_hits": "命中",
+    "col_state": "狀態",
+    "col_code": "錯誤碼",
+    "col_message": "最近訊息",
+    "col_expires": "攔截至",
+    "state_blocked": "已攔截",
+    "state_expired": "已過期",
+    "state_observing": "觀察中"
   },
   "vertex_import": {
     "title": "Vertex JSON 登入",
