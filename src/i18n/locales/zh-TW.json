@@ -2594,5 +2594,39 @@
     "readOnly": "此憑證由其他設定管理，無法在此修改。",
     "rebindAny": "任意憑證故障",
     "rebindQuota": "配額或驗證失敗"
+  },
+  "account_test": {
+    "title": "測試模型",
+    "description": "向目前帳號發送簡短的真實請求，使用該帳號的代理並遵守工作階段及並行限制。重複測試共用一個測試 session，會消耗少量額度。",
+    "model": "模型",
+    "refresh": "重新載入模型",
+    "route": "請求出口",
+    "route_note": "顯示設定的代理位址，並非實測公網 IP。綁定代理故障時不會切換其他出口。",
+    "source_account": "帳號設定",
+    "source_global": "全域設定",
+    "source_environment": "伺服器環境",
+    "mode_direct": "直接連線",
+    "mode_inherit": "繼承伺服器網路設定",
+    "mode_invalid": "代理設定無效",
+    "prompt": "測試提示詞",
+    "loading": "正在載入模型…",
+    "no_models": "此帳號尚無已註冊的文字模型",
+    "running": "正在測試…可隨時取消。",
+    "cancel": "取消測試",
+    "cancelled": "已取消測試",
+    "start": "開始測試",
+    "success": "測試成功",
+    "failed": "測試失敗",
+    "duration": "耗時 {{ms}} 毫秒",
+    "connection_changed": "連線已切換，請關閉後重新開啟測試視窗。",
+    "errors": {
+      "invalid_proxy": "代理設定無效，請修正後再測試。",
+      "execution_failed": "請求失敗，請檢查綁定代理、模型可用性及冷卻狀態。",
+      "auth_failed": "上游拒絕了此帳號的認證或權限。",
+      "capacity_exceeded": "帳號觸發工作階段、並行或限流上限，或正在冷卻。",
+      "quota_exceeded": "此帳號的上游額度不足。",
+      "incomplete_response": "上游回應未完整結束。",
+      "empty_response": "上游未傳回文字內容。"
+    }
   }
 }

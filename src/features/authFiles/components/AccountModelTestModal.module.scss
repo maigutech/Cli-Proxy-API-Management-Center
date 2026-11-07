@@ -1,0 +1,81 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.account {
+  overflow-wrap: anywhere;
+}
+.note {
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0;
+}
+.modelRow {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+.modelField {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 8px;
+}
+.route {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  font-size: 13px;
+  code {
+    overflow-wrap: anywhere;
+  }
+  small {
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+}
+.console {
+  padding: 18px;
+  border-radius: 10px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  min-height: 160px;
+  max-height: 320px;
+  overflow: auto;
+  pre {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 8px 0 16px;
+  }
+}
+.resultHeader {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 16px 0 8px;
+}
+.success {
+  color: var(--success-color);
+}
+.error {
+  color: var(--danger-color);
+  overflow-wrap: anywhere;
+}
+.output {
+  color: var(--text-primary);
+}
+@media (max-width: 480px) {
+  .modelRow {
+    flex-wrap: wrap;
+  }
+  .modelField {
+    flex-basis: 100%;
+  }
+}

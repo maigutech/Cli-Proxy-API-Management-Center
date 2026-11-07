@@ -2574,5 +2574,39 @@
     "readOnly": "Thông tin xác thực này được quản lý ở nơi khác.",
     "rebindAny": "Mọi lỗi tài khoản",
     "rebindQuota": "Lỗi hạn mức/xác thực"
+  },
+  "account_test": {
+    "title": "Thử mô hình",
+    "description": "Gửi yêu cầu thực ngắn bằng tài khoản và proxy này với giới hạn thông thường. Các lần thử dùng chung một phiên và tiêu thụ ít hạn mức.",
+    "model": "Mô hình",
+    "refresh": "Tải lại mô hình",
+    "route": "Đường ra",
+    "route_note": "Địa chỉ proxy đã cấu hình, không phải IP công cộng đo được. Proxy lỗi không chuyển sang đường khác.",
+    "source_account": "Cấu hình tài khoản",
+    "source_global": "Cấu hình chung",
+    "source_environment": "Môi trường máy chủ",
+    "mode_direct": "Kết nối trực tiếp",
+    "mode_inherit": "Kế thừa mạng máy chủ",
+    "mode_invalid": "Proxy không hợp lệ",
+    "prompt": "Lời nhắc thử",
+    "loading": "Đang tải mô hình…",
+    "no_models": "Chưa có mô hình văn bản đã đăng ký",
+    "running": "Đang thử… Có thể hủy bất cứ lúc nào.",
+    "cancel": "Hủy thử",
+    "cancelled": "Đã hủy thử",
+    "start": "Bắt đầu thử",
+    "success": "Thử thành công",
+    "failed": "Thử thất bại",
+    "duration": "{{ms}} ms",
+    "connection_changed": "Kết nối đã thay đổi. Hãy đóng và mở lại hộp thoại.",
+    "errors": {
+      "invalid_proxy": "Proxy không hợp lệ. Hãy sửa cài đặt.",
+      "execution_failed": "Yêu cầu lỗi. Kiểm tra proxy, mô hình và thời gian chờ.",
+      "auth_failed": "Dịch vụ từ chối xác thực hoặc quyền của tài khoản.",
+      "capacity_exceeded": "Đạt giới hạn phiên, đồng thời, tốc độ hoặc đang chờ.",
+      "quota_exceeded": "Không đủ hạn mức dịch vụ.",
+      "incomplete_response": "Phản hồi chưa hoàn tất.",
+      "empty_response": "Dịch vụ không trả về văn bản."
+    }
   }
 }

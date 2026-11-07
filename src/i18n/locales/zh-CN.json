@@ -2566,5 +2566,39 @@
     "readOnly": "此凭证由其他配置管理，无法在这里修改。",
     "rebindAny": "任意凭证故障",
     "rebindQuota": "配额或认证失败"
+  },
+  "account_test": {
+    "title": "测试模型",
+    "description": "向当前账号发送一条简短的真实请求，使用该账号的代理并遵守会话和并发限制。重复测试复用一个测试 session，会消耗少量额度。",
+    "model": "模型",
+    "refresh": "刷新模型列表",
+    "route": "请求出口",
+    "route_note": "这里显示配置的代理地址，并非实测公网 IP。绑定代理故障时不会切换其他出口。",
+    "source_account": "账号配置",
+    "source_global": "全局配置",
+    "source_environment": "服务器环境",
+    "mode_direct": "直接连接",
+    "mode_inherit": "继承服务器网络设置",
+    "mode_invalid": "代理配置无效",
+    "prompt": "测试提示词",
+    "loading": "正在加载模型…",
+    "no_models": "该账号暂无已注册的文本模型",
+    "running": "正在测试…可随时取消。",
+    "cancel": "取消测试",
+    "cancelled": "测试已取消",
+    "start": "开始测试",
+    "success": "测试成功",
+    "failed": "测试失败",
+    "duration": "耗时 {{ms}} 毫秒",
+    "connection_changed": "连接已切换，请关闭后重新打开测试窗口。",
+    "errors": {
+      "invalid_proxy": "代理配置无效，请修正后再测试。",
+      "execution_failed": "当前账号未能完成请求，请检查绑定代理、模型可用性和冷却状态。",
+      "auth_failed": "上游拒绝了该账号的认证或权限。",
+      "capacity_exceeded": "账号触发会话上限、并发上限、限流或冷却，请稍后再试。",
+      "quota_exceeded": "该账号的上游额度不足。",
+      "incomplete_response": "上游响应未完整结束。",
+      "empty_response": "上游没有返回文本内容。"
+    }
   }
 }

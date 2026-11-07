@@ -63,6 +63,7 @@ export type AuthFileCardProps = {
   onCooldownReset: (file: AuthFileItem) => void;
   onOpenPrefixProxyEditor: (file: AuthFileItem) => void;
   onOpenSessionRouting?: (file: AuthFileItem) => void;
+  onTestModel?: (file: AuthFileItem) => void;
   onDelete: (name: string) => void;
   onToggleStatus: (file: AuthFileItem, enabled: boolean) => void;
   onToggleSelect: (name: string) => void;
@@ -91,6 +92,7 @@ export function AuthFileCard(props: AuthFileCardProps) {
     onCooldownReset,
     onOpenPrefixProxyEditor,
     onOpenSessionRouting,
+    onTestModel,
     onDelete,
     onToggleStatus,
     onToggleSelect,
@@ -362,6 +364,16 @@ export function AuthFileCard(props: AuthFileCardProps) {
             >
               <IconModelCluster size={14} />
               {t('auth_files.models_button')}
+            </Button>
+          )}
+          {!isRuntimeOnly && onTestModel && (
+            <Button
+              variant="secondary"
+              size="sm"
+              disabled={disableControls || file.disabled || isManualRefreshing}
+              onClick={() => onTestModel(file)}
+            >
+              {t('account_test.title')}
             </Button>
           )}
           {!isRuntimeOnly && onOpenSessionRouting && (

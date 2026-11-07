@@ -2568,5 +2568,39 @@
     "readOnly": "This credential is managed elsewhere and cannot be edited here.",
     "rebindAny": "Any credential failure",
     "rebindQuota": "Quota/auth failures"
+  },
+  "account_test": {
+    "title": "Test model",
+    "description": "Send a short real request using this account’s proxy and normal limits. Repeated tests reuse one test session and consume a small amount of quota.",
+    "model": "Model",
+    "refresh": "Reload models",
+    "route": "Egress route",
+    "route_note": "Configured proxy address, not a measured public IP. A failed bound proxy never falls back to another route.",
+    "source_account": "Account setting",
+    "source_global": "Global setting",
+    "source_environment": "Server environment",
+    "mode_direct": "Direct connection",
+    "mode_inherit": "Inherit server network settings",
+    "mode_invalid": "Invalid proxy",
+    "prompt": "Test prompt",
+    "loading": "Loading models…",
+    "no_models": "No registered text models for this account",
+    "running": "Testing… You can cancel at any time.",
+    "cancel": "Cancel test",
+    "cancelled": "Test cancelled",
+    "start": "Start test",
+    "success": "Test passed",
+    "failed": "Test failed",
+    "duration": "{{ms}} ms",
+    "connection_changed": "Connection changed. Close and reopen this dialog.",
+    "errors": {
+      "invalid_proxy": "Invalid proxy. Fix its settings before testing.",
+      "execution_failed": "Request failed. Check this account’s proxy, model availability and cooldown status.",
+      "auth_failed": "Upstream rejected account authentication or permissions.",
+      "capacity_exceeded": "Session, concurrency or rate limit reached, or account is cooling down.",
+      "quota_exceeded": "Insufficient upstream quota.",
+      "incomplete_response": "The upstream response did not complete.",
+      "empty_response": "The upstream returned no text."
+    }
   }
 }

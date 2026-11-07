@@ -2568,5 +2568,39 @@
     "readOnly": "Bu kimlik bilgisi başka yerde yönetiliyor.",
     "rebindAny": "Tüm hesap hataları",
     "rebindQuota": "Kota/kimlik doğrulama hataları"
+  },
+  "account_test": {
+    "title": "Modeli test et",
+    "description": "Bu hesap ve proxy üzerinden normal sınırlarla kısa bir gerçek istek gönderir. Tekrarlanan testler bir oturumu paylaşır ve az kota tüketir.",
+    "model": "Model",
+    "refresh": "Modelleri yenile",
+    "route": "Çıkış rotası",
+    "route_note": "Yapılandırılan proxy adresidir, ölçülmüş genel IP değildir. Proxy başarısız olursa başka rotaya geçilmez.",
+    "source_account": "Hesap ayarı",
+    "source_global": "Genel ayar",
+    "source_environment": "Sunucu ortamı",
+    "mode_direct": "Doğrudan bağlantı",
+    "mode_inherit": "Sunucu ağ ayarlarını devral",
+    "mode_invalid": "Geçersiz proxy",
+    "prompt": "Test istemi",
+    "loading": "Modeller yükleniyor…",
+    "no_models": "Kayıtlı metin modeli yok",
+    "running": "Test ediliyor… İstediğiniz zaman iptal edebilirsiniz.",
+    "cancel": "Testi iptal et",
+    "cancelled": "Test iptal edildi",
+    "start": "Testi başlat",
+    "success": "Test başarılı",
+    "failed": "Test başarısız",
+    "duration": "{{ms}} ms",
+    "connection_changed": "Bağlantı değişti. Pencereyi kapatıp yeniden açın.",
+    "errors": {
+      "invalid_proxy": "Proxy geçersiz. Ayarları düzeltin.",
+      "execution_failed": "İstek başarısız. Proxy, model ve bekleme durumunu kontrol edin.",
+      "auth_failed": "Hesap kimlik doğrulaması veya yetkileri reddedildi.",
+      "capacity_exceeded": "Oturum, eşzamanlılık, hız sınırı veya bekleme süresi etkin.",
+      "quota_exceeded": "Yetersiz üst servis kotası.",
+      "incomplete_response": "Yanıt tamamlanmadı.",
+      "empty_response": "Metin döndürülmedi."
+    }
   }
 }

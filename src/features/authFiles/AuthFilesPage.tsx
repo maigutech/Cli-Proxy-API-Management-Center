@@ -23,6 +23,7 @@ import {
 } from '@/features/authFiles/constants';
 import { AuthFileCard } from '@/features/authFiles/components/AuthFileCard';
 import type { AuthFileItem } from '@/types';
+import { AccountModelTestModal } from '@/features/authFiles/components/AccountModelTestModal';
 import { SessionRoutingSheet } from '@/features/authFiles/components/SessionRoutingSheet';
 import { AuthFileDetailsSheet } from '@/features/authFiles/components/AuthFileDetailsSheet';
 import { getAuthFileRefreshKey } from '@/features/authFiles/manualRefresh';
@@ -89,6 +90,7 @@ export function AuthFilesPage() {
   const isCurrentLayer = pageTransitionLayer ? pageTransitionLayer.status === 'current' : true;
   const navigate = useNavigate();
 
+  const [modelTestFile, setModelTestFile] = useState<AuthFileItem | null>(null);
   const [sessionRoutingFile, setSessionRoutingFile] = useState<AuthFileItem | null>(null);
   const [filter, setFilter] = useState<'all' | string>('all');
   const [statusFilterMode, setStatusFilterMode] = useState<AuthFilesStatusFilterMode>('all');
@@ -732,6 +734,7 @@ export function AuthFilesPage() {
                 onCooldownReset={handleCooldownReset}
                 onOpenPrefixProxyEditor={openPrefixProxyEditor}
                 onOpenSessionRouting={setSessionRoutingFile}
+                onTestModel={setModelTestFile}
                 onDelete={handleDelete}
                 onToggleStatus={handleStatusToggle}
                 onToggleSelect={toggleSelect}
@@ -810,6 +813,15 @@ export function AuthFilesPage() {
         onClose={closeModelsModal}
         onCopyText={copyTextWithNotification}
       />
+
+      {modelTestFile && (
+        <AccountModelTestModal
+          key={`${modelTestFile.name}:${modelTestFile.authIndex ?? ''}`}
+          file={modelTestFile}
+          disableControls={disableControls}
+          onClose={() => setModelTestFile(null)}
+        />
+      )}
 
       {sessionRoutingFile && (
         <SessionRoutingSheet
