@@ -47,6 +47,7 @@ import { useAuthFilesModels } from '@/features/authFiles/hooks/useAuthFilesModel
 import { useAuthFilesOauth } from '@/features/authFiles/hooks/useAuthFilesOauth';
 import { useAuthFilesPrefixProxyEditor } from '@/features/authFiles/hooks/useAuthFilesPrefixProxyEditor';
 import { useAuthFilesStatusBarCache } from '@/features/authFiles/hooks/useAuthFilesStatusBarCache';
+import { useSessionRoutingStatus } from '@/features/authFiles/hooks/useSessionRoutingStatus';
 import { useCodexDegradationProbe } from '@/features/authFiles/hooks/useCodexDegradationProbe';
 import {
   isAuthFilesStatusFilterMode,
@@ -464,6 +465,20 @@ export function AuthFilesPage() {
   const currentPage = Math.min(page, totalPages);
   const start = (currentPage - 1) * pageSize;
   const pageItems = useMemo(() => sorted.slice(start, start + pageSize), [pageSize, sorted, start]);
+  const occupancyIndices = [
+    ...new Set(
+      pageItems
+        .filter((file) => !isRuntimeOnlyAuthFile(file) && file.authIndex != null)
+        .map((file) => String(file.authIndex))
+        .filter(Boolean)
+    ),
+  ]
+    .sort()
+    .join(',');
+  const occupancy = useSessionRoutingStatus(
+    occupancyIndices,
+    isCurrentLayer && connectionStatus === 'connected'
+  );
   const selectablePageItems = useMemo(
     () => pageItems.filter((file) => !isRuntimeOnlyAuthFile(file)),
     [pageItems]
@@ -727,6 +742,7 @@ export function AuthFilesPage() {
                   codexProbe.byAuth.get(file.name)
                 }
                 probeEnabled={codexProbe.settings.enabled}
+                occupancy={occupancy[String(file.authIndex ?? '')]}
                 entranceDelayMs={cardEntranceDelay(index)}
                 onShowModels={showModels}
                 onDownload={handleDownload}

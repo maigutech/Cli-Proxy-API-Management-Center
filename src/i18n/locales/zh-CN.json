@@ -2565,7 +2565,9 @@
     "globalSettings": "全局路由设置",
     "readOnly": "此凭证由其他配置管理，无法在这里修改。",
     "rebindAny": "任意凭证故障",
-    "rebindQuota": "配额或认证失败"
+    "rebindQuota": "配额或认证失败",
+    "card_hint": "当前使用量 / 生效上限，每 5 秒刷新一次；短请求可能发生在两次刷新之间。",
+    "card_unknown": "暂时无法获取当前使用量，将自动重试。"
   },
   "account_test": {
     "title": "测试模型",

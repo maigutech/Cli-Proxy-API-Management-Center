@@ -37,6 +37,8 @@ import { AuthFileQuotaSection } from '@/features/authFiles/components/AuthFileQu
 import { AuthFileCooldownSection } from './AuthFileCooldownSection';
 import { getSiwcBindingStatus, supportsSiwcBinding } from '@/features/oauth/siwcBinding';
 import { SiwcStatusBadge } from '@/features/oauth/components/SiwcStatusBadge';
+import { AccountOccupancy } from './AccountOccupancy';
+import type { SessionRoutingSnapshot } from '@/services/api/sessionRouting';
 import styles from './AuthFileCard.module.scss';
 
 export type AuthFileCardProps = {
@@ -55,6 +57,7 @@ export type AuthFileCardProps = {
   probeStatus?: CodexDegradationProbeStatus;
   /** Whether the degradation probe is enabled on the server. */
   probeEnabled?: boolean;
+  occupancy?: SessionRoutingSnapshot | null;
   /** One-time entrance delay; null/undefined disables entrance motion. */
   entranceDelayMs?: number | null;
   onShowModels: (file: AuthFileItem) => void;
@@ -85,6 +88,7 @@ export function AuthFileCard(props: AuthFileCardProps) {
     statusBarCache,
     probeStatus,
     probeEnabled,
+    occupancy,
     entranceDelayMs,
     onShowModels,
     onDownload,
@@ -306,6 +310,8 @@ export function AuthFileCard(props: AuthFileCardProps) {
           </div>
         )}
       </div>
+
+      {!isRuntimeOnly && <AccountOccupancy snapshot={occupancy} />}
 
       <div className={styles.metaRow}>
         <span title={t('auth_files.file_size')}>{file.size ? formatFileSize(file.size) : '-'}</span>

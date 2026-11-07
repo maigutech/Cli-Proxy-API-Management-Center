@@ -2593,7 +2593,9 @@
     "globalSettings": "全域路由設定",
     "readOnly": "此憑證由其他設定管理，無法在此修改。",
     "rebindAny": "任意憑證故障",
-    "rebindQuota": "配額或驗證失敗"
+    "rebindQuota": "配額或驗證失敗",
+    "card_hint": "目前使用量 / 生效上限，每 5 秒重新整理；短請求可能發生在兩次更新之間。",
+    "card_unknown": "暫時無法取得目前使用量，將自動重試。"
   },
   "account_test": {
     "title": "測試模型",

@@ -2567,7 +2567,9 @@
     "globalSettings": "Genel yönlendirme ayarları",
     "readOnly": "Bu kimlik bilgisi başka yerde yönetiliyor.",
     "rebindAny": "Tüm hesap hataları",
-    "rebindQuota": "Kota/kimlik doğrulama hataları"
+    "rebindQuota": "Kota/kimlik doğrulama hataları",
+    "card_hint": "Mevcut kullanım / etkin sınır. Her 5 saniyede yenilenir; kısa istekler ölçümler arasına denk gelebilir.",
+    "card_unknown": "Mevcut kullanım alınamıyor. Otomatik olarak yeniden denenecek."
   },
   "account_test": {
     "title": "Modeli test et",

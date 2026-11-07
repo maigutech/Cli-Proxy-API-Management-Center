@@ -2573,7 +2573,9 @@
     "globalSettings": "Cài đặt định tuyến chung",
     "readOnly": "Thông tin xác thực này được quản lý ở nơi khác.",
     "rebindAny": "Mọi lỗi tài khoản",
-    "rebindQuota": "Lỗi hạn mức/xác thực"
+    "rebindQuota": "Lỗi hạn mức/xác thực",
+    "card_hint": "Hiện tại / giới hạn hiệu lực. Cập nhật mỗi 5 giây; yêu cầu ngắn có thể nằm giữa hai lần lấy mẫu.",
+    "card_unknown": "Chưa lấy được mức sử dụng hiện tại. Sẽ tự động thử lại."
   },
   "account_test": {
     "title": "Thử mô hình",

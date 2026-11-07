@@ -2567,7 +2567,9 @@
     "globalSettings": "Global routing settings",
     "readOnly": "This credential is managed elsewhere and cannot be edited here.",
     "rebindAny": "Any credential failure",
-    "rebindQuota": "Quota/auth failures"
+    "rebindQuota": "Quota/auth failures",
+    "card_hint": "Current / effective limit. Refreshed every 5 seconds; very short requests may fall between samples.",
+    "card_unknown": "Current occupancy is unavailable. The display will retry automatically."
   },
   "account_test": {
     "title": "Test model",

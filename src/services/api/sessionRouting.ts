@@ -71,12 +71,33 @@ export function serializeSessionRouting(values: SessionRoutingOverrides) {
   );
 }
 
+export function normalizeSessionRoutingStatus(
+  raw: unknown
+): Record<string, SessionRoutingSnapshot | null> {
+  const accounts = record(record(raw).accounts);
+  return Object.fromEntries(
+    Object.entries(accounts).map(([index, value]) => [
+      index,
+      value === null ? null : normalizeSessionRouting(value),
+    ])
+  );
+}
+
 // Pin credentials so an in-flight editor never writes to a newly selected server.
 export function captureSessionRoutingApi() {
   const revision = apiClient.getConnectionRevision();
   const client = apiClient.captureConnection();
   return {
     isCurrent: () => apiClient.getConnectionRevision() === revision,
+    getStatus: async (indices: string[], signal: AbortSignal) => {
+      if (apiClient.getConnectionRevision() !== revision) throw new Error('Connection changed');
+      return normalizeSessionRoutingStatus(
+        await client.get('/credentials/session-routing/status', {
+          params: { auth_indices: indices.join(',') },
+          signal,
+        })
+      );
+    },
     get: async (name: string, authIndex?: string) =>
       normalizeSessionRouting(
         await client.get('/credentials/session-routing', {
