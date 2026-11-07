@@ -1384,6 +1384,26 @@
         "codexLiveMediaRelayICEServers": {
           "label": "ICE Sunucuları",
           "hint": "stun:, stuns:, turn: veya turns: URL'leri Kullanan İsteğe Bağlı STUN/TURN Sunucuları. TURN Kimlik Bilgileri JSON Yapılandırma API Değerinden Çıkarılır. Kimlik Bilgisini Parola Olarak Gir ve Gizlileri Ekran Görüntülerinden ve Günlüklerden Uzak Tut."
+        },
+        "routingMaxActiveSessions": {
+          "label": "Etkin oturum sınırı",
+          "hint": "0 sınırsızdır. Aynı çağıran ve oturumun istekleri modeller arasında tek yer paylaşır."
+        },
+        "routingMaxConcurrentRequests": {
+          "label": "Eşzamanlı istek sınırı",
+          "hint": "0 sınırsızdır. Her çalışan istek bir yer kullanır; akışlar bitene kadar yer tutulur."
+        },
+        "routingSessionIdleTTL": {
+          "label": "Oturum boşta kalma süresi",
+          "hint": "Go duration: 5m, 30s. Empty = 5m; individual accounts may override."
+        },
+        "routingSessionFailoverTTL": {
+          "label": "Yedek hesapta tutma süresi",
+          "hint": "Go duration: 5m. Empty or 0s disables the hold. Requires affinity and quota/auth rebind policy."
+        },
+        "routingSessionRebindOn": {
+          "label": "Kota/kimlik doğrulama hataları",
+          "hint": "Yedekte tutma için genel oturum bağlılığı ve kota/kimlik doğrulama hatalarında yeniden bağlama gerekir. Genel ayarlara geçmeden değişiklikleri kaydedin."
         }
       },
       "search": {
@@ -2520,5 +2540,33 @@
     "error": "Bağlama Başarısız Oldu. Lütfen Yeniden Başla.",
     "unsupported": "Bu Arka Uç SIWC Bağlamayı Desteklemiyor.",
     "expired": "Bağlama Oturumunun Süresi Doldu. Lütfen Yeniden Başla."
+  },
+  "session_routing": {
+    "title": "Oturum ve eşzamanlılık",
+    "sessions": "Etkin oturumlar",
+    "requests": "Eşzamanlı istekler",
+    "unlimited": "Sınırsız",
+    "inherit": "Genel varsayılan",
+    "custom": "Hesaba özel",
+    "maxActiveSessions": "Etkin oturum sınırı",
+    "maxConcurrentRequests": "Eşzamanlı istek sınırı",
+    "idleTtlSeconds": "Oturum boşta kalma süresi (saniye)",
+    "failoverTtlSeconds": "Yedek hesapta tutma süresi (saniye)",
+    "maxActiveSessionsHint": "0 sınırsızdır. Aynı çağıran ve oturumun istekleri modeller arasında tek yer paylaşır.",
+    "maxConcurrentRequestsHint": "0 sınırsızdır. Her çalışan istek bir yer kullanır; akışlar bitene kadar yer tutulur.",
+    "idleTtlSecondsHint": "Son istek bittikten ve boşta kalma süresi geçtikten sonra oturum yeri serbest bırakılır. Çalışan isteklerin süresi dolmaz.",
+    "failoverTtlSecondsHint": "Bu hesap geçici hata verirse oturumlar belirtilen süre boyunca boşta kalana kadar yedek hesapta tutulur. 0 tutmayı kapatır.",
+    "description": "Sayaçlar mevcut CPA işlemine aittir. Yeni sınırlar sonraki kabullerde geçerlidir; mevcut istekler tamamlanır. Yeniden başlatma sayaçları sıfırlar.",
+    "updated": "Güncelleme: {{time}} · Her 5 saniyede",
+    "invalid": "{{min}} ile {{max}} arasında tam sayı girin.",
+    "saved": "Hesap oturum ayarları kaydedildi",
+    "loadFailed": "Ayarlar yüklenemedi",
+    "saveFailed": "Ayarlar kaydedilemedi",
+    "connectionChanged": "Sunucu bağlantısı değişti. Paneli kapatıp hesabı yeniden açın.",
+    "failoverPrerequisite": "Yedekte tutma için genel oturum bağlılığı ve kota/kimlik doğrulama hatalarında yeniden bağlama gerekir. Genel ayarlara geçmeden değişiklikleri kaydedin.",
+    "globalSettings": "Genel yönlendirme ayarları",
+    "readOnly": "Bu kimlik bilgisi başka yerde yönetiliyor.",
+    "rebindAny": "Tüm hesap hataları",
+    "rebindQuota": "Kota/kimlik doğrulama hataları"
   }
 }

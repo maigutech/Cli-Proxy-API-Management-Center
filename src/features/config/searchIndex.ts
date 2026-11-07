@@ -38,6 +38,42 @@ const L = (key: string) => `config_management.visual.${key}`;
 
 export const CONFIG_FIELD_SEARCH_INDEX: ConfigFieldSearchEntry[] = [
   {
+    fieldId: 'routingMaxActiveSessions',
+    sectionId: 'network',
+    labelKey: L('additions.routingMaxActiveSessions.label'),
+    hintKey: L('additions.routingMaxActiveSessions.hint'),
+    yamlKeys: ['routing', 'max-active-sessions-per-credential'],
+  },
+  {
+    fieldId: 'routingMaxConcurrentRequests',
+    sectionId: 'network',
+    labelKey: L('additions.routingMaxConcurrentRequests.label'),
+    hintKey: L('additions.routingMaxConcurrentRequests.hint'),
+    yamlKeys: ['routing', 'max-concurrent-requests-per-credential'],
+  },
+  {
+    fieldId: 'routingSessionIdleTTL',
+    sectionId: 'network',
+    labelKey: L('additions.routingSessionIdleTTL.label'),
+    hintKey: L('additions.routingSessionIdleTTL.hint'),
+    yamlKeys: ['routing', 'session-idle-ttl'],
+  },
+  {
+    fieldId: 'routingSessionFailoverTTL',
+    sectionId: 'network',
+    labelKey: L('additions.routingSessionFailoverTTL.label'),
+    hintKey: L('additions.routingSessionFailoverTTL.hint'),
+    yamlKeys: ['routing', 'session-affinity-failover-ttl'],
+  },
+  {
+    fieldId: 'routingSessionRebindOn',
+    sectionId: 'network',
+    labelKey: L('additions.routingSessionRebindOn.label'),
+    hintKey: L('additions.routingSessionRebindOn.hint'),
+    yamlKeys: ['routing', 'session-affinity-rebind-on'],
+  },
+
+  {
     fieldId: 'routingSessionAffinitySubagents',
     sectionId: 'network',
     labelKey: L('additions.routingSessionAffinitySubagents.label'),

@@ -1384,6 +1384,26 @@
         "codexLiveMediaRelayICEServers": {
           "label": "ICE servers",
           "hint": "Optional STUN/TURN servers using stun:, stuns:, turn:, or turns: URLs. TURN credentials are omitted from the JSON config API. Enter the credential as a password and keep secrets out of screenshots and logs."
+        },
+        "routingMaxActiveSessions": {
+          "label": "Active session limit",
+          "hint": "0 means unlimited. Requests with the same caller and session share one slot, across models."
+        },
+        "routingMaxConcurrentRequests": {
+          "label": "Concurrent request limit",
+          "hint": "0 means unlimited. Each running request takes one slot, including streams until they end."
+        },
+        "routingSessionIdleTTL": {
+          "label": "Session idle time",
+          "hint": "Go duration: 5m, 30s. Empty = 5m; individual accounts may override."
+        },
+        "routingSessionFailoverTTL": {
+          "label": "Failover hold time",
+          "hint": "Go duration: 5m. Empty or 0s disables the hold. Requires affinity and quota/auth rebind policy."
+        },
+        "routingSessionRebindOn": {
+          "label": "Quota/auth failures",
+          "hint": "Failover hold requires global session affinity and the “Quota/auth failures” rebind policy. Save account changes before opening global settings."
         }
       },
       "search": {
@@ -2520,5 +2540,33 @@
     "error": "Binding failed. Please start over.",
     "unsupported": "This backend does not support SIWC binding.",
     "expired": "The binding session expired. Please start over."
+  },
+  "session_routing": {
+    "title": "Sessions & concurrency",
+    "sessions": "Active sessions",
+    "requests": "Concurrent requests",
+    "unlimited": "Unlimited",
+    "inherit": "Use global default",
+    "custom": "Account override",
+    "maxActiveSessions": "Active session limit",
+    "maxConcurrentRequests": "Concurrent request limit",
+    "idleTtlSeconds": "Session idle time (seconds)",
+    "failoverTtlSeconds": "Failover hold time (seconds)",
+    "maxActiveSessionsHint": "0 means unlimited. Requests with the same caller and session share one slot, across models.",
+    "maxConcurrentRequestsHint": "0 means unlimited. Each running request takes one slot, including streams until they end.",
+    "idleTtlSecondsHint": "The session slot is released after its final request ends and this idle period passes. Running requests do not expire.",
+    "failoverTtlSecondsHint": "When this account has a transient failure, keep its sessions on the backup until idle for this duration. 0 disables the hold.",
+    "description": "Usage is measured in this CPA process. Limits take effect on the next admission; existing requests finish normally. Counts reset when CPA restarts.",
+    "updated": "Updated at {{time}} · Refreshes every 5 seconds",
+    "invalid": "Enter a whole number between {{min}} and {{max}}.",
+    "saved": "Account session settings saved",
+    "loadFailed": "Could not load session settings",
+    "saveFailed": "Could not save session settings",
+    "connectionChanged": "The server connection changed. Close this panel and reopen the account.",
+    "failoverPrerequisite": "Failover hold requires global session affinity and the “Quota/auth failures” rebind policy. Save account changes before opening global settings.",
+    "globalSettings": "Global routing settings",
+    "readOnly": "This credential is managed elsewhere and cannot be edited here.",
+    "rebindAny": "Any credential failure",
+    "rebindQuota": "Quota/auth failures"
   }
 }

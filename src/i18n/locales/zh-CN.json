@@ -581,7 +581,6 @@
     "reset_confirm_button": "确认重置",
     "reset_not_confirmed": "未确认额度重置成功，请刷新额度后再决定是否重试。",
     "reset_cooldown_failed": "额度已重置，但代理冷却清除失败。请在原连接的认证文件页面使用“清除冷却”，不要再次消耗重置卡。",
-
     "reset_success": "已重置 \"{{name}}\" 的 Codex 额度",
     "reset_failed": "重置 \"{{name}}\" 的 Codex 额度失败：{{message}}",
     "plan_plus": "Plus",
@@ -1383,6 +1382,26 @@
         "codexLiveMediaRelayICEServers": {
           "label": "ICE 服务器",
           "hint": "可选的 STUN/TURN 服务器，URL 支持 stun:、stuns:、turn: 或 turns:。JSON 配置 API 不返回 TURN 凭据。请通过密码字段填写凭据，勿将秘密暴露在截图或日志中。"
+        },
+        "routingMaxActiveSessions": {
+          "label": "全局活跃 session 上限",
+          "hint": "0 表示不限。同一调用方、同一 session 的请求跨模型共享一个会话名额。"
+        },
+        "routingMaxConcurrentRequests": {
+          "label": "全局请求并发上限",
+          "hint": "0 表示不限。每个正在处理的请求占一个名额，流式请求在结束后释放。"
+        },
+        "routingSessionIdleTTL": {
+          "label": "全局 session 空闲释放时间",
+          "hint": "Go 时长，如 5m、30s。留空使用 5m；账号可单独覆盖。"
+        },
+        "routingSessionFailoverTTL": {
+          "label": "全局故障转移保持时间",
+          "hint": "Go 时长，如 5m。0s 或留空表示关闭。需启用会话亲和，并选择配额或认证失败时重新绑定。"
+        },
+        "routingSessionRebindOn": {
+          "label": "会话重新绑定策略",
+          "hint": "选择“配额或认证失败”后，临时故障保留原账号绑定，并使用备用账号；恢复后的返回时机由保持时间决定。"
         }
       },
       "search": {
@@ -2519,5 +2538,33 @@
     "error": "绑定失败，请重新开始。",
     "unsupported": "当前后端不支持 SIWC 绑定。",
     "expired": "绑定会话已过期，请重新开始。"
+  },
+  "session_routing": {
+    "title": "会话与并发",
+    "sessions": "活跃会话",
+    "requests": "请求并发",
+    "unlimited": "不限",
+    "inherit": "继承全局",
+    "custom": "单账号设置",
+    "maxActiveSessions": "活跃 session 上限",
+    "maxConcurrentRequests": "请求并发上限",
+    "idleTtlSeconds": "Session 空闲释放时间（秒）",
+    "failoverTtlSeconds": "故障转移保持时间（秒）",
+    "maxActiveSessionsHint": "0 表示不限。同一调用方、同一 session 的请求跨模型共享一个会话名额。",
+    "maxConcurrentRequestsHint": "0 表示不限。每个正在处理的请求占一个名额，流式请求在结束后释放。",
+    "idleTtlSecondsHint": "最后一个请求结束后，空闲超过这段时间才释放会话名额；正在处理的请求不会过期。",
+    "failoverTtlSecondsHint": "此账号发生临时故障后，会话继续使用备用账号，直到空闲达到这段时间。0 表示不保持。",
+    "description": "占用统计属于当前 CPA 进程。修改限额后，新请求按新设置准入，已接入的请求正常完成；重启后占用计数清零。",
+    "updated": "更新于 {{time}} · 每 5 秒刷新",
+    "invalid": "请输入 {{min}} 到 {{max}} 之间的整数。",
+    "saved": "账号会话配置已保存",
+    "loadFailed": "无法加载会话配置",
+    "saveFailed": "无法保存会话配置",
+    "connectionChanged": "服务器连接已切换，请关闭面板后重新打开账号。",
+    "failoverPrerequisite": "故障转移保持需要全局启用“会话亲和”，并将重新绑定策略设为“配额或认证失败”。请先保存账号修改，再打开全局设置。",
+    "globalSettings": "全局路由设置",
+    "readOnly": "此凭证由其他配置管理，无法在这里修改。",
+    "rebindAny": "任意凭证故障",
+    "rebindQuota": "配额或认证失败"
   }
 }

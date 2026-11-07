@@ -1632,6 +1632,26 @@
         "codexLiveMediaRelayICEServers": {
           "label": "Máy chủ ICE",
           "hint": "Các máy chủ STUN/TURN tùy chọn dùng URL stun:, stuns:, turn:, hoặc turns:. Thông tin xác thực TURN được bỏ qua trong API cấu hình JSON. Nhập thông tin xác thực dưới dạng mật khẩu và không để lộ bí mật trong ảnh chụp màn hình hay log."
+        },
+        "routingMaxActiveSessions": {
+          "label": "Giới hạn phiên hoạt động",
+          "hint": "0 là không giới hạn. Các yêu cầu cùng bên gọi và phiên dùng chung một chỗ, kể cả khác mô hình."
+        },
+        "routingMaxConcurrentRequests": {
+          "label": "Giới hạn yêu cầu đồng thời",
+          "hint": "0 là không giới hạn. Mỗi yêu cầu đang chạy chiếm một chỗ, kể cả luồng cho đến khi kết thúc."
+        },
+        "routingSessionIdleTTL": {
+          "label": "Thời gian nhàn rỗi",
+          "hint": "Go duration: 5m, 30s. Empty = 5m; individual accounts may override."
+        },
+        "routingSessionFailoverTTL": {
+          "label": "Thời gian giữ tài khoản dự phòng",
+          "hint": "Go duration: 5m. Empty or 0s disables the hold. Requires affinity and quota/auth rebind policy."
+        },
+        "routingSessionRebindOn": {
+          "label": "Lỗi hạn mức/xác thực",
+          "hint": "Giữ tài khoản dự phòng cần bật gắn kết phiên và chọn gắn lại khi lỗi hạn mức/xác thực trong cài đặt chung. Lưu thay đổi tài khoản trước khi mở cài đặt chung."
         }
       }
     },
@@ -2526,5 +2546,33 @@
     "error": "Liên kết thất bại. Hãy bắt đầu lại.",
     "unsupported": "Máy chủ này không hỗ trợ liên kết SIWC.",
     "expired": "Phiên liên kết đã hết hạn. Hãy bắt đầu lại."
+  },
+  "session_routing": {
+    "title": "Phiên và đồng thời",
+    "sessions": "Phiên đang hoạt động",
+    "requests": "Yêu cầu đồng thời",
+    "unlimited": "Không giới hạn",
+    "inherit": "Dùng mặc định chung",
+    "custom": "Riêng tài khoản",
+    "maxActiveSessions": "Giới hạn phiên hoạt động",
+    "maxConcurrentRequests": "Giới hạn yêu cầu đồng thời",
+    "idleTtlSeconds": "Thời gian nhàn rỗi (giây)",
+    "failoverTtlSeconds": "Thời gian giữ tài khoản dự phòng (giây)",
+    "maxActiveSessionsHint": "0 là không giới hạn. Các yêu cầu cùng bên gọi và phiên dùng chung một chỗ, kể cả khác mô hình.",
+    "maxConcurrentRequestsHint": "0 là không giới hạn. Mỗi yêu cầu đang chạy chiếm một chỗ, kể cả luồng cho đến khi kết thúc.",
+    "idleTtlSecondsHint": "Chỗ của phiên được giải phóng sau khi yêu cầu cuối kết thúc và hết thời gian nhàn rỗi. Yêu cầu đang chạy không hết hạn.",
+    "failoverTtlSecondsHint": "Khi tài khoản này gặp lỗi tạm thời, phiên tiếp tục dùng tài khoản dự phòng đến khi nhàn rỗi đủ lâu. 0 tắt chức năng giữ.",
+    "description": "Số liệu thuộc tiến trình CPA hiện tại. Giới hạn mới áp dụng cho lần tiếp nhận tiếp theo; yêu cầu đang chạy vẫn hoàn tất. Khởi động lại đặt số đếm về 0.",
+    "updated": "Cập nhật {{time}} · Mỗi 5 giây",
+    "invalid": "Nhập số nguyên từ {{min}} đến {{max}}.",
+    "saved": "Đã lưu cài đặt phiên",
+    "loadFailed": "Không tải được cài đặt",
+    "saveFailed": "Không lưu được cài đặt",
+    "connectionChanged": "Kết nối đã thay đổi. Đóng bảng và mở lại tài khoản.",
+    "failoverPrerequisite": "Giữ tài khoản dự phòng cần bật gắn kết phiên và chọn gắn lại khi lỗi hạn mức/xác thực trong cài đặt chung. Lưu thay đổi tài khoản trước khi mở cài đặt chung.",
+    "globalSettings": "Cài đặt định tuyến chung",
+    "readOnly": "Thông tin xác thực này được quản lý ở nơi khác.",
+    "rebindAny": "Mọi lỗi tài khoản",
+    "rebindQuota": "Lỗi hạn mức/xác thực"
   }
 }

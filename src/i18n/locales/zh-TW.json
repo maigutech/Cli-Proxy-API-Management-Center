@@ -581,7 +581,6 @@
     "reset_confirm_button": "確認重置",
     "reset_not_confirmed": "尚未確認額度重置成功，請重新整理額度後再決定是否重試。",
     "reset_cooldown_failed": "額度已重置，但代理冷卻清除失敗。請在原連線的認證檔案頁面使用「清除冷卻」，不要再次消耗重置卡。",
-
     "reset_success": "已重置「{{name}}」的 Codex 配額",
     "reset_failed": "重置「{{name}}」的 Codex 配額失敗：{{message}}",
     "plan_plus": "Plus",
@@ -1411,6 +1410,26 @@
         "codexLiveMediaRelayICEServers": {
           "label": "ICE 伺服器",
           "hint": "可選的 STUN/TURN 伺服器，URL 支援 stun:、stuns:、turn: 或 turns:。JSON 設定 API 不會傳回 TURN 憑證。請透過密碼欄位填寫憑證，勿將機密暴露在螢幕截圖或日誌中。"
+        },
+        "routingMaxActiveSessions": {
+          "label": "全域活躍 session 上限",
+          "hint": "0 表示不限。同一呼叫方、同一 session 的請求跨模型共用一個會話名額。"
+        },
+        "routingMaxConcurrentRequests": {
+          "label": "全域並行請求上限",
+          "hint": "0 表示不限。每個正在處理的請求占一個名額，串流請求結束後釋放。"
+        },
+        "routingSessionIdleTTL": {
+          "label": "全域 session 閒置釋放時間",
+          "hint": "Go 時長，例如 5m、30s。留空使用 5m；帳號可單獨覆寫。"
+        },
+        "routingSessionFailoverTTL": {
+          "label": "全域故障轉移維持時間",
+          "hint": "Go 時長，例如 5m。0s 或留空表示關閉。需啟用會話親和，並選擇配額或驗證失敗時重新綁定。"
+        },
+        "routingSessionRebindOn": {
+          "label": "會話重新綁定策略",
+          "hint": "選擇「配額或驗證失敗」後，暫時故障保留原帳號綁定，並使用備用帳號；返回時機由維持時間決定。"
         }
       },
       "search": {
@@ -2547,5 +2566,33 @@
     "error": "綁定失敗，請重新開始。",
     "unsupported": "目前後端不支援 SIWC 綁定。",
     "expired": "綁定工作階段已過期，請重新開始。"
+  },
+  "session_routing": {
+    "title": "會話與並行",
+    "sessions": "活躍會話",
+    "requests": "並行請求",
+    "unlimited": "不限",
+    "inherit": "繼承全域",
+    "custom": "單一帳號設定",
+    "maxActiveSessions": "活躍 session 上限",
+    "maxConcurrentRequests": "並行請求上限",
+    "idleTtlSeconds": "Session 閒置釋放時間（秒）",
+    "failoverTtlSeconds": "故障轉移維持時間（秒）",
+    "maxActiveSessionsHint": "0 表示不限。同一呼叫方、同一 session 的請求跨模型共用一個會話名額。",
+    "maxConcurrentRequestsHint": "0 表示不限。每個正在處理的請求占一個名額，串流請求結束後釋放。",
+    "idleTtlSecondsHint": "最後一個請求結束後，閒置超過這段時間才釋放會話名額；正在處理的請求不會過期。",
+    "failoverTtlSecondsHint": "此帳號發生暫時故障後，會話繼續使用備用帳號，直到閒置達到這段時間。0 表示不維持。",
+    "description": "使用量屬於目前 CPA 程序。新請求依新設定准入，已接入的請求正常完成；重新啟動後計數歸零。",
+    "updated": "更新於 {{time}} · 每 5 秒重新整理",
+    "invalid": "請輸入 {{min}} 到 {{max}} 之間的整數。",
+    "saved": "帳號會話設定已儲存",
+    "loadFailed": "無法載入會話設定",
+    "saveFailed": "無法儲存會話設定",
+    "connectionChanged": "伺服器連線已切換，請關閉面板後重新開啟帳號。",
+    "failoverPrerequisite": "故障轉移維持需要全域啟用「會話親和」，並將重新綁定策略設為「配額或驗證失敗」。請先儲存帳號修改，再開啟全域設定。",
+    "globalSettings": "全域路由設定",
+    "readOnly": "此憑證由其他設定管理，無法在此修改。",
+    "rebindAny": "任意憑證故障",
+    "rebindQuota": "配額或驗證失敗"
   }
 }

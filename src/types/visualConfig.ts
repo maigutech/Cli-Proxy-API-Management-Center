@@ -14,6 +14,11 @@ export type CodexLiveICEServerDraft = {
 };
 
 export type VisualConfigFieldPath =
+  | 'routingMaxActiveSessions'
+  | 'routingMaxConcurrentRequests'
+  | 'routingSessionIdleTTL'
+  | 'routingSessionFailoverTTL'
+  | 'routingSessionRebindOn'
   | 'trustedProxies'
   | 'discoveryServiceType'
   | 'transientErrorCooldownSeconds'
@@ -128,6 +133,11 @@ export type VisualConfigValues = {
   discoveryAuthRequired: boolean;
   discoveryAdvertiseManagement: boolean;
 
+  routingMaxActiveSessions: string;
+  routingMaxConcurrentRequests: string;
+  routingSessionIdleTTL: string;
+  routingSessionFailoverTTL: string;
+  routingSessionRebindOn: string;
   routingSessionAffinitySubagents: boolean;
   saveCooldownStatus: boolean;
   transientErrorCooldownSeconds: string;
@@ -231,6 +241,11 @@ export const DEFAULT_VISUAL_VALUES: VisualConfigValues = {
   discoveryAuthRequired: true,
   discoveryAdvertiseManagement: false,
 
+  routingMaxActiveSessions: '',
+  routingMaxConcurrentRequests: '',
+  routingSessionIdleTTL: '',
+  routingSessionFailoverTTL: '',
+  routingSessionRebindOn: '',
   routingSessionAffinitySubagents: true,
   saveCooldownStatus: false,
   transientErrorCooldownSeconds: '',

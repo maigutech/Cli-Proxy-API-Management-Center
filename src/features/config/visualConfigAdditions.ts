@@ -12,6 +12,28 @@ import { readConfigBoolean } from './visualConfigBoolean';
 // under upstream.*/client.codex; only OAuth-only provider paths keep oauth.providers.*.
 export const ADDITION_FIELDS = [
   {
+    key: 'routingMaxActiveSessions',
+    path: 'routing.max-active-sessions-per-credential'.split('.'),
+    kind: 'integer',
+  },
+  {
+    key: 'routingMaxConcurrentRequests',
+    path: 'routing.max-concurrent-requests-per-credential'.split('.'),
+    kind: 'integer',
+  },
+  { key: 'routingSessionIdleTTL', path: 'routing.session-idle-ttl'.split('.'), kind: 'string' },
+  {
+    key: 'routingSessionFailoverTTL',
+    path: 'routing.session-affinity-failover-ttl'.split('.'),
+    kind: 'string',
+  },
+  {
+    key: 'routingSessionRebindOn',
+    path: 'routing.session-affinity-rebind-on'.split('.'),
+    kind: 'string',
+  },
+
+  {
     key: 'routingSessionAffinitySubagents',
     path: 'routing.session-affinity-subagents'.split('.'),
     kind: 'boolean',
@@ -295,6 +317,12 @@ export function validateVisualAdditions(
   dirtyFields?: ReadonlySet<string>
 ): VisualConfigValidationErrors {
   const errors: VisualConfigValidationErrors = {
+    routingMaxActiveSessions: undefined,
+    routingMaxConcurrentRequests: undefined,
+    routingSessionIdleTTL: undefined,
+    routingSessionFailoverTTL: undefined,
+    routingSessionRebindOn: undefined,
+
     transientErrorCooldownSeconds: undefined,
     videoResultAuthCacheTTL: undefined,
     claudeHeaderTimezone: undefined,
@@ -351,6 +379,17 @@ export function validateVisualAdditions(
       new Intl.DateTimeFormat('en', { timeZone: timezone });
     } catch {
       errors.claudeHeaderTimezone = 'invalid_timezone';
+    }
+  }
+  for (const key of ['routingSessionIdleTTL', 'routingSessionFailoverTTL'] as const) {
+    const value = values[key].trim();
+    if (!value) continue;
+    const duration = goDurationSeconds(value);
+    if (
+      duration === undefined ||
+      (key === 'routingSessionIdleTTL' ? duration <= 0 : duration < 0)
+    ) {
+      errors[key] = 'invalid_duration';
     }
   }
   // uint16 decoding applies even to a disabled relay; operational constraints do not.

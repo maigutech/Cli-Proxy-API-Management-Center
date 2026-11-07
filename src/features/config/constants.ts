@@ -67,6 +67,11 @@ export const SECTION_VALIDATION_FIELDS: Record<VisualSectionId, readonly VisualC
   {
     connectivity: ['port', 'trustedProxies', 'discoveryServiceType'],
     network: [
+      'routingMaxActiveSessions',
+      'routingMaxConcurrentRequests',
+      'routingSessionIdleTTL',
+      'routingSessionFailoverTTL',
+      'routingSessionRebindOn',
       'requestRetry',
       'maxRetryCredentials',
       'maxRetryInterval',
@@ -100,6 +105,11 @@ export const SECTION_VALIDATION_FIELDS: Record<VisualSectionId, readonly VisualC
  * 增删字段时漏改任何一边（索引 / 本表 / 分区 JSX）都会红。
  */
 export const FIELD_VALUE_KEYS: Record<string, readonly string[]> = {
+  routingMaxActiveSessions: ['routingMaxActiveSessions'],
+  routingMaxConcurrentRequests: ['routingMaxConcurrentRequests'],
+  routingSessionIdleTTL: ['routingSessionIdleTTL'],
+  routingSessionFailoverTTL: ['routingSessionFailoverTTL'],
+  routingSessionRebindOn: ['routingSessionRebindOn'],
   routingSessionAffinitySubagents: ['routingSessionAffinitySubagents'],
   saveCooldownStatus: ['saveCooldownStatus'],
   transientErrorCooldownSeconds: ['transientErrorCooldownSeconds'],

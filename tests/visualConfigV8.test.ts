@@ -169,6 +169,8 @@ routing:
 
 describe('v8 scalar read/write path parity', () => {
   const numericFields = new Set([
+    'routingMaxActiveSessions',
+    'routingMaxConcurrentRequests',
     'port',
     'errorLogsMaxFiles',
     'logsMaxTotalSizeMb',

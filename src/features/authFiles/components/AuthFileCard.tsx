@@ -62,6 +62,7 @@ export type AuthFileCardProps = {
   onManualRefresh: (file: AuthFileItem) => void;
   onCooldownReset: (file: AuthFileItem) => void;
   onOpenPrefixProxyEditor: (file: AuthFileItem) => void;
+  onOpenSessionRouting?: (file: AuthFileItem) => void;
   onDelete: (name: string) => void;
   onToggleStatus: (file: AuthFileItem, enabled: boolean) => void;
   onToggleSelect: (name: string) => void;
@@ -89,6 +90,7 @@ export function AuthFileCard(props: AuthFileCardProps) {
     onManualRefresh,
     onCooldownReset,
     onOpenPrefixProxyEditor,
+    onOpenSessionRouting,
     onDelete,
     onToggleStatus,
     onToggleSelect,
@@ -147,10 +149,14 @@ export function AuthFileCard(props: AuthFileCardProps) {
       lines.push(`${t('auth_files.probe_replies')}: ${probeStatus.last_replies}`);
     }
     if (probeStatus.consecutive_abnormal) {
-      lines.push(`${t('auth_files.probe_consecutive_abnormal')}: ${probeStatus.consecutive_abnormal}`);
+      lines.push(
+        `${t('auth_files.probe_consecutive_abnormal')}: ${probeStatus.consecutive_abnormal}`
+      );
     }
     if (probeStatus.consecutive_healthy) {
-      lines.push(`${t('auth_files.probe_consecutive_healthy')}: ${probeStatus.consecutive_healthy}`);
+      lines.push(
+        `${t('auth_files.probe_consecutive_healthy')}: ${probeStatus.consecutive_healthy}`
+      );
     }
     if (probeStatus.last_checked_at) {
       lines.push(
@@ -356,6 +362,16 @@ export function AuthFileCard(props: AuthFileCardProps) {
             >
               <IconModelCluster size={14} />
               {t('auth_files.models_button')}
+            </Button>
+          )}
+          {!isRuntimeOnly && onOpenSessionRouting && (
+            <Button
+              variant="secondary"
+              size="sm"
+              disabled={disableControls || isManualRefreshing}
+              onClick={() => onOpenSessionRouting(file)}
+            >
+              {t('session_routing.title')}
             </Button>
           )}
           {!isRuntimeOnly && (

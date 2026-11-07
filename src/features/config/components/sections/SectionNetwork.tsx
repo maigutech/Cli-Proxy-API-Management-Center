@@ -224,6 +224,62 @@ export function SectionNetwork({
           disabled={disabled}
           onChange={(routingSessionAffinity) => onChange({ routingSessionAffinity })}
         />
+        <TextSetting
+          fieldId="routingMaxActiveSessions"
+          size="sm"
+          label={t('config_management.visual.additions.routingMaxActiveSessions.label')}
+          description={t('config_management.visual.additions.routingMaxActiveSessions.hint')}
+          value={values.routingMaxActiveSessions}
+          disabled={disabled}
+          type="number"
+          error={getValidationMessage(t, validationErrors?.routingMaxActiveSessions)}
+          onChange={(routingMaxActiveSessions) => onChange({ routingMaxActiveSessions })}
+        />
+        <TextSetting
+          fieldId="routingMaxConcurrentRequests"
+          size="sm"
+          label={t('config_management.visual.additions.routingMaxConcurrentRequests.label')}
+          description={t('config_management.visual.additions.routingMaxConcurrentRequests.hint')}
+          value={values.routingMaxConcurrentRequests}
+          disabled={disabled}
+          type="number"
+          error={getValidationMessage(t, validationErrors?.routingMaxConcurrentRequests)}
+          onChange={(routingMaxConcurrentRequests) => onChange({ routingMaxConcurrentRequests })}
+        />
+        <TextSetting
+          fieldId="routingSessionIdleTTL"
+          size="sm"
+          label={t('config_management.visual.additions.routingSessionIdleTTL.label')}
+          description={t('config_management.visual.additions.routingSessionIdleTTL.hint')}
+          value={values.routingSessionIdleTTL}
+          disabled={disabled}
+
+          error={getValidationMessage(t, validationErrors?.routingSessionIdleTTL)}
+          onChange={(routingSessionIdleTTL) => onChange({ routingSessionIdleTTL })}
+        />
+        <TextSetting
+          fieldId="routingSessionFailoverTTL"
+          size="sm"
+          label={t('config_management.visual.additions.routingSessionFailoverTTL.label')}
+          description={t('config_management.visual.additions.routingSessionFailoverTTL.hint')}
+          value={values.routingSessionFailoverTTL}
+          disabled={disabled}
+
+          error={getValidationMessage(t, validationErrors?.routingSessionFailoverTTL)}
+          onChange={(routingSessionFailoverTTL) => onChange({ routingSessionFailoverTTL })}
+        />
+        <SelectSetting
+          fieldId="routingSessionRebindOn"
+          label={t('config_management.visual.additions.routingSessionRebindOn.label')}
+          description={t('config_management.visual.additions.routingSessionRebindOn.hint')}
+          value={values.routingSessionRebindOn || 'any'}
+          disabled={disabled}
+          options={[
+            { value: 'any', label: t('session_routing.rebindAny') },
+            { value: 'quota', label: t('session_routing.rebindQuota') },
+          ]}
+          onChange={(routingSessionRebindOn) => onChange({ routingSessionRebindOn })}
+        />
         <ToggleSetting
           fieldId="wsAuth"
           label={t('config_management.visual.sections.network.ws_auth')}
