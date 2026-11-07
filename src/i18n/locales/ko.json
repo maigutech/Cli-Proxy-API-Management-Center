@@ -726,6 +726,13 @@
     "failed": "가져오기 실패",
     "token_required": "액세스 토큰이 필요합니다"
   },
+  "proxy_test": {
+    "button": "프록시 테스트",
+    "testing": "테스트 중…",
+    "failed": "테스트 실패",
+    "direct": "직접 연결",
+    "empty_hint": "테스트하려면 프록시를 입력하세요"
+  },
   "vertex_import": {
     "title": "Vertex JSON 로그인",
     "description": "Google 서비스 계정 JSON을 업로드하여 CLI vertex-import 도우미와 동일한 규칙으로 auth-dir/vertex-<project>.json에 저장합니다.",

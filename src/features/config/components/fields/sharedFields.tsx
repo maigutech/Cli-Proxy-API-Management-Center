@@ -7,6 +7,7 @@ import type { VisualConfigValues } from '@/types/visualConfig';
 import { SPONSORS } from '../../sponsors';
 import { ApiKeysCardEditor } from '../blocks/ApiKeysCardEditor';
 import { SettingCell, SettingList, TextSetting, ToggleSetting } from './FieldPrimitives';
+import { ProxyTest } from '@/components/ProxyTest';
 import fieldStyles from './Field.module.scss';
 
 export type SharedFieldProps = {
@@ -70,22 +71,25 @@ export function ProxyUrlField({ values, disabled, onChange, wide }: SharedFieldP
       size="lg"
       label={t('config_management.visual.sections.network.proxy_url')}
       description={
-        sponsor ? (
-          <>
-            {t('config_management.visual.sections.network.proxy_url_sponsor_hint')}{' '}
-            <a
-              className={fieldStyles.fieldSponsorLink}
-              href={sponsor.url}
-              target="_blank"
-              rel="noopener noreferrer sponsored"
-            >
-              {sponsor.logo ? (
-                <img className={fieldStyles.fieldSponsorLogo} src={sponsor.logo} alt="" />
-              ) : null}
-              {sponsor.name}
-            </a>
-          </>
-        ) : undefined
+        <>
+          {sponsor ? (
+            <>
+              {t('config_management.visual.sections.network.proxy_url_sponsor_hint')}{' '}
+              <a
+                className={fieldStyles.fieldSponsorLink}
+                href={sponsor.url}
+                target="_blank"
+                rel="noopener noreferrer sponsored"
+              >
+                {sponsor.logo ? (
+                  <img className={fieldStyles.fieldSponsorLogo} src={sponsor.logo} alt="" />
+                ) : null}
+                {sponsor.name}
+              </a>
+            </>
+          ) : null}
+          <ProxyTest proxyUrl={values.proxyUrl || ''} disabled={disabled} />
+        </>
       }
       placeholder="socks5://user:pass@127.0.0.1:1080/"
       value={values.proxyUrl}

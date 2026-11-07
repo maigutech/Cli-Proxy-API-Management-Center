@@ -725,6 +725,13 @@
     "failed": "匯入失敗",
     "token_required": "存取權杖必填"
   },
+  "proxy_test": {
+    "button": "測試代理",
+    "testing": "測試中…",
+    "failed": "測試失敗",
+    "direct": "直連",
+    "empty_hint": "填入代理後可測試"
+  },
   "vertex_import": {
     "title": "Vertex JSON 登入",
     "description": "上傳 Google 服務帳號 JSON，使用 CLI vertex-import 同步規則寫入 auth-dir/vertex-<project>.json。",

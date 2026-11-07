@@ -682,6 +682,13 @@
     "failed": "Nhập thất bại",
     "token_required": "Cần access token"
   },
+  "proxy_test": {
+    "button": "Kiểm tra proxy",
+    "testing": "Đang kiểm tra…",
+    "failed": "Kiểm tra thất bại",
+    "direct": "kết nối trực tiếp",
+    "empty_hint": "Nhập proxy để kiểm tra"
+  },
   "vertex_import": {
     "title": "Đăng nhập Vertex bằng JSON",
     "description": "Tải lên file JSON service account của Google để lưu thành auth-dir/vertex-<project>.json theo cùng quy tắc với công cụ vertex-import của CLI.",

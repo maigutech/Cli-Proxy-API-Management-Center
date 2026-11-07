@@ -6,6 +6,7 @@ import type { ProviderFlowState } from '../hooks/useOAuthFlows';
 import { resolveFlowView, splitAuthUrl, type FlowView } from '../flowView';
 import { BrandGlyph } from './BrandGlyph';
 import { CopyButton } from './CopyButton';
+import { ProxyTest } from '@/components/ProxyTest';
 import styles from './OAuthFlowDialog.module.scss';
 
 export interface DialogHeading {
@@ -190,6 +191,7 @@ function ProxyField({ state, onProxyChange }: OAuthFlowDialogProps) {
           {state.proxyValidation}
         </p>
       )}
+      <ProxyTest proxyUrl={state.proxyUrl || ''} />
     </div>
   );
 }

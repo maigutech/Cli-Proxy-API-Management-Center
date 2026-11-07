@@ -726,6 +726,13 @@
     "failed": "İçe aktarma başarısız",
     "token_required": "Erişim jetonu gerekli"
   },
+  "proxy_test": {
+    "button": "Proxy'yi test et",
+    "testing": "Test ediliyor…",
+    "failed": "Test başarısız",
+    "direct": "doğrudan",
+    "empty_hint": "Test için bir proxy girin"
+  },
   "vertex_import": {
     "title": "Vertex JSON Girişi",
     "description": "Bir Google Hizmet Hesabı JSON Dosyası Yükle. CLI Vertex-Import Yardımcısıyla Aynı Kurallarla auth-dir/vertex-<project>.json Olarak Saklanır.",

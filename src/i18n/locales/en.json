@@ -726,6 +726,13 @@
     "failed": "Import failed",
     "token_required": "Access token is required"
   },
+  "proxy_test": {
+    "button": "Test proxy",
+    "testing": "Testing…",
+    "failed": "Test failed",
+    "direct": "direct",
+    "empty_hint": "Enter a proxy to test"
+  },
   "vertex_import": {
     "title": "Vertex JSON Login",
     "description": "Upload a Google service account JSON to store it as auth-dir/vertex-<project>.json using the same rules as the CLI vertex-import helper.",

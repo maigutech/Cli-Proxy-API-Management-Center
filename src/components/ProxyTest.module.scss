@@ -1,0 +1,85 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.button {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border-strong, var(--border));
+  background: var(--surface-raised, transparent);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.button:hover:not(:disabled) {
+  border-color: var(--accent, var(--text-primary));
+  color: var(--text-primary);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.spin {
+  animation: proxytest-spin 0.8s linear infinite;
+}
+
+@keyframes proxytest-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ok,
+.fail {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  padding: 8px 10px;
+  border-radius: 9px;
+  font-size: 12px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.ok {
+  border: 1px solid color-mix(in srgb, var(--viz-success) 30%, transparent);
+  background: color-mix(in srgb, var(--viz-success) 9%, transparent);
+  color: color-mix(in srgb, var(--viz-success) 80%, var(--text-primary));
+}
+
+.fail {
+  border: 1px solid color-mix(in srgb, var(--viz-failure) 30%, transparent);
+  background: color-mix(in srgb, var(--viz-failure) 9%, transparent);
+  color: color-mix(in srgb, var(--viz-failure) 82%, var(--text-primary));
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.primary {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.meta {
+  opacity: 0.82;
+  font-size: 11.5px;
+}

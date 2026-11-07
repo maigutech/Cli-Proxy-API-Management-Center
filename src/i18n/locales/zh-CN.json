@@ -725,6 +725,13 @@
     "failed": "导入失败",
     "token_required": "访问令牌必填"
   },
+  "proxy_test": {
+    "button": "测试代理",
+    "testing": "测试中…",
+    "failed": "测试失败",
+    "direct": "直连",
+    "empty_hint": "填入代理后可测试"
+  },
   "vertex_import": {
     "title": "Vertex JSON 登录",
     "description": "上传 Google 服务账号 JSON，使用 CLI vertex-import 同步规则写入 auth-dir/vertex-<project>.json。",

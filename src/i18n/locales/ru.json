@@ -729,6 +729,13 @@
     "failed": "Ошибка импорта",
     "token_required": "Требуется access token"
   },
+  "proxy_test": {
+    "button": "Проверить прокси",
+    "testing": "Проверка…",
+    "failed": "Проверка не удалась",
+    "direct": "прямое соединение",
+    "empty_hint": "Введите прокси для проверки"
+  },
   "vertex_import": {
     "title": "Вход с Vertex JSON",
     "description": "Загрузите JSON ключа сервисного аккаунта Google, чтобы сохранить его как auth-dir/vertex-<project>.json по тем же правилам, что и помощник CLI vertex-import.",
