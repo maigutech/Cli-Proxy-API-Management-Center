@@ -2761,6 +2761,7 @@
     "related": "Lượt gọi liên quan",
     "streaming": "Luồng",
     "nonStreaming": "Không luồng",
+    "totalDuration": "Tổng",
     "ttftShort": "Đầu tiên",
     "ttft": "Thời gian đến token đầu",
     "all": "Tất cả",

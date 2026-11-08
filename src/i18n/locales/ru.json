@@ -2749,6 +2749,7 @@
     "related": "Связанные вызовы",
     "streaming": "Поток",
     "nonStreaming": "Без потока",
+    "totalDuration": "Всего",
     "ttftShort": "Первый",
     "ttft": "Время до первого токена",
     "all": "Все",

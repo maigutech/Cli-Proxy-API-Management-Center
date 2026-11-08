@@ -2755,6 +2755,7 @@
     "related": "관련 호출 보기",
     "streaming": "스트리밍",
     "nonStreaming": "비스트리밍",
+    "totalDuration": "총 소요",
     "ttftShort": "첫 응답",
     "ttft": "첫 토큰까지 시간",
     "all": "전체",

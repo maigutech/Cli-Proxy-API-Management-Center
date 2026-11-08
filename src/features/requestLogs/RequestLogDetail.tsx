@@ -28,8 +28,8 @@ export function RequestLogDetail({
     ],
     [t('request_logs.time'), logTimestamp(row.requestedAt)],
     [t('request_logs.completedAt'), logTimestamp(row.completedAt)],
-    [t('request_logs.latency'), duration(latency(row))],
     [t('request_logs.ttft'), duration(row.ttftMs)],
+    [t('request_logs.totalDuration'), duration(latency(row))],
     [t('request_logs.transport'), row.transport],
     [t('request_logs.type'), t(`request_logs.${row.stream ? 'streaming' : 'nonStreaming'}`)],
     [

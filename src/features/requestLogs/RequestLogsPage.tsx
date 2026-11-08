@@ -191,9 +191,11 @@ export function RequestLogTable({
                 </span>
               </TableCell>
               <TableCell>
-                <span className={styles.transport}>{duration(latency(row))}</span>
-                <small className={styles.secondary}>
+                <span className={styles.transport}>
                   {t('request_logs.ttftShort')} {duration(row.ttftMs)}
+                </span>
+                <small className={styles.secondary}>
+                  {t('request_logs.totalDuration')} {duration(latency(row))}
                 </small>
               </TableCell>
               <TableCell>

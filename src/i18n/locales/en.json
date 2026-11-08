@@ -2756,6 +2756,7 @@
     "related": "Related calls",
     "streaming": "Stream",
     "nonStreaming": "Non-stream",
+    "totalDuration": "Total",
     "ttftShort": "First",
     "ttft": "Time to first token",
     "all": "All",
