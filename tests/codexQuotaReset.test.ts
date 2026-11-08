@@ -32,7 +32,12 @@ function setup(body: unknown, statusCode = 200) {
     calls.push('clear');
     return { status: 'ok', auth_index: 'test-index', models: [] };
   });
-  mocks.push(request, clear);
+  const client = apiClient.captureConnection();
+  const quota = spyOn(client, 'post').mockImplementation(async () => {
+    calls.push('read');
+    return {};
+  });
+  mocks.push(request, clear, quota, spyOn(apiClient, 'captureConnection').mockReturnValue(client));
   return { calls, request, clear };
 }
 

@@ -15,13 +15,13 @@ import type {
   CodexUsagePayload,
 } from '@/types';
 import { apiCallApi, authFilesApi, getApiCallErrorMessage } from '@/services/api';
+import { captureUsageApi } from '@/services/api/accountUsage';
 import { guardConfigConnection } from '@/services/api/configValue';
 import { isRecord } from '@/utils/helpers';
 import {
   CODEX_RATE_LIMIT_RESET_CREDITS_URL,
   CODEX_RATE_LIMIT_RESET_CREDITS_CONSUME_URL,
   CODEX_SUBSCRIPTION_URL,
-  CODEX_USAGE_URL,
   CODEX_REQUEST_HEADERS,
   normalizeNumberValue,
   normalizePlanType,
@@ -427,21 +427,15 @@ const fetchCodexQuota = async (file: AuthFileItem, t: TFunction): Promise<CodexQ
   const accountId = resolveCodexChatgptAccountId(file);
   const requestHeader = buildCodexRequestHeader(file);
 
+  const usageApi = captureUsageApi();
   const [result, liveSubscriptionActiveUntil] = await Promise.all([
-    apiCallApi.request({
-      authIndex,
-      method: 'GET',
-      url: CODEX_USAGE_URL,
-      header: requestHeader,
-    }),
+    usageApi.refreshQuota(file.name, authIndex),
     fetchCodexSubscriptionActiveUntil(authIndex, accountId, requestHeader),
   ]);
-
-  if (result.statusCode < 200 || result.statusCode >= 300) {
-    throw createStatusError(getApiCallErrorMessage(result), result.statusCode);
+  if (usageApi.isCurrent() && typeof window !== 'undefined') {
+    window.dispatchEvent(new Event('account-usage-changed'));
   }
-
-  const payload = parseCodexUsagePayload(result.body ?? result.bodyText);
+  const payload = parseCodexUsagePayload(result);
   if (!payload) {
     throw new Error(t('codex_quota.empty_windows'));
   }

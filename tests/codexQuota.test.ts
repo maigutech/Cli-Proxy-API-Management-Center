@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, test } from 'bun:test';
+import { afterEach, beforeEach, describe, expect, spyOn, test } from 'bun:test';
 import type { TFunction } from 'i18next';
 import {
   CODEX_CONFIG,
@@ -6,17 +6,29 @@ import {
   normalizeCodexAccountCredits,
 } from '@/features/quota/providers/codex/data';
 import type { CodexQuotaState, CodexUsagePayload } from '@/types';
-import { apiCallApi, type ApiCallRequest, type ApiCallResult } from '@/services/api';
+import { apiClient, apiCallApi, type ApiCallRequest, type ApiCallResult } from '@/services/api';
 import {
   CODEX_RATE_LIMIT_RESET_CREDITS_URL,
   CODEX_SUBSCRIPTION_URL,
-  CODEX_USAGE_URL,
   normalizeCodexResetCreditsPayload,
   parseCodexUsagePayload,
 } from '@/utils/quota';
 
 const t = ((key: string) => key) as TFunction;
 const originalApiCallRequest = apiCallApi.request;
+const quotaRequests: Array<{ path: string; data: unknown }> = [];
+let quotaPayload: unknown;
+const quotaMocks: Array<{ mockRestore(): void }> = [];
+beforeEach(() => {
+  quotaPayload = CURRENT_CODEX_USAGE_PAYLOAD;
+  quotaRequests.length = 0;
+  const client = apiClient.captureConnection();
+  const post = spyOn(client, 'post').mockImplementation(async (path, data) => {
+    quotaRequests.push({ path, data });
+    return quotaPayload;
+  });
+  quotaMocks.push(post, spyOn(apiClient, 'captureConnection').mockReturnValue(client));
+});
 
 const result = (statusCode: number, body: unknown = null): ApiCallResult => ({
   statusCode,
@@ -64,6 +76,7 @@ const CURRENT_CODEX_USAGE_PAYLOAD: CodexUsagePayload = {
 
 afterEach(() => {
   apiCallApi.request = originalApiCallRequest;
+  quotaMocks.splice(0).forEach((mock) => mock.mockRestore());
 });
 
 describe('Codex current usage payload', () => {
@@ -136,14 +149,12 @@ describe('Codex account credits', () => {
 
   test('reads credits from the existing usage request and forwards them into quota state', async () => {
     const requests: ApiCallRequest[] = [];
+    quotaPayload = {
+      ...CURRENT_CODEX_USAGE_PAYLOAD,
+      credits: { has_credits: true, unlimited: false, balance: '8.75' },
+    };
     apiCallApi.request = async (payload) => {
       requests.push(payload);
-      if (payload.url === CODEX_USAGE_URL) {
-        return result(200, {
-          ...CURRENT_CODEX_USAGE_PAYLOAD,
-          credits: { has_credits: true, unlimited: false, balance: '8.75' },
-        });
-      }
       if (payload.url === CODEX_RATE_LIMIT_RESET_CREDITS_URL) {
         return result(200, { available_count: 1, credits: [] });
       }
@@ -158,7 +169,9 @@ describe('Codex account credits', () => {
     expect(state.creditBalance).toBe('8.75');
     expect(state.creditsUnlimited).toBeFalse();
     expect(state.rateLimitResetCreditsAvailableCount).toBe(1);
-    expect(requests.filter((request) => request.url === CODEX_USAGE_URL)).toHaveLength(1);
+    expect(quotaRequests).toEqual([
+      { path: '/credentials/usage/quota', data: { name: 'codex.json', auth_index: 'codex:1' } },
+    ]);
   });
 });
 
@@ -167,7 +180,6 @@ describe('Codex live subscription renewal', () => {
     const requests: ApiCallRequest[] = [];
     apiCallApi.request = async (payload) => {
       requests.push(payload);
-      if (payload.url === CODEX_USAGE_URL) return result(200, CURRENT_CODEX_USAGE_PAYLOAD);
       if (payload.url === CODEX_RATE_LIMIT_RESET_CREDITS_URL) {
         return result(200, { available_count: 0, credits: [] });
       }
@@ -202,7 +214,6 @@ describe('Codex live subscription renewal', () => {
 
   test('falls back to the credential date when the subscription probe fails', async () => {
     apiCallApi.request = async (payload) => {
-      if (payload.url === CODEX_USAGE_URL) return result(200, CURRENT_CODEX_USAGE_PAYLOAD);
       if (payload.url === CODEX_RATE_LIMIT_RESET_CREDITS_URL) {
         return result(200, { available_count: 0, credits: [] });
       }

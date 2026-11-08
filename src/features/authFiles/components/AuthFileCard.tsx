@@ -39,6 +39,8 @@ import { getSiwcBindingStatus, supportsSiwcBinding } from '@/features/oauth/siwc
 import { SiwcStatusBadge } from '@/features/oauth/components/SiwcStatusBadge';
 import { AccountOccupancy } from './AccountOccupancy';
 import type { SessionRoutingSnapshot } from '@/services/api/sessionRouting';
+import type { AccountUsage } from '@/services/api/accountUsage';
+import { AccountUsageCard } from '@/features/usage/AccountUsageCard';
 import styles from './AuthFileCard.module.scss';
 
 export type AuthFileCardProps = {
@@ -58,6 +60,8 @@ export type AuthFileCardProps = {
   /** Whether the degradation probe is enabled on the server. */
   probeEnabled?: boolean;
   occupancy?: SessionRoutingSnapshot | null;
+  usage?: AccountUsage;
+  onUsageDetails?: (file: AuthFileItem) => void;
   /** One-time entrance delay; null/undefined disables entrance motion. */
   entranceDelayMs?: number | null;
   onShowModels: (file: AuthFileItem) => void;
@@ -89,6 +93,8 @@ export function AuthFileCard(props: AuthFileCardProps) {
     probeStatus,
     probeEnabled,
     occupancy,
+    usage,
+    onUsageDetails,
     entranceDelayMs,
     onShowModels,
     onDownload,
@@ -122,7 +128,7 @@ export function AuthFileCard(props: AuthFileCardProps) {
     (authIndexKey && statusBarCache.get(authIndexKey)) ||
     statusBarDataFromRecentRequests(file.recentRequests ?? []);
 
-  // Codex degradation-probe (降智探针) badge: shown only for Codex accounts the
+  // Codex degradation-probe badge: shown only for Codex accounts the
   // probe has actually observed. Pure observability — it never changes routing.
   const showProbe = providerKey === 'codex' && Boolean(probeStatus);
   const probeState = probeStatus?.state ?? '';
@@ -312,6 +318,13 @@ export function AuthFileCard(props: AuthFileCardProps) {
       </div>
 
       {!isRuntimeOnly && <AccountOccupancy snapshot={occupancy} />}
+      {!isRuntimeOnly && file.authIndex != null && onUsageDetails && (
+        <AccountUsageCard
+          usage={usage}
+          disabled={disableControls}
+          onDetails={() => onUsageDetails(file)}
+        />
+      )}
 
       <div className={styles.metaRow}>
         <span title={t('auth_files.file_size')}>{file.size ? formatFileSize(file.size) : '-'}</span>
