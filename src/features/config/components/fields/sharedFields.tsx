@@ -2,6 +2,11 @@
 // 两处渲染结构性不可能漂移（旧简单模式靠共享 JSX 常量达成同一目的）。
 // 注意：只挂载激活 tab，所以设置行的 DOM id 不会重复。
 
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useAuthStore } from '@/stores';
+import { apiClient } from '@/services/api/client';
+import { captureServiceGroupsApi } from '@/services/api/serviceGroups';
 import { useTranslation } from 'react-i18next';
 import type { VisualConfigValues } from '@/types/visualConfig';
 import { SPONSORS } from '../../sponsors';
@@ -100,6 +105,34 @@ export function ProxyUrlField({ values, disabled, onChange, wide }: SharedFieldP
 }
 
 export function ApiKeysField({ values, disabled, onChange }: SharedFieldProps) {
+  const { t } = useTranslation();
+  const apiBase = useAuthStore((s) => s.apiBase);
+  const managementKey = useAuthStore((s) => s.managementKey);
+  const [grouped, setGrouped] = useState(false);
+  useEffect(() => {
+    let current = true;
+    const revision = apiClient.getConnectionRevision();
+    setGrouped(false);
+    void captureServiceGroupsApi()
+      .list()
+      .then((board) => {
+        if (current && revision === apiClient.getConnectionRevision())
+          setGrouped(board.mode === 'grouped');
+      })
+      .catch(() => {});
+    return () => {
+      current = false;
+    };
+  }, [apiBase, managementKey]);
+  if (grouped)
+    return (
+      <SettingList>
+        <SettingCell fieldId="apiKeys">
+          <p>{t('service_groups.keysManaged')}</p>
+          <Link to="/service-groups">{t('service_groups.title')}</Link>
+        </SettingCell>
+      </SettingList>
+    );
   return (
     <SettingList>
       <SettingCell fieldId="apiKeys">

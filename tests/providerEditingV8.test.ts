@@ -301,3 +301,18 @@ describe('v8 model row identity', () => {
     expect(JSON.stringify(b.writes)).not.toContain('sourceIndex');
   });
 });
+
+describe('persistent service group credential identities', () => {
+  for (const [family, update] of keyApis) {
+    test(`${family} keeps membership when rotating the upstream key`, async () => {
+      const b = backend(family, {
+        name: 'fixture',
+        keys: [{ 'api-key': 'old', 'credential-id': 'cred-stable' }],
+      });
+      const config = row(b.group());
+      await update(config.apiKey, config.baseUrl, { ...config, apiKey: 'rotated' });
+      expect(key(b.group())['credential-id']).toBe('cred-stable');
+      expect(key(b.group())['api-key']).toBe('rotated');
+    });
+  }
+});

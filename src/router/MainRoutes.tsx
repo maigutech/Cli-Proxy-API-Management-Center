@@ -6,6 +6,7 @@ import { AuthFilesOAuthExcludedEditPage } from '@/pages/AuthFilesOAuthExcludedEd
 import { AuthFilesOAuthModelAliasEditPage } from '@/pages/AuthFilesOAuthModelAliasEditPage';
 import { OAuthPage } from '@/features/oauth/OAuthPage';
 import { QuotaPage } from '@/features/quota/QuotaPage';
+import { ServiceGroupsPage } from '@/features/serviceGroups/ServiceGroupsPage';
 import { RoutingPage } from '@/features/routing/RoutingPage';
 import { CyberSessionBlockPage } from '@/features/cybersession/CyberSessionBlockPage';
 import { PluginResourcePage } from '@/features/plugins/PluginResourcePage';
@@ -30,6 +31,7 @@ const createMainRoutes = (supportsPlugin: boolean) => [
   { path: '/auth-files/oauth-excluded', element: <AuthFilesOAuthExcludedEditPage /> },
   { path: '/auth-files/oauth-model-alias', element: <AuthFilesOAuthModelAliasEditPage /> },
   { path: '/oauth', element: <OAuthPage /> },
+  { path: '/service-groups', element: <ServiceGroupsPage /> },
   { path: '/routing', element: <RoutingPage /> },
   { path: '/quota', element: <QuotaPage /> },
   { path: '/cyber-block', element: <CyberSessionBlockPage /> },

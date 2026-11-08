@@ -638,6 +638,12 @@ export function MainLayout() {
           icon: sidebarIcons.oauth,
         },
         {
+          path: '/service-groups',
+          labelKey: 'nav.service_groups',
+          metaKey: 'nav_meta.service_groups',
+          icon: sidebarIcons.routing,
+        },
+        {
           path: '/routing',
           labelKey: 'nav.routing',
           metaKey: 'nav_meta.routing',
