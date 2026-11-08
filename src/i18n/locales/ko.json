@@ -226,6 +226,9 @@
     "routing_strategy_fill_first": "fill-first (우선 채우기)"
   },
   "auth_files": {
+    "sign_in_required": "인증 정보가 무효합니다. 다시 로그인하세요.",
+    "sign_in_required_hint": "이 패널의 OAuth 로그인에서 이 계정을 다시 인증하세요.",
+    "probe_failed": "검사 실패",
     "title": "인증 파일 관리",
     "meta_total": "자격 증명 {{count}}개",
     "meta_active": "활성 {{count}}개",

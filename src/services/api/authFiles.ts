@@ -296,6 +296,7 @@ const normalizeAuthFileEntry = (
     siwcExpiresAt: readTextField(entry, 'siwc_expires_at') || undefined,
     cooldownSnapshot: normalizeAuthFileCooldowns(entry.cooldowns, observedAt, receivedAtMs),
     runtimeOnly: readRuntimeOnlyField(entry),
+    requiresSignIn: readBooleanField(entry['requires_sign_in'] ?? entry.requiresSignIn),
     authIndex: normalizeRecentRequestAuthIndex(entry['auth_index'] ?? entry.authIndex),
     ...(supportsQuota !== undefined ? { supportsQuota } : {}),
     ...(quotaProvider ? { quotaProvider } : {}),

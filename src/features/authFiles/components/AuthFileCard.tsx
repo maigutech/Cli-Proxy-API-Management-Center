@@ -127,21 +127,26 @@ export function AuthFileCard(props: AuthFileCardProps) {
 
   // Codex degradation-probe badge: shown only for Codex accounts the
   // probe has actually observed. Pure observability — it never changes routing.
-  const showProbe = providerKey === 'codex' && Boolean(probeStatus);
+  const requiresSignIn = file.requiresSignIn === true;
+  const showProbe = providerKey === 'codex' && Boolean(probeStatus) && !requiresSignIn;
+  const probeFailed = Boolean(probeStatus?.last_error?.trim());
   const probeState = probeStatus?.state ?? '';
   const probeVerdict = probeStatus?.last_verdict ?? '';
   const probeTone: 'ok' | 'warn' | 'danger' =
     probeState === 'held'
       ? 'danger'
-      : probeState === 'suspect' || probeState === 'recovering'
+      : probeFailed || probeState === 'suspect' || probeState === 'recovering'
         ? 'warn'
         : 'ok';
   const probeStateLabel = showProbe
-    ? t(`auth_files.probe_state_${probeState}`, { defaultValue: probeState })
+    ? probeFailed
+      ? t('auth_files.probe_failed')
+      : t(`auth_files.probe_state_${probeState}`, { defaultValue: probeState })
     : '';
-  const probeVerdictLabel = probeVerdict
-    ? t(`auth_files.probe_verdict_${probeVerdict}`, { defaultValue: probeVerdict })
-    : '';
+  const probeVerdictLabel =
+    probeVerdict && !probeFailed
+      ? t(`auth_files.probe_verdict_${probeVerdict}`, { defaultValue: probeVerdict })
+      : '';
   const probeTooltip = (() => {
     if (!showProbe || !probeStatus) return '';
     const lines: string[] = [];
@@ -261,10 +266,14 @@ export function AuthFileCard(props: AuthFileCardProps) {
         </p>
       )}
 
-      {rawStatusMessage && hasStatusWarning && (
-        <div className={styles.warning} title={rawStatusMessage}>
+      {(requiresSignIn || (rawStatusMessage && hasStatusWarning)) && (
+        <div
+          className={styles.warning}
+          role="status"
+          title={requiresSignIn ? t('auth_files.sign_in_required_hint') : rawStatusMessage}
+        >
           <IconInfo className={styles.warningIcon} size={14} />
-          <span>{rawStatusMessage}</span>
+          <span>{requiresSignIn ? t('auth_files.sign_in_required') : rawStatusMessage}</span>
         </div>
       )}
 

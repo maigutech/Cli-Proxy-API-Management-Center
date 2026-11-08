@@ -226,6 +226,9 @@
     "routing_strategy_fill_first": "fill-first (优先填充)"
   },
   "auth_files": {
+    "sign_in_required": "凭证失效，需要重新登录",
+    "sign_in_required_hint": "请通过本面板的 OAuth 登录重新授权这个账号。",
+    "probe_failed": "检测失败",
     "title": "认证文件管理",
     "meta_total": "{{count}} 个凭证",
     "meta_active": "{{count}} 个启用",

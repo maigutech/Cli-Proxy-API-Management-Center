@@ -226,6 +226,9 @@
     "routing_strategy_fill_first": "fill-first (prioritize)"
   },
   "auth_files": {
+    "sign_in_required": "Credential invalid. Sign in again.",
+    "sign_in_required_hint": "Reauthorize this account through OAuth Login in this panel.",
+    "probe_failed": "Check failed",
     "title": "Auth Files Management",
     "meta_total": "{{count}} credentials",
     "meta_active": "{{count}} active",

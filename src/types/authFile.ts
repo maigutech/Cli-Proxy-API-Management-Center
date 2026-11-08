@@ -67,6 +67,8 @@ export interface AuthFileItem {
   unavailable?: boolean;
   status?: string;
   statusMessage?: string;
+  /** The backend requires a new OAuth login after a terminal refresh failure. */
+  requiresSignIn?: boolean;
   lastRefresh?: string | number;
   modified?: number;
   priority?: number;

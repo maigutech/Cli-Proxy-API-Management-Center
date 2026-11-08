@@ -397,7 +397,7 @@ export function AuthFilesPage() {
     () => {
       void loadFiles({ background: true }).catch(() => {});
     },
-    isCurrentLayer ? 240_000 : null
+    isCurrentLayer ? 60_000 : null
   );
 
   /* Filter, sort and paginate. */

@@ -6,6 +6,19 @@ const responseWithRawFiles = (files: Array<Record<string, unknown>>): AuthFilesR
   ({ files }) as unknown as AuthFilesResponse;
 
 describe('auth-files response normalization', () => {
+  test('normalizes sign-in requirements without treating a temporary retry as permanent', () => {
+    const files = normalizeAuthFilesResponse(
+      responseWithRawFiles([
+        { name: 'a.json', requires_sign_in: true },
+        { name: 'b.json', requires_sign_in: false, renewal_state: 'retry_scheduled' },
+        { name: 'c.json', requires_sign_in: 'true' },
+        { name: 'd.json', requiresSignIn: true },
+        { name: 'e.json' },
+      ])
+    ).files;
+    expect(files.map((file) => file.requiresSignIn)).toEqual([true, false, true, true, undefined]);
+  });
+
   test('normalizes WRR weights while preserving zero and negative values', () => {
     const result = normalizeAuthFilesResponse(
       responseWithRawFiles([

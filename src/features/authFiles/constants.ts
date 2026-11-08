@@ -28,14 +28,7 @@ export type AuthFileModelItem = {
 export type AuthFileIconAsset = string | { light: string; dark: string };
 
 export type QuotaProviderType =
-  | 'antigravity'
-  | 'claude'
-  | 'codex'
-  | 'devin'
-  | 'kimi'
-  | 'meta'
-  | 'plugin'
-  | 'xai';
+  'antigravity' | 'claude' | 'codex' | 'devin' | 'kimi' | 'meta' | 'plugin' | 'xai';
 export type AuthFileQuotaFilter = string | null;
 export type OAuthConfigLoadError = 'loading' | 'unsupported' | 'load' | null;
 
@@ -131,7 +124,7 @@ export const getAuthFileStatusMessage = (file: AuthFileItem): string => {
   return String(raw).trim();
 };
 
-/** 这些 status_message 视为健康，不触发告警态。 */
+/** Healthy status messages do not trigger a warning. */
 export const HEALTHY_AUTH_FILE_STATUS_MESSAGES = new Set([
   'ok',
   'healthy',
@@ -140,8 +133,9 @@ export const HEALTHY_AUTH_FILE_STATUS_MESSAGES = new Set([
   'available',
 ]);
 
-/** 是否存在非健康的 status_message（卡片告警态 / 谱条琥珀色共用判定）。 */
+/** Shared warning predicate for credential cards and health summaries. */
 export const hasAuthFileStatusWarning = (file: AuthFileItem): boolean => {
+  if (file.requiresSignIn === true) return true;
   const message = getAuthFileStatusMessage(file);
   return Boolean(message) && !HEALTHY_AUTH_FILE_STATUS_MESSAGES.has(message.toLowerCase());
 };

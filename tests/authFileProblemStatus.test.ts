@@ -9,6 +9,11 @@ const authFile = (overrides: Partial<AuthFileItem> = {}): AuthFileItem => ({
 });
 
 describe('auth file problem status', () => {
+  test('surfaces sign-in requirements even before a status message arrives', () => {
+    expect(isProblemAuthFile(authFile({ requiresSignIn: true }))).toBe(true);
+    expect(isProblemAuthFile(authFile({ requiresSignIn: true, disabled: true }))).toBe(false);
+  });
+
   test('does not classify a deliberately disabled credential as a problem', () => {
     expect(
       isProblemAuthFile(

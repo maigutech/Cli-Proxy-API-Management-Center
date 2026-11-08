@@ -225,6 +225,9 @@
     "routing_strategy_fill_first": "fill-first (приоритет)"
   },
   "auth_files": {
+    "sign_in_required": "Учётные данные недействительны. Войдите снова.",
+    "sign_in_required_hint": "Повторно авторизуйте этот аккаунт через вход OAuth в этой панели.",
+    "probe_failed": "Проверка не удалась",
     "title": "Управление файлами авторизации",
     "meta_total": "{{count}} учётных данных",
     "meta_active": "{{count}} активно",

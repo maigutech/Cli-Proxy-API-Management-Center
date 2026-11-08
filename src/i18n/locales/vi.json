@@ -226,6 +226,9 @@
     "routing_strategy_fill_first": "fill-first (ưu tiên lấp đầy)"
   },
   "auth_files": {
+    "sign_in_required": "Thông tin xác thực không hợp lệ. Hãy đăng nhập lại.",
+    "sign_in_required_hint": "Ủy quyền lại tài khoản này qua Đăng nhập OAuth trong bảng điều khiển.",
+    "probe_failed": "Kiểm tra thất bại",
     "title": "Quản lý File xác thực",
     "meta_total": "{{count}} credential",
     "meta_active": "{{count}} đang hoạt động",

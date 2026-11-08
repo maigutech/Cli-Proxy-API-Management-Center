@@ -226,6 +226,9 @@
     "routing_strategy_fill_first": "Fill-First (Önceliklendir)"
   },
   "auth_files": {
+    "sign_in_required": "Kimlik bilgileri geçersiz. Yeniden giriş yapın.",
+    "sign_in_required_hint": "Bu paneldeki OAuth Girişi üzerinden bu hesabı yeniden yetkilendirin.",
+    "probe_failed": "Kontrol başarısız",
     "title": "Kimlik Dosyası Yönetimi",
     "meta_total": "{{count}} Kimlik Bilgisi",
     "meta_active": "{{count}} Aktif",
