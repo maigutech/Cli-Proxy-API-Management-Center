@@ -10,6 +10,7 @@ const REASON_KEYS: Record<string, string> = {
   not_found: 'auth_files.cooldown_reason_not_found',
   model_not_supported: 'auth_files.cooldown_reason_model_not_supported',
   transient_error: 'auth_files.cooldown_reason_transient_error',
+  service_unavailable: 'auth_files.cooldown_reason_service_unavailable',
 };
 
 export function cooldownReasonKey(reason: string): string {
@@ -35,7 +36,15 @@ export function summarizeCooldowns(snapshot: AuthFileCooldownSnapshot, nowMs: nu
     remainingSeconds: cooldownRemainingSeconds(record, snapshot.receivedAtMs, nowMs),
   }));
   const active = rows.filter((row) => row.remainingSeconds > 0);
+  const serviceUnavailable = active.filter(
+    (row) =>
+      row.record.reason === 'service_unavailable' ||
+      (row.record.reason === 'transient_error' && row.record.httpStatus === 503)
+  );
   return {
+    serviceUnavailableSeconds: serviceUnavailable.length
+      ? Math.min(...serviceUnavailable.map((row) => row.remainingSeconds))
+      : 0,
     rows,
     modelCount: active.filter((row) => row.record.scope === 'model').length,
     credentialWide: active.some((row) => row.record.scope === 'credential'),

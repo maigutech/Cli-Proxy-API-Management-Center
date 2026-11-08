@@ -292,6 +292,8 @@
     "cooldown_reason_payment_required": "Access restricted (402/403; not a billing diagnosis)",
     "cooldown_reason_not_found": "Resource not found",
     "cooldown_reason_model_not_supported": "Model not supported",
+    "cooldown_reason_service_unavailable": "Upstream temporarily unavailable (503)",
+    "cooldown_service_unavailable": "503 cooldown · next retry in {{time}}",
     "cooldown_reason_transient_error": "Transient upstream error",
     "cooldown_reason_unknown": "Other or unknown reason",
     "health_status_label": "Health",

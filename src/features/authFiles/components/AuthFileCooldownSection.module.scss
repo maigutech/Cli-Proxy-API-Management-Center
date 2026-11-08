@@ -35,6 +35,12 @@
   gap: 2px 12px;
 }
 
+.serviceUnavailable {
+  flex-basis: 100%;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
 .scope {
   font-weight: 600;
 }

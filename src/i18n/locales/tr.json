@@ -292,6 +292,8 @@
     "cooldown_reason_payment_required": "Erişim Kısıtlı (402/403; Faturalama Tanısı Değil)",
     "cooldown_reason_not_found": "Kaynak Bulunamadı",
     "cooldown_reason_model_not_supported": "Model Desteklenmiyor",
+    "cooldown_reason_service_unavailable": "Üst servis geçici olarak kullanılamıyor (503)",
+    "cooldown_service_unavailable": "503 nedeniyle beklemede · {{time}} sonra yeniden deneme",
     "cooldown_reason_transient_error": "Geçici Yukarı Akış Hatası",
     "cooldown_reason_unknown": "Diğer veya Bilinmeyen Neden",
     "health_status_label": "Sağlık",

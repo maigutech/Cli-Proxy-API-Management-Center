@@ -437,6 +437,8 @@
     "cooldown_reason_payment_required": "Truy cập bị hạn chế (402/403; không phải chẩn đoán thanh toán)",
     "cooldown_reason_not_found": "Không tìm thấy tài nguyên",
     "cooldown_reason_model_not_supported": "Model không được hỗ trợ",
+    "cooldown_reason_service_unavailable": "Dịch vụ tạm thời không khả dụng (503)",
+    "cooldown_service_unavailable": "Tạm nghỉ do lỗi 503 · thử lại sau {{time}}",
     "cooldown_reason_transient_error": "Lỗi tạm thời từ upstream",
     "cooldown_reason_unknown": "Lý do khác hoặc không xác định",
     "refresh_all_button": "Làm mới tất cả credential",

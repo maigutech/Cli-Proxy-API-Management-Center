@@ -295,6 +295,8 @@
     "cooldown_reason_payment_required": "Доступ ограничен (402/403; не подтверждает проблему оплаты)",
     "cooldown_reason_not_found": "Ресурс не найден",
     "cooldown_reason_model_not_supported": "Модель не поддерживается",
+    "cooldown_reason_service_unavailable": "Сервис временно недоступен (503)",
+    "cooldown_service_unavailable": "Пауза после 503 · повтор через {{time}}",
     "cooldown_reason_transient_error": "Временная ошибка сервиса",
     "cooldown_reason_unknown": "Другая или неизвестная причина",
     "health_status_label": "Состояние",

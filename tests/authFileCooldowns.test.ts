@@ -272,3 +272,72 @@ describe('cooldown section rendering', () => {
     }
   });
 });
+
+describe('503 cooldown guidance', () => {
+  const unavailable = {
+    ...modelRecord,
+    reason: 'service_unavailable',
+    http_status: 503,
+    remaining_seconds: 309,
+  };
+
+  test('shows reason and precise countdown in the collapsed summary', () => {
+    const value = normalize([unavailable])!;
+    expect(value.records![0]).toMatchObject({ reason: 'service_unavailable', httpStatus: 503 });
+    const markup = render(value);
+    const summary = markup.slice(markup.indexOf('<summary'), markup.indexOf('</summary>'));
+    expect(summary).toContain('503');
+    expect(summary).toContain(
+      i18n.t('auth_files.cooldown_service_unavailable', {
+        time: `${i18n.t('auth_files.cooldown_minutes', { count: 5 })} ${i18n.t('auth_files.cooldown_seconds', { count: 9 })}`,
+      })
+    );
+    expect(markup).toContain(i18n.t('auth_files.cooldown_reason_service_unavailable'));
+    expect(markup).not.toContain(' open=""');
+  });
+
+  test('keeps the 503 timer distinct from a shorter quota timer', () => {
+    const value = normalize([modelRecord, { ...unavailable, model_key: 'model-b' }])!;
+    expect(summarizeCooldowns(value, receivedAtMs)).toMatchObject({
+      earliestSeconds: 32,
+      serviceUnavailableSeconds: 309,
+      modelCount: 2,
+    });
+    expect(summarizeCooldowns(value, receivedAtMs + 309_000).serviceUnavailableSeconds).toBe(0);
+  });
+
+  test('expired 503 does not label a remaining quota cooldown', () => {
+    const value = normalize([
+      { ...unavailable, remaining_seconds: 1 },
+      { ...modelRecord, model_key: 'model-b' },
+    ])!;
+    const later = { ...value, receivedAtMs: receivedAtMs - 2_000 };
+    expect(summarizeCooldowns(later, receivedAtMs).serviceUnavailableSeconds).toBe(0);
+    const markup = render(later);
+    expect(markup.slice(markup.indexOf('<summary'), markup.indexOf('</summary>'))).not.toContain(
+      '503'
+    );
+  });
+
+  test('recognizes the prior backend 503 reason without mislabelling quota', () => {
+    expect(
+      summarizeCooldowns(normalize([{ ...unavailable, reason: 'transient_error' }])!, receivedAtMs)
+        .serviceUnavailableSeconds
+    ).toBe(309);
+    expect(
+      summarizeCooldowns(normalize([{ ...unavailable, reason: 'quota' }])!, receivedAtMs)
+        .serviceUnavailableSeconds
+    ).toBe(0);
+  });
+
+  test('provides both 503 labels in every supported locale', () => {
+    for (const lng of ['en', 'zh-CN', 'zh-TW', 'ru', 'vi', 'ko', 'tr']) {
+      for (const key of ['cooldown_reason_service_unavailable', 'cooldown_service_unavailable']) {
+        expect(typeof i18n.getResource(lng, 'translation', `auth_files.${key}`)).toBe('string');
+        const text = i18n.t(`auth_files.${key}`, { lng, time: '5m 9s' });
+        expect(text).toContain('503');
+        expect(text).not.toContain('{{');
+      }
+    }
+  });
+});

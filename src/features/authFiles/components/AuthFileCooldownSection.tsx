@@ -53,11 +53,17 @@ function CooldownDetails({
 }) {
   const { t, i18n } = useTranslation();
   const now = useSyncExternalStore(clock.subscribe, clock.getSnapshot, clock.getSnapshot);
-  const { rows, modelCount, credentialWide, earliestSeconds } = summarizeCooldowns(snapshot, now);
+  const { rows, modelCount, credentialWide, earliestSeconds, serviceUnavailableSeconds } =
+    summarizeCooldowns(snapshot, now);
   const elapsed = earliestSeconds === 0;
   const duration = (seconds: number) => {
     if (seconds < 60) return t('auth_files.cooldown_seconds', { count: seconds });
-    if (seconds < 3600) return t('auth_files.cooldown_minutes', { count: Math.ceil(seconds / 60) });
+    if (seconds < 3600) {
+      const minutes = t('auth_files.cooldown_minutes', { count: Math.floor(seconds / 60) });
+      return seconds % 60
+        ? `${minutes} ${t('auth_files.cooldown_seconds', { count: seconds % 60 })}`
+        : minutes;
+    }
     return t('auth_files.cooldown_hours', { count: Math.ceil(seconds / 3600) });
   };
   const scopeLabel = credentialWide
@@ -78,6 +84,13 @@ function CooldownDetails({
               ? t('auth_files.cooldown_refresh_hint')
               : t('auth_files.cooldown_earliest', { time: duration(earliestSeconds) })}
           </span>
+          {serviceUnavailableSeconds > 0 && (
+            <span className={styles.serviceUnavailable}>
+              {t('auth_files.cooldown_service_unavailable', {
+                time: duration(serviceUnavailableSeconds),
+              })}
+            </span>
+          )}
         </span>
         <IconChevronDown size={14} className={styles.chevron} aria-hidden="true" />
       </summary>

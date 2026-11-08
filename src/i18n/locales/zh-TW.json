@@ -290,6 +290,8 @@
     "cooldown_reason_payment_required": "存取受限（402/403，非帳單結論）",
     "cooldown_reason_not_found": "找不到資源",
     "cooldown_reason_model_not_supported": "不支援此模型",
+    "cooldown_reason_service_unavailable": "上游暫時無法使用（503）",
+    "cooldown_service_unavailable": "503 錯誤，冷卻休息中 · 距下次重試 {{time}}",
     "cooldown_reason_transient_error": "上游暫時出錯",
     "cooldown_reason_unknown": "其他或未知原因",
     "health_status_label": "健康狀態",
