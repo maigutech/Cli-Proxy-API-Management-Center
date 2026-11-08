@@ -97,6 +97,11 @@ export interface UsageRecord {
   executionId: string;
   traceId: string;
   requestedAt: string;
+  completedAt: string;
+  authIndex: string;
+  provider: string;
+  statusCode: number | null;
+  ttftMs: number | null;
   requestedModel: string;
   upstreamModel: string;
   responseModel: string;
@@ -252,6 +257,48 @@ export function normalizeUsageAccounts(raw: unknown): UsageAccounts {
   );
   return { status: normalizeUsageStatus(d.status), accounts };
 }
+export function normalizeUsageRecord(raw: unknown): UsageRecord {
+  const r = object(raw);
+  const tokens = object(r.tokens);
+  const input = object(tokens.input);
+  const output = object(tokens.output);
+  const cost = r.cost == null ? null : object(r.cost);
+  return {
+    sequence: number(r.sequence),
+    executionId: string(r.execution_id),
+    traceId: string(r.trace_id),
+    requestedAt: string(r.requested_at),
+    completedAt: string(r.completed_at),
+    authIndex: string(r.auth_index),
+    provider: string(r.provider),
+    statusCode: r.status_code == null || r.status_code === 0 ? null : number(r.status_code),
+    ttftMs: nullable(r.ttft_ms),
+    requestedModel: string(r.requested_model),
+    upstreamModel: string(r.upstream_model),
+    responseModel: string(r.response_model),
+    pricingModel: string(r.pricing_model),
+    serviceTier: string(r.service_tier),
+    source: string(r.source),
+    transport: string(r.transport),
+    stream: r.stream === true,
+    failed: r.failed === true,
+    input: number(input.uncached_tokens),
+    cacheRead: number(input.cache_read_tokens),
+    cacheWrite: number(input.cache_write_tokens),
+    output: number(output.total_tokens),
+    reasoning: number(output.reasoning_tokens),
+    price: r.price == null ? null : normalizeModelPrice(r.price),
+    costStatus: string(r.cost_status),
+    longContext: r.long_context === true,
+    cost: cost && {
+      input: number(cost.input),
+      output: number(cost.output),
+      cacheRead: number(cost.cache_read),
+      cacheWrite: number(cost.cache_write),
+      total: number(cost.total),
+    },
+  };
+}
 export function normalizeUsageDetails(raw: unknown): UsageDetails {
   const d = object(raw);
   if (!Array.isArray(d.models) || !Array.isArray(d.records))
@@ -263,43 +310,7 @@ export function normalizeUsageDetails(raw: unknown): UsageDetails {
       const m = object(raw);
       return { ...normalizeUsageTotals(m), provider: string(m.provider), model: string(m.model) };
     }),
-    records: d.records.map((raw) => {
-      const r = object(raw);
-      const tokens = object(r.tokens);
-      const input = object(tokens.input);
-      const output = object(tokens.output);
-      const cost = r.cost == null ? null : object(r.cost);
-      return {
-        sequence: number(r.sequence),
-        executionId: string(r.execution_id),
-        traceId: string(r.trace_id),
-        requestedAt: string(r.requested_at),
-        requestedModel: string(r.requested_model),
-        upstreamModel: string(r.upstream_model),
-        responseModel: string(r.response_model),
-        pricingModel: string(r.pricing_model),
-        serviceTier: string(r.service_tier),
-        source: string(r.source),
-        transport: string(r.transport),
-        stream: r.stream === true,
-        failed: r.failed === true,
-        input: number(input.uncached_tokens),
-        cacheRead: number(input.cache_read_tokens),
-        cacheWrite: number(input.cache_write_tokens),
-        output: number(output.total_tokens),
-        reasoning: number(output.reasoning_tokens),
-        price: r.price == null ? null : normalizeModelPrice(r.price),
-        costStatus: string(r.cost_status),
-        longContext: r.long_context === true,
-        cost: cost && {
-          input: number(cost.input),
-          output: number(cost.output),
-          cacheRead: number(cost.cache_read),
-          cacheWrite: number(cost.cache_write),
-          total: number(cost.total),
-        },
-      };
-    }),
+    records: d.records.map(normalizeUsageRecord),
     nextCursor: number(d.next_cursor),
   };
 }
