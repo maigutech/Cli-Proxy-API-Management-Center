@@ -411,7 +411,7 @@
 }
 
 .tableArea > div > div {
-  max-height: clamp(280px, calc(100dvh - 350px), 740px);
+  max-height: clamp(280px, calc(100dvh - 420px), 740px);
   overflow: auto;
 }
 .tableArea th {
