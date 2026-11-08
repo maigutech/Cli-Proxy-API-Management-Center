@@ -2569,7 +2569,9 @@
     "rebindAny": "任意凭证故障",
     "rebindQuota": "配额或认证失败",
     "card_hint": "当前使用量 / 生效上限，每 5 秒刷新一次；短请求可能发生在两次刷新之间。",
-    "card_unknown": "暂时无法获取当前使用量，将自动重试。"
+    "card_unknown": "暂时无法获取当前使用量，将自动重试。",
+    "requestsShort": "并发",
+    "sessionsShort": "会话"
   },
   "account_test": {
     "title": "测试模型",
@@ -2713,6 +2715,21 @@
     "status_missing_price": "缺少模型或服务等级价格",
     "status_missing_long_context_price": "缺少长上下文价格",
     "status_missing_cache_price": "缺少缓存价格",
-    "status_unsupported_usage": "媒体或工具消耗需要额外价格信息"
+    "status_unsupported_usage": "媒体或工具消耗需要额外价格信息",
+    "quotaUsage": "额度使用",
+    "quotaUnknown": "额度未知或已过期，请刷新",
+    "usedShort": "已用",
+    "quotaDetails": "额度详情",
+    "quotaFailed": "刷新失败",
+    "autoSync": "自动同步价格",
+    "syncNow": "立即同步",
+    "syncRunning": "同步中",
+    "syncHint": "使用 sub2api 同源的 OpenAI 价格表，每 {{minutes}} 分钟检查一次。手动价格优先，历史消耗不重算。",
+    "syncChecked": "最近检查",
+    "syncUpdated": "价格更新",
+    "syncCounts": "{{count}} 条价格 · 保留/跳过 {{skipped}} 条",
+    "syncSkippedHint": "保留手动价格及源数据缺少已知计价维度的价格，跳过不支持的条目。",
+    "syncFailed": "同步失败，已保留原价格",
+    "remotePrice": "自动同步"
   }
 }

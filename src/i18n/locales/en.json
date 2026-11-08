@@ -2571,7 +2571,9 @@
     "rebindAny": "Any credential failure",
     "rebindQuota": "Quota/auth failures",
     "card_hint": "Current / effective limit. Refreshed every 5 seconds; very short requests may fall between samples.",
-    "card_unknown": "Current occupancy is unavailable. The display will retry automatically."
+    "card_unknown": "Current occupancy is unavailable. The display will retry automatically.",
+    "requestsShort": "Req",
+    "sessionsShort": "Sessions"
   },
   "account_test": {
     "title": "Test model",
@@ -2715,6 +2717,21 @@
     "status_missing_price": "Model or tier price unavailable",
     "status_missing_long_context_price": "Long-context price unavailable",
     "status_missing_cache_price": "Cache price unavailable",
-    "status_unsupported_usage": "Media or tool cost needs additional pricing"
+    "status_unsupported_usage": "Media or tool cost needs additional pricing",
+    "quotaUsage": "Quota usage",
+    "quotaUnknown": "Quota unknown or expired; refresh to update",
+    "usedShort": "used",
+    "quotaDetails": "Quota details",
+    "quotaFailed": "Refresh failed",
+    "autoSync": "Automatic price sync",
+    "syncNow": "Sync now",
+    "syncRunning": "Syncing",
+    "syncHint": "OpenAI prices from the sub2api catalog. Check every {{minutes}} min; manual prices take precedence. Historical costs stay unchanged.",
+    "syncChecked": "Last check",
+    "syncUpdated": "Prices updated",
+    "syncCounts": "{{count}} prices · {{skipped}} preserved/skipped",
+    "syncSkippedHint": "Preserves manual prices and known dimensions missing from the source; skips unsupported entries.",
+    "syncFailed": "Sync failed; previous prices retained",
+    "remotePrice": "Auto synced"
   }
 }

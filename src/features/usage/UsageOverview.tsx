@@ -22,9 +22,11 @@ export function UsageOverview({
   const amount = (total: typeof today) =>
     !data || (total.requests > 0 && !total.priced) ? '—' : money(total.cost);
   return (
-    <section className={styles.section} aria-label={t('account_usage.overview')}>
+    <section className={styles.overview} aria-label={t('account_usage.overview')}>
       <div className={styles.row}>
-        <strong>{t('account_usage.overview')}</strong>
+        <strong title={`${t('account_usage.filteredTotal')} ${t('account_usage.disclaimer')}`}>
+          {t('account_usage.overview')}
+        </strong>
         <Button variant="secondary" size="sm" disabled={disabled} onClick={onPrices}>
           {t('account_usage.prices')}
         </Button>
@@ -39,9 +41,7 @@ export function UsageOverview({
           <strong>{amount(seven)}</strong>
         </div>
       </div>
-      <span className={styles.hint}>
-        {t('account_usage.filteredTotal')} {t('account_usage.disclaimer')}
-      </span>
+
       {seven.unpriced > 0 && (
         <span className={styles.warning}>
           {t('account_usage.unpriced', { count: seven.unpriced })}

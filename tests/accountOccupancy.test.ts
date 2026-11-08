@@ -50,12 +50,12 @@ describe('account occupancy cards', () => {
       concurrent_requests: 0,
       effective: { ...values, max_concurrent_requests: 0 },
     });
-    expect(text).toContain('0 / ' + en.session_routing.unlimited);
+    expect(text).toContain('0 / ∞');
     expect(text).not.toContain('0 / 0');
   });
   test('unavailable accounts show unknown rather than a fabricated zero', () => {
     const text = render(null);
-    expect(text.match(/-- \/ --/g)).toHaveLength(2);
+    expect(text.match(/— \/ —/g)).toHaveLength(2);
     expect(text).not.toContain('0 /');
     expect(() =>
       normalizeSessionRoutingStatus({

@@ -130,7 +130,7 @@ describe('SIWC binding', () => {
     const card = read('../src/features/authFiles/components/AuthFileCard.tsx');
     expect(card).not.toContain('SiwcBindDialog');
     expect(card).not.toContain('siwc.rebind');
-    expect(card).toContain('<SiwcStatusBadge');
+    expect(card).not.toContain('<SiwcStatusBadge');
   });
 
   test('target attempts are independent and invalidation suppresses stale completion', async () => {

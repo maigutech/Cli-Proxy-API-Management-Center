@@ -6,6 +6,7 @@ import { I18nextProvider } from 'react-i18next';
 import { apiClient } from '../src/services/api/client';
 import {
   captureUsageApi,
+  normalizePriceSyncStatus,
   normalizeModelPrice,
   serializeModelPrice,
   normalizeUsageAccounts,
@@ -168,4 +169,41 @@ describe('account cost cards', () => {
       );
     });
   }
+});
+
+const syncState = {
+  enabled: true,
+  running: false,
+  interval_minutes: 10,
+  source_url: 'https://example.com/prices',
+  last_checked: '2026-11-08T12:00:00Z',
+  last_updated: '',
+  last_success: '',
+  updated_rows: 0,
+  skipped_rows: 2,
+  catalog_rows: 100,
+};
+test('price sync normalization distinguishes missing and zero counts', () => {
+  expect(normalizePriceSyncStatus(syncState).updatedRows).toBe(0);
+  expect(normalizePriceSyncStatus(syncState).enabled).toBe(true);
+  expect(() => normalizePriceSyncStatus({ ...syncState, running: 'false' })).toThrow();
+  expect(() => normalizePriceSyncStatus({ ...syncState, catalog_rows: undefined })).toThrow();
+});
+test('sync controls use the captured v8 client and refuse stale connections', async () => {
+  const client = apiClient.captureConnection();
+  const post = spyOn(client, 'post').mockResolvedValue(syncState);
+  const put = spyOn(client, 'put').mockResolvedValue(syncState);
+  const captured = spyOn(apiClient, 'captureConnection').mockReturnValue(client);
+  const revision = spyOn(apiClient, 'getConnectionRevision').mockReturnValue(7);
+  mocks.push(post, put, captured, revision);
+  const api = captureUsageApi();
+  await api.syncPrices();
+  await api.setPriceSyncEnabled(false);
+  expect(post).toHaveBeenCalledWith('/observability/usage/prices/sync');
+  expect(put).toHaveBeenCalledWith('/observability/usage/prices/sync', { enabled: false });
+  revision.mockReturnValue(8);
+  await expect(api.syncPrices()).rejects.toThrow('Connection changed');
+  await expect(api.setPriceSyncEnabled(true)).rejects.toThrow('Connection changed');
+  expect(post).toHaveBeenCalledTimes(1);
+  expect(put).toHaveBeenCalledTimes(1);
 });

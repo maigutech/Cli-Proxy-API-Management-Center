@@ -2571,7 +2571,9 @@
     "rebindAny": "Tüm hesap hataları",
     "rebindQuota": "Kota/kimlik doğrulama hataları",
     "card_hint": "Mevcut kullanım / etkin sınır. Her 5 saniyede yenilenir; kısa istekler ölçümler arasına denk gelebilir.",
-    "card_unknown": "Mevcut kullanım alınamıyor. Otomatik olarak yeniden denenecek."
+    "card_unknown": "Mevcut kullanım alınamıyor. Otomatik olarak yeniden denenecek.",
+    "requestsShort": "İstek",
+    "sessionsShort": "Oturum"
   },
   "account_test": {
     "title": "Modeli test et",
@@ -2715,6 +2717,21 @@
     "status_missing_price": "Model veya katman fiyatı yok",
     "status_missing_long_context_price": "Uzun bağlam fiyatı yok",
     "status_missing_cache_price": "Önbellek fiyatı yok",
-    "status_unsupported_usage": "Medya veya araç maliyeti ek fiyat gerektirir"
+    "status_unsupported_usage": "Medya veya araç maliyeti ek fiyat gerektirir",
+    "quotaUsage": "Kota kullanımı",
+    "quotaUnknown": "Kota bilinmiyor veya süresi doldu; yenileyin",
+    "usedShort": "kullanım",
+    "quotaDetails": "Kota ayrıntıları",
+    "quotaFailed": "Yenileme başarısız",
+    "autoSync": "Otomatik fiyat eşitleme",
+    "syncNow": "Şimdi eşitle",
+    "syncRunning": "Eşitleniyor",
+    "syncHint": "sub2api ile aynı kaynaktan OpenAI fiyatları. Her {{minutes}} dakikada kontrol edilir; elle girilen fiyatlar önceliklidir. Geçmiş maliyetler değişmez.",
+    "syncChecked": "Son kontrol",
+    "syncUpdated": "Fiyat güncellemesi",
+    "syncCounts": "{{count}} fiyat · {{skipped}} korunan/atlanan",
+    "syncSkippedHint": "Elle girilen fiyatları ve kaynakta eksik olan bilinen fiyat boyutlarını korur; desteklenmeyen kayıtları atlar.",
+    "syncFailed": "Eşitleme başarısız; önceki fiyatlar korundu",
+    "remotePrice": "Otomatik eşitlendi"
   }
 }

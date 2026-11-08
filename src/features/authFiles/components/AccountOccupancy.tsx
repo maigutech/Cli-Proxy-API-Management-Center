@@ -24,14 +24,14 @@ export function AccountOccupancy({ snapshot }: { snapshot?: SessionRoutingSnapsh
       {metrics.map(({ label, current, limit }) => (
         <div
           key={label}
+          aria-label={t(`session_routing.${label}`)}
           className={
             limit != null && limit > 0 && current != null && current >= limit ? styles.full : ''
           }
         >
-          <span>{t(`session_routing.${label}`)}</span>
+          <span>{t(`session_routing.${label}Short`)}</span>
           <strong>
-            {current ?? '--'} <span>/</span>{' '}
-            {limit == null ? '--' : limit === 0 ? t('session_routing.unlimited') : limit}
+            {current ?? '—'} <span>/</span> {limit == null ? '—' : limit === 0 ? '∞' : limit}
           </strong>
         </div>
       ))}

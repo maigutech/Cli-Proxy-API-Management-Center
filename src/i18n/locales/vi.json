@@ -2577,7 +2577,9 @@
     "rebindAny": "Mọi lỗi tài khoản",
     "rebindQuota": "Lỗi hạn mức/xác thực",
     "card_hint": "Hiện tại / giới hạn hiệu lực. Cập nhật mỗi 5 giây; yêu cầu ngắn có thể nằm giữa hai lần lấy mẫu.",
-    "card_unknown": "Chưa lấy được mức sử dụng hiện tại. Sẽ tự động thử lại."
+    "card_unknown": "Chưa lấy được mức sử dụng hiện tại. Sẽ tự động thử lại.",
+    "requestsShort": "Yêu cầu",
+    "sessionsShort": "Phiên"
   },
   "account_test": {
     "title": "Thử mô hình",
@@ -2721,6 +2723,21 @@
     "status_missing_price": "Chưa có giá mô hình hoặc cấp",
     "status_missing_long_context_price": "Chưa có giá ngữ cảnh dài",
     "status_missing_cache_price": "Chưa có giá bộ đệm",
-    "status_unsupported_usage": "Cần thêm giá cho đa phương tiện hoặc công cụ"
+    "status_unsupported_usage": "Cần thêm giá cho đa phương tiện hoặc công cụ",
+    "quotaUsage": "Sử dụng hạn mức",
+    "quotaUnknown": "Hạn mức chưa rõ hoặc đã hết hạn; hãy làm mới",
+    "usedShort": "đã dùng",
+    "quotaDetails": "Chi tiết hạn mức",
+    "quotaFailed": "Làm mới thất bại",
+    "autoSync": "Tự động đồng bộ giá",
+    "syncNow": "Đồng bộ ngay",
+    "syncRunning": "Đang đồng bộ",
+    "syncHint": "Giá OpenAI từ cùng nguồn sub2api. Kiểm tra mỗi {{minutes}} phút; ưu tiên giá nhập tay. Không tính lại chi phí cũ.",
+    "syncChecked": "Kiểm tra gần nhất",
+    "syncUpdated": "Cập nhật giá",
+    "syncCounts": "{{count}} giá · giữ/bỏ qua {{skipped}}",
+    "syncSkippedHint": "Giữ giá nhập tay và các mức giá có thông tin bị thiếu ở nguồn; bỏ qua mục không hỗ trợ.",
+    "syncFailed": "Đồng bộ thất bại; giữ giá cũ",
+    "remotePrice": "Đồng bộ tự động"
   }
 }

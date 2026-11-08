@@ -6,7 +6,7 @@ import {
   useNotificationStore,
   useQuotaStore,
 } from '@/stores';
-import type { AuthFileItem, ClaudeQuotaState } from '@/types';
+import type { AuthFileItem, ClaudeQuotaState, CodexQuotaState } from '@/types';
 import { getStatusFromError, resolveQuotaErrorMessage } from '@/utils/quota';
 import { getQuotaCacheKey } from '@/utils/quota/identity';
 import { isRuntimeOnlyAuthFile, type QuotaProviderType } from '@/features/authFiles/constants';
@@ -15,6 +15,8 @@ import { IconRefreshCw } from '@/components/ui/icons';
 import { bindQuotaClasses } from '@/features/quota/types';
 import { QUOTA_ADAPTERS, type QuotaCardState } from '@/features/quota/providers';
 import { hasClaudeUsageData } from '@/features/quota/providers/claude/data';
+import type { UsageQuota } from '@/services/api/accountUsage';
+import { CompactCodexQuota } from './CompactCodexQuota';
 import styles from './AuthFileQuota.module.scss';
 
 /** Bind the auth-file host's compact styles to the quota rendering contract. */
@@ -32,10 +34,11 @@ export type AuthFileQuotaSectionProps = {
   file: AuthFileItem;
   quotaType: QuotaProviderType;
   disableControls: boolean;
+  weeklyQuota?: UsageQuota | null;
 };
 
 export function AuthFileQuotaSection(props: AuthFileQuotaSectionProps) {
-  const { file, quotaType, disableControls } = props;
+  const { file, quotaType, disableControls, weeklyQuota } = props;
   const { t } = useTranslation();
   const showNotification = useNotificationStore((state) => state.showNotification);
   const showConfirmation = useNotificationStore((state) => state.showConfirmation);
@@ -189,6 +192,39 @@ export function AuthFileQuotaSection(props: AuthFileQuotaSectionProps) {
     quota?.errorStatus,
     quota?.error || t('common.unknown_error')
   );
+
+  if (quotaType === 'codex') {
+    return (
+      <CompactCodexQuota
+        quota={quota as CodexQuotaState | undefined}
+        weekly={weeklyQuota}
+        error={quotaStatus === 'error' ? quotaErrorMessage : undefined}
+        refresh={
+          <Button
+            type="button"
+            variant="secondary"
+            size="sm"
+            onClick={() => void refreshQuotaForFile()}
+            disabled={!canRefreshQuota || quotaStatus === 'loading'}
+            loading={quotaStatus === 'loading'}
+            title={t('auth_files.quota_refresh_hint')}
+            aria-label={t('auth_files.quota_refresh_single')}
+          >
+            {quotaStatus !== 'loading' && <IconRefreshCw size={12} />}{' '}
+            {t('auth_files.quota_refresh_single')}
+          </Button>
+        }
+        details={
+          quotaStatus === 'success' && quota ? (
+            <>
+              <adapter.Body quota={quota} classes={compactQuotaClasses} />
+              {resetQuotaAction}
+            </>
+          ) : undefined
+        }
+      />
+    );
+  }
 
   return (
     <div className={styles.quotaSection}>

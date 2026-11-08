@@ -1,16 +1,14 @@
 @use '../../../styles/mixins' as *;
 
-/* ============================================================
- * 凭证卡片 — statTile 配方（14px 圆角 / 1px 边框 / 82% 透感纸面）
- * 身份优先；停用时弱化内容，操作区保持清晰以便重新启用。
- * ============================================================ */
+/* Compact credential cards with identity first and accessible controls. */
 
 .card {
   position: relative;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 16px;
+  gap: 9px;
+  padding: 14px;
   border-radius: 14px;
   border: 1px solid var(--border-color);
   background: color-mix(in srgb, var(--bg-primary) 82%, transparent);
@@ -41,7 +39,7 @@
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--primary-color) 40%, transparent);
 }
 
-/* 首次数据到达时的一次性级联入场；过滤/翻页/轮询不重播 */
+/* Play entrance motion only when the card first mounts. */
 .cardEnter {
   animation: card-in 180ms var(--ease-out-strong, ease-out) both;
   animation-delay: var(--card-delay, 0s);
@@ -53,7 +51,7 @@
   }
 }
 
-/* ---------- 头部：选择 + 供应商药丸 / 账号 ---------- */
+/* Header: selection, provider, and live occupancy. */
 
 .head {
   display: flex;
@@ -74,16 +72,16 @@
   gap: 4px 8px;
   min-width: 0;
   margin: 0;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   line-height: 1.6;
 }
 
-/* 品牌药丸与账号按盒子中心对齐，避免不同字号的基线造成视觉偏移。 */
+/* Keep provider labels aligned with controls. */
 .providerBadge {
   flex-shrink: 0;
   max-width: 100%;
-  padding: 4px 10px;
+  padding: 3px 8px;
   border-radius: 12px;
   font-size: 12px;
   font-weight: 600;
@@ -97,32 +95,32 @@
   color: var(--text-tertiary);
 }
 
-/* 窄卡片保留基本阅读宽度；空间不足时换行，不截断邮箱或项目 ID。 */
+/* Truncate long identities; the full value remains available in the title. */
 .account {
-  flex: 1 1 12ch;
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
   min-width: 0;
   letter-spacing: -0.005em;
   color: var(--text-primary);
-  overflow-wrap: anywhere;
+  @include text-ellipsis;
 }
 
-/* 无账号线索时主行回落到文件名，沿用 mono 语汇。
-   必须声明在 .account 之后——两者同为单类选择器，letter-spacing 靠源序决胜。 */
+/* Use monospace for file-name identities. */
 .accountMono {
   font-family: $font-mono;
   letter-spacing: -0.01em;
 }
 
-/* 副行：满卡宽的文件名。email 在 codex 名字的中段，必须能换行才不丢信息，
-   overflow-wrap + -webkit-box 的组合与本文件 .warning span 同配方。 */
+/* Keep the secondary file name on one line. */
 .fileName {
   margin: -4px 0 0;
   font-family: $font-mono;
   font-size: 11px;
   line-height: 1.45;
   color: var(--text-tertiary);
-  overflow-wrap: anywhere;
-  @include text-ellipsis-multiline(2);
+  @include text-ellipsis;
 }
 
 .note {
@@ -133,7 +131,7 @@
   @include text-ellipsis;
 }
 
-/* ---------- 告警行 ---------- */
+/* Warning row. */
 
 .warning {
   display: flex;
@@ -159,12 +157,12 @@
   margin-top: 2px;
 }
 
-/* ---------- 健康区：eyebrow + 计数 + 状态条 ---------- */
+/* Request health and recent outcomes. */
 
 .health {
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 5px;
 }
 
 .healthHead {
@@ -201,7 +199,7 @@
   color: var(--text-quaternary);
 }
 
-/* 绿色只给活的流量：有计数才点亮 */
+/* Highlight counts only when traffic exists. */
 .countLive.countOk {
   color: var(--viz-success);
 }
@@ -210,7 +208,7 @@
   color: var(--viz-failure);
 }
 
-/* ---------- 降智探针 badge ---------- */
+/* Degradation probe status. */
 
 .probeRow {
   display: flex;
@@ -269,7 +267,7 @@
   border-color: color-mix(in srgb, var(--viz-failure) 34%, transparent);
 }
 
-/* ---------- ProviderStatusBar 注入样式（18 个契约类名） ---------- */
+/* ProviderStatusBar style contract. */
 
 .statusBar {
   display: flex;
@@ -291,7 +289,7 @@
 }
 
 .statusBlock {
-  height: 14px;
+  height: 10px;
   border-radius: 2px;
 }
 
@@ -382,17 +380,23 @@
   color: var(--text-secondary);
 }
 
-/* ---------- 元数据行：size · modified · priority · WRR weight ---------- */
+/* File metadata and routing weights. */
 
 .metaRow {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 4px 7px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  gap: 4px 5px;
   font-family: $font-mono;
-  font-size: 11.5px;
+  font-size: 10px;
   font-variant-numeric: tabular-nums;
   color: var(--text-tertiary);
+}
+
+.metaTime {
+  min-width: 0;
+  @include text-ellipsis;
 }
 
 .metaDivider {
@@ -403,6 +407,7 @@
 .metaPriority,
 .metaWeight {
   display: inline-flex;
+  flex-shrink: 0;
   align-items: baseline;
   gap: 4px;
   padding: 2px 6px;
@@ -432,24 +437,7 @@
   opacity: 0.78;
 }
 
-/* ---------- SIWC：状态药丸 + 到期时间，与元数据行同为 mono 小字 ---------- */
-
-.siwcRow {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 4px 8px;
-  min-width: 0;
-}
-
-.siwcExpires {
-  font-family: $font-mono;
-  font-size: 11px;
-  font-variant-numeric: tabular-nums;
-  color: var(--text-tertiary);
-}
-
-/* ---------- 页脚动作区 ---------- */
+/* Footer actions. */
 
 .actions {
   margin-top: auto;
@@ -458,11 +446,12 @@
   align-items: center;
   justify-content: space-between;
   gap: 10px;
-  padding-top: 12px;
+  padding-top: 9px;
   border-top: 1px solid color-mix(in srgb, var(--border-color) 70%, transparent);
 }
 
 .actionsMain {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -476,7 +465,7 @@
   gap: 4px;
 }
 
-/* Button 会用 span 包裹 children；将包裹层也设为 flex，避免 SVG 按文本基线偏移。 */
+/* Align the button content wrapper and icons. */
 .actions :global(.btn > span) {
   display: inline-flex;
   align-items: center;
@@ -490,7 +479,7 @@
   flex-shrink: 0;
 }
 
-/* 图标按钮：方形紧凑的安静描边风——危险动作静默存在，hover 才显色块 */
+/* Compact utility buttons. */
 .card .actions .iconButton {
   display: inline-flex;
   align-items: center;
@@ -522,8 +511,11 @@
   }
 }
 
-/* 按压反馈：所有可点元素 scale 0.96（reduced-motion 下豁免） */
+/* Respect reduced motion for press feedback. */
 .actions :global(.btn) {
+  min-height: 28px;
+  padding: 5px 8px;
+  font-size: 11px;
   transition:
     transform var(--dur-press, 160ms) var(--ease-out-strong, ease-out),
     background-color $transition-fast,
@@ -551,8 +543,7 @@
 
 @include mobile {
   .toggleWrap {
-    width: 100%;
-    justify-content: space-between;
+    gap: 6px;
   }
 
   .actionsMain {
@@ -565,7 +556,7 @@
   }
 }
 
-/* ---------- 降级 ---------- */
+/* Reduced motion. */
 
 @media (prefers-reduced-motion: reduce) {
   .card {

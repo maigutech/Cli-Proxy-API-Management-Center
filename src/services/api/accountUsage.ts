@@ -61,6 +61,37 @@ export interface ModelPrice {
   sourceUrl: string;
   effectiveAt: string;
 }
+export interface PriceSyncStatus {
+  enabled: boolean;
+  running: boolean;
+  intervalMinutes: number;
+  sourceUrl: string;
+  lastChecked: string;
+  lastSuccess: string;
+  lastUpdated: string;
+  error: string;
+  updatedRows: number;
+  skippedRows: number;
+  catalogRows: number;
+}
+export function normalizePriceSyncStatus(raw: unknown): PriceSyncStatus {
+  const d = object(raw);
+  if (typeof d.enabled !== 'boolean' || typeof d.running !== 'boolean')
+    throw new Error('Invalid price sync status');
+  return {
+    enabled: d.enabled,
+    running: d.running,
+    intervalMinutes: number(d.interval_minutes),
+    sourceUrl: string(d.source_url),
+    lastChecked: string(d.last_checked),
+    lastSuccess: string(d.last_success),
+    lastUpdated: string(d.last_updated),
+    error: string(d.error),
+    updatedRows: number(d.updated_rows),
+    skippedRows: number(d.skipped_rows),
+    catalogRows: number(d.catalog_rows),
+  };
+}
 export interface UsageRecord {
   sequence: number;
   executionId: string;
@@ -324,6 +355,22 @@ export function captureUsageApi() {
       const d = object(await client.get('/observability/usage/prices', { signal }));
       if (!Array.isArray(d.prices)) throw new Error('Invalid price catalog');
       return { prices: d.prices.map(normalizeModelPrice), status: normalizeUsageStatus(d.status) };
+    },
+    priceSyncStatus: async (signal?: AbortSignal) => {
+      check();
+      return normalizePriceSyncStatus(
+        await client.get('/observability/usage/prices/sync', { signal })
+      );
+    },
+    syncPrices: async () => {
+      check();
+      return normalizePriceSyncStatus(await client.post('/observability/usage/prices/sync'));
+    },
+    setPriceSyncEnabled: async (enabled: boolean) => {
+      check();
+      return normalizePriceSyncStatus(
+        await client.put('/observability/usage/prices/sync', { enabled })
+      );
     },
     savePrice: async (price: ModelPrice) => {
       check();

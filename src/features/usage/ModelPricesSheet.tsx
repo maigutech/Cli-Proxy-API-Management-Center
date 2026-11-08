@@ -11,6 +11,7 @@ import {
   type ModelPrice,
   type ModelPriceRates,
 } from '@/services/api/accountUsage';
+import { PriceSyncPanel } from './PriceSyncPanel';
 import { dateLabel, money } from './format';
 import styles from './Usage.module.scss';
 
@@ -240,6 +241,7 @@ export function ModelPricesSheet({ onClose }: { onClose: () => void }) {
           </p>
         ) : (
           <>
+            <PriceSyncPanel api={api} onPrices={setPrices} />
             {error && (
               <p role="alert" className={styles.warning}>
                 {error}
@@ -370,7 +372,9 @@ export function ModelPricesSheet({ onClose }: { onClose: () => void }) {
                           {t(
                             p.source === 'manual'
                               ? 'account_usage.manualPrice'
-                              : 'account_usage.builtinPrice'
+                              : p.source === 'remote'
+                                ? 'account_usage.remotePrice'
+                                : 'account_usage.builtinPrice'
                           )}
                           {p.sourceUrl.startsWith('sub2api_') && (
                             <div className={styles.hint}>sub2api</div>
