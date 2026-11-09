@@ -2875,7 +2875,6 @@
     "inherit": "Inherit",
     "refreshIdentities": "Prepare newly imported credentials",
     "modelHelp": "Only models in this list are authorized. Edit the public name to create a group alias.",
-    "useSupported": "Use supported models",
     "publicModel": "Public name",
     "targetModel": "Target model",
     "chooseModel": "Choose a model",
@@ -2925,6 +2924,17 @@
     "membershipLoadFailed": "Не удалось загрузить группы",
     "membershipLoading": "Загрузка групп…",
     "groupUnavailable": "Группа недоступна",
-    "deleteFiltered": "Удалить отфильтрованные записи"
+    "deleteFiltered": "Удалить отфильтрованные записи",
+    "fetchModels": "Получить модели пула",
+    "fetchingModels": "Получение…",
+    "selectMembersFirst": "Сначала выберите аккаунты в пуле",
+    "fetchModelsHelp": "Получите текущие зарегистрированные модели выбранных аккаунтов и выберите нужные из общего списка. Добавьте модели и сохраните группу для применения прав. Существующие модели и псевдонимы сохраняются.",
+    "modelsFetched": "Получено моделей: {{total}} · {{time}}",
+    "disabledModelMembers": "Пропущено отключённых аккаунтов: {{total}}. Временное охлаждение не удаляет поддержку моделей.",
+    "noPoolModels": "В выбранном пуле нет моделей. Проверьте состояние аккаунтов и настройки моделей.",
+    "modelAlreadyMapped": "Уже настроено",
+    "clearModelSelection": "Снять выбор",
+    "selectAllModels": "Выбрать все новые модели",
+    "addSelectedModels": "Добавить выбранные ({{total}})"
   }
 }

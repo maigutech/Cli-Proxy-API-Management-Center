@@ -1,4 +1,16 @@
-import type { GroupCredential, ServiceGroup } from '@/services/api/serviceGroups';
+import type { GroupCredential, GroupModel, ServiceGroup } from '@/services/api/serviceGroups';
+
+export function addableModels(existing: GroupModel[], candidates: string[]): string[] {
+  const occupied = new Set(existing.flatMap((model) => [model.name.trim(), model.target]));
+  return [...new Set(candidates)].filter((id) => id && id !== 'auto' && !occupied.has(id));
+}
+
+export function appendModels(existing: GroupModel[], selected: string[]): GroupModel[] {
+  return [
+    ...existing,
+    ...addableModels(existing, selected).map((id) => ({ name: id, target: id })),
+  ];
+}
 
 export const newGroup = (): ServiceGroup => ({
   id: '',

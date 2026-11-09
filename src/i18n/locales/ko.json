@@ -2881,7 +2881,6 @@
     "inherit": "Inherit",
     "refreshIdentities": "Prepare newly imported credentials",
     "modelHelp": "Only models in this list are authorized. Edit the public name to create a group alias.",
-    "useSupported": "Use supported models",
     "publicModel": "Public name",
     "targetModel": "Target model",
     "chooseModel": "Choose a model",
@@ -2931,6 +2930,17 @@
     "membershipLoadFailed": "그룹 정보를 불러오지 못했습니다",
     "membershipLoading": "그룹 로딩 중…",
     "groupUnavailable": "그룹을 사용할 수 없음",
-    "deleteFiltered": "필터 결과 삭제"
+    "deleteFiltered": "필터 결과 삭제",
+    "fetchModels": "계정 풀 모델 가져오기",
+    "fetchingModels": "가져오는 중…",
+    "selectMembersFirst": "먼저 자격 증명 풀에서 계정을 선택하세요",
+    "fetchModelsHelp": "선택한 계정에 현재 등록된 모델을 가져와 통합 목록에서 선택합니다. 모델을 추가하고 그룹을 저장하면 권한이 적용됩니다. 기존 모델과 별칭은 유지됩니다.",
+    "modelsFetched": "모델 {{total}}개 가져옴 · {{time}}",
+    "disabledModelMembers": "비활성 계정 {{total}}개를 건너뛰었습니다. 일시적인 대기 상태는 모델 지원을 제거하지 않습니다.",
+    "noPoolModels": "선택한 풀에 모델이 없습니다. 계정 상태와 모델 설정을 확인하세요.",
+    "modelAlreadyMapped": "이미 매핑됨",
+    "clearModelSelection": "선택 해제",
+    "selectAllModels": "새 모델 모두 선택",
+    "addSelectedModels": "선택 항목 추가 ({{total}})"
   }
 }

@@ -2887,7 +2887,6 @@
     "inherit": "Inherit",
     "refreshIdentities": "Prepare newly imported credentials",
     "modelHelp": "Only models in this list are authorized. Edit the public name to create a group alias.",
-    "useSupported": "Use supported models",
     "publicModel": "Public name",
     "targetModel": "Target model",
     "chooseModel": "Choose a model",
@@ -2937,6 +2936,17 @@
     "membershipLoadFailed": "Không tải được nhóm",
     "membershipLoading": "Đang tải nhóm…",
     "groupUnavailable": "Nhóm không khả dụng",
-    "deleteFiltered": "Xóa kết quả đã lọc"
+    "deleteFiltered": "Xóa kết quả đã lọc",
+    "fetchModels": "Lấy mô hình của nhóm tài khoản",
+    "fetchingModels": "Đang lấy…",
+    "selectMembersFirst": "Chọn tài khoản trong kho thông tin xác thực trước",
+    "fetchModelsHelp": "Lấy các mô hình hiện được đăng ký cho tài khoản đã chọn và chọn từ danh sách tổng hợp. Thêm mô hình rồi lưu nhóm để áp dụng quyền. Mô hình và bí danh hiện có được giữ lại.",
+    "modelsFetched": "Đã lấy {{total}} mô hình · {{time}}",
+    "disabledModelMembers": "Đã bỏ qua {{total}} tài khoản bị tắt. Thời gian nghỉ tạm thời không làm mất khả năng hỗ trợ mô hình.",
+    "noPoolModels": "Không có mô hình cho nhóm tài khoản đã chọn. Kiểm tra trạng thái tài khoản và cấu hình mô hình.",
+    "modelAlreadyMapped": "Đã ánh xạ",
+    "clearModelSelection": "Bỏ chọn tất cả",
+    "selectAllModels": "Chọn tất cả mô hình mới",
+    "addSelectedModels": "Thêm đã chọn ({{total}})"
   }
 }

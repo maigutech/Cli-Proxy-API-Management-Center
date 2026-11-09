@@ -2881,7 +2881,6 @@
     "inherit": "Inherit",
     "refreshIdentities": "Prepare newly imported credentials",
     "modelHelp": "Only models in this list are authorized. Edit the public name to create a group alias.",
-    "useSupported": "Use supported models",
     "publicModel": "Public name",
     "targetModel": "Target model",
     "chooseModel": "Choose a model",
@@ -2931,6 +2930,17 @@
     "membershipLoadFailed": "Grup bilgileri yüklenemedi",
     "membershipLoading": "Gruplar yükleniyor…",
     "groupUnavailable": "Grup kullanılamıyor",
-    "deleteFiltered": "Filtrelenen sonuçları sil"
+    "deleteFiltered": "Filtrelenen sonuçları sil",
+    "fetchModels": "Havuz modellerini getir",
+    "fetchingModels": "Getiriliyor…",
+    "selectMembersFirst": "Önce kimlik bilgisi havuzundan hesap seçin",
+    "fetchModelsHelp": "Seçili hesapların şu anda kayıtlı modellerini getirip birleşik listeden seçim yapın. İzinleri uygulamak için modelleri ekleyip grubu kaydedin. Mevcut modeller ve takma adlar korunur.",
+    "modelsFetched": "{{total}} model getirildi · {{time}}",
+    "disabledModelMembers": "{{total}} devre dışı hesap atlandı. Geçici bekleme süreleri model desteğini kaldırmaz.",
+    "noPoolModels": "Seçili havuzda model bulunamadı. Hesap durumunu ve model yapılandırmasını kontrol edin.",
+    "modelAlreadyMapped": "Zaten eşlenmiş",
+    "clearModelSelection": "Seçimi temizle",
+    "selectAllModels": "Tüm yeni modelleri seç",
+    "addSelectedModels": "Seçilenleri ekle ({{total}})"
   }
 }

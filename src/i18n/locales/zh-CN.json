@@ -2879,7 +2879,6 @@
     "inherit": "继承",
     "refreshIdentities": "准备新导入凭证",
     "modelHelp": "仅授权清单内的模型。编辑对外名称即可设置组内别名。",
-    "useSupported": "填入支持的模型",
     "publicModel": "对外名称",
     "targetModel": "目标模型",
     "chooseModel": "选择模型",
@@ -2929,6 +2928,17 @@
     "membershipLoadFailed": "分组归属加载失败",
     "membershipLoading": "正在加载分组…",
     "groupUnavailable": "分组已不可用",
-    "deleteFiltered": "删除筛选结果"
+    "deleteFiltered": "删除筛选结果",
+    "fetchModels": "获取号池模型",
+    "fetchingModels": "正在获取…",
+    "selectMembersFirst": "请先在凭证池中选择账号",
+    "fetchModelsHelp": "每次获取当前所选账号已注册的模型，合并去重后供选择。添加后保存分组，对外授权才会生效；已有模型和别名会保留。",
+    "modelsFetched": "已获取 {{total}} 个模型 · {{time}}",
+    "disabledModelMembers": "已跳过 {{total}} 个停用账号；暂时冷却的账号仍保留模型能力。",
+    "noPoolModels": "当前所选号池没有可添加的模型，请检查账号状态和模型配置。",
+    "modelAlreadyMapped": "已有映射",
+    "clearModelSelection": "取消全选",
+    "selectAllModels": "全选可添加模型",
+    "addSelectedModels": "添加所选（{{total}}）"
   }
 }
