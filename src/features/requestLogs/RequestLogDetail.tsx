@@ -8,16 +8,25 @@ import styles from './RequestLogsPage.module.scss';
 export function RequestLogDetail({
   row,
   account,
+  groupName,
   onTrace,
 }: {
   row: UsageRecord;
   account: string;
+  groupName?: string;
   onTrace: () => void;
 }) {
   const { t } = useTranslation();
   const rates = row.longContext ? row.price?.longContext : row.price?.rates;
   const unknown = row.costStatus === 'usage_unknown';
   const fields: Array<[string, string | number]> = [
+    [
+      t('request_logs.groupId'),
+      row.groupId ? groupName || row.groupId : t('request_logs.unassignedGroup'),
+    ],
+    [t('request_logs.groupIdentity'), row.groupId || '—'],
+    [t('request_logs.keyIdentity'), row.keyId || '—'],
+    [t('request_logs.credentialIdentity'), row.credentialId || '—'],
     [t('request_logs.account'), account],
     [t('request_logs.authIndex'), row.authIndex],
     [t('request_logs.requestId'), row.traceId || '—'],
@@ -117,7 +126,8 @@ export function RequestLogDetail({
         </p>
       )}
       <p className={styles.note}>
-        {t('request_logs.costHint')} {t('request_logs.detailNote')}
+        {t('request_logs.groupAttributionHint')} {t('request_logs.costHint')}{' '}
+        {t('request_logs.detailNote')}
       </p>
     </div>
   );

@@ -64,6 +64,9 @@ import { AccountUsageSheet } from '@/features/usage/AccountUsageSheet';
 import { ModelPricesSheet } from '@/features/usage/ModelPricesSheet';
 import { UsageOverview } from '@/features/usage/UsageOverview';
 import { useAccountUsage } from '@/features/usage/useAccountUsage';
+import { useGroupMembership } from '@/features/serviceGroups/useGroupMembership';
+import { groupCounts, matchesGroup } from '@/features/serviceGroups/membership';
+import { GroupMembershipFilter } from '@/features/serviceGroups/GroupMembershipControls';
 import styles from './AuthFilesPage.module.scss';
 
 const DEFAULT_REGULAR_PAGE_SIZE = 9;
@@ -94,6 +97,10 @@ export function AuthFilesPage() {
   const pageTransitionLayer = usePageTransitionLayer();
   const isCurrentLayer = pageTransitionLayer ? pageTransitionLayer.status === 'current' : true;
   const navigate = useNavigate();
+  const groups = useGroupMembership();
+  const reloadGroups = groups.reload;
+  const { board: groupBoard, selected: selectedGroup, membership } = groups;
+  const setSelectedGroup = groups.setSelected;
 
   const [usageFile, setUsageFile] = useState<AuthFileItem | null>(null);
   const [pricesOpen, setPricesOpen] = useState(false);
@@ -380,8 +387,13 @@ export function AuthFilesPage() {
   const initialLoadDoneRef = useRef(false);
 
   const handleHeaderRefresh = useCallback(async () => {
-    await Promise.all([loadFiles({ background: true }), loadExcluded(), loadModelAlias()]);
-  }, [loadFiles, loadExcluded, loadModelAlias]);
+    await Promise.all([
+      loadFiles({ background: true }),
+      loadExcluded(),
+      loadModelAlias(),
+      reloadGroups(),
+    ]);
+  }, [loadFiles, loadExcluded, loadModelAlias, reloadGroups]);
 
   useHeaderRefresh(handleHeaderRefresh);
 
@@ -402,6 +414,19 @@ export function AuthFilesPage() {
 
   /* Filter, sort and paginate. */
 
+  const groupFiles = useMemo(
+    () =>
+      files.filter(
+        (file) =>
+          !selectedGroup || (groupBoard !== null && matchesGroup(membership(file), selectedGroup))
+      ),
+    [files, selectedGroup, groupBoard, membership]
+  );
+  const membershipCounts = useMemo(
+    () => groupCounts(files, groups.membership),
+    [files, groups.membership]
+  );
+
   const existingTypes = useMemo(() => {
     const types = new Set<string>(['all']);
     files.forEach((file) => {
@@ -413,13 +438,13 @@ export function AuthFilesPage() {
 
   const filesMatchingStatusFilters = useMemo(
     () =>
-      files.filter((file) => {
+      groupFiles.filter((file) => {
         if (enabledOnly && file.disabled === true) return false;
         if (disabledOnly && file.disabled !== true) return false;
         if (problemOnly && !isProblemAuthFile(file)) return false;
         return true;
       }),
-    [disabledOnly, enabledOnly, files, problemOnly]
+    [disabledOnly, enabledOnly, groupFiles, problemOnly]
   );
 
   const statusFilterOptions = useMemo(
@@ -522,8 +547,11 @@ export function AuthFilesPage() {
 
   /* Header telemetry counts. */
 
-  const activeCount = useMemo(() => files.filter((file) => file.disabled !== true).length, [files]);
-  const problemCount = useMemo(() => files.filter(isProblemAuthFile).length, [files]);
+  const activeCount = useMemo(
+    () => groupFiles.filter((file) => file.disabled !== true).length,
+    [groupFiles]
+  );
+  const problemCount = useMemo(() => groupFiles.filter(isProblemAuthFile).length, [groupFiles]);
 
   /* Animate the initial cards once. Mounted cards retain their initial delay;
    * cards mounted by filtering, pagination or polling do not replay it. */
@@ -587,11 +615,13 @@ export function AuthFilesPage() {
   );
 
   const clearFilters = useCallback(() => {
+    setSelectedGroup('');
+    deselectAll();
     setFilter('all');
     setStatusFilterMode('all');
     setSearch('');
     setPage(1);
-  }, []);
+  }, [setSelectedGroup, deselectAll]);
 
   const deleteAllButtonLabel = (() => {
     if (enabledOnly || disabledOnly) {
@@ -625,7 +655,7 @@ export function AuthFilesPage() {
   return (
     <div className={styles.page}>
       <VaultHeader
-        totalCount={files.length}
+        totalCount={groupFiles.length}
         activeCount={activeCount}
         problemCount={problemCount}
         loading={loading}
@@ -648,9 +678,21 @@ export function AuthFilesPage() {
         onChange={handleFileChange}
       />
 
-      <VaultPulse files={files} statusBarCache={statusBarCache} />
+      <VaultPulse files={groupFiles} statusBarCache={statusBarCache} />
 
       <section className={styles.workbench} aria-label={t('auth_files.title_section')}>
+        <GroupMembershipFilter
+          board={groups.board}
+          value={groups.selected}
+          counts={membershipCounts}
+          error={groups.error}
+          loading={groups.loading}
+          onChange={(id) => {
+            groups.setSelected(id);
+            setPage(1);
+            deselectAll();
+          }}
+        />
         <ProviderTabs
           types={existingTypes}
           counts={typeCounts}
@@ -686,20 +728,27 @@ export function AuthFilesPage() {
           onPageSizeCommit={commitPageSizeInput}
           compactMode={compactMode}
           onCompactModeChange={setCompactMode}
-          deleteLabel={deleteAllButtonLabel}
-          deleteDisabled={disableControls || loading || deletingAll || files.length === 0}
+          deleteLabel={groups.selected ? t('service_groups.deleteFiltered') : deleteAllButtonLabel}
+          deleteDisabled={
+            disableControls ||
+            loading ||
+            deletingAll ||
+            (groups.selected ? selectableFilteredItems.length === 0 : files.length === 0)
+          }
           deleteLoading={deletingAll}
           onDelete={() =>
-            handleDeleteAll({
-              filter,
-              problemOnly,
-              disabledOnly,
-              enabledOnly,
-              onResetFilterToAll: () => setFilter('all'),
-              onResetProblemOnly: () => setStatusFilterMode('all'),
-              onResetDisabledOnly: () => setStatusFilterMode('all'),
-              onResetEnabledOnly: () => setStatusFilterMode('all'),
-            })
+            groups.selected
+              ? batchDelete(selectableFilteredItems.map((file) => file.name))
+              : handleDeleteAll({
+                  filter,
+                  problemOnly,
+                  disabledOnly,
+                  enabledOnly,
+                  onResetFilterToAll: () => setFilter('all'),
+                  onResetProblemOnly: () => setStatusFilterMode('all'),
+                  onResetDisabledOnly: () => setStatusFilterMode('all'),
+                  onResetEnabledOnly: () => setStatusFilterMode('all'),
+                })
           }
         />
 
@@ -750,6 +799,7 @@ export function AuthFilesPage() {
               <AuthFileCard
                 key={getQuotaCacheKey(file)}
                 file={file}
+                groups={groups.board?.mode === 'grouped' ? groups.membership(file) : undefined}
                 compact={compactMode}
                 selected={selectedFiles.has(file.name)}
                 resolvedTheme={resolvedTheme}

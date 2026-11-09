@@ -39,9 +39,12 @@ import { AccountOccupancy } from './AccountOccupancy';
 import type { SessionRoutingSnapshot } from '@/services/api/sessionRouting';
 import type { AccountUsage } from '@/services/api/accountUsage';
 import styles from './AuthFileCard.module.scss';
+import { GroupMembershipBadges } from '@/features/serviceGroups/GroupMembershipControls';
+import type { GroupLabel } from '@/features/serviceGroups/membership';
 
 export type AuthFileCardProps = {
   file: AuthFileItem;
+  groups?: GroupLabel[];
   compact: boolean;
   selected: boolean;
   resolvedTheme: ResolvedTheme;
@@ -259,6 +262,8 @@ export function AuthFileCard(props: AuthFileCardProps) {
           {identity.secondary}
         </p>
       )}
+
+      {props.groups && <GroupMembershipBadges groups={props.groups} />}
 
       {!compact && noteValue && (
         <p className={styles.note} title={noteValue}>

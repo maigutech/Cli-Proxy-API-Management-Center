@@ -2812,7 +2812,14 @@
     "incomplete": "Một phần dữ liệu chưa được lưu. Tổng có thể chưa đầy đủ.",
     "reasoningNote": "Token suy luận: {{count}} (đã gồm trong đầu ra). Đầu vào không gồm token bộ nhớ đệm.",
     "costHint": "Chi phí theo giá token đã ghi, bằng USD; không phải số dư tiền mặt và không gồm phí công cụ.",
-    "detailNote": "Thời gian và mã trạng thái lịch sử còn thiếu được giữ là không rõ. Không tự gán mã HTTP cho lượt thành công."
+    "detailNote": "Thời gian và mã trạng thái lịch sử còn thiếu được giữ là không rõ. Không tự gán mã HTTP cho lượt thành công.",
+    "groupId": "Nhóm dịch vụ",
+    "unassignedGroup": "Không có nhóm",
+    "archivedGroup": "Đã lưu trữ",
+    "groupIdentity": "ID nhóm",
+    "keyIdentity": "ID khóa khách hàng",
+    "credentialIdentity": "ID thông tin xác thực",
+    "groupAttributionHint": "Nhóm được ghi lại khi yêu cầu chạy. Chuyển tài khoản hoặc thay khóa không làm thay đổi lịch sử."
   },
   "service_groups": {
     "title": "Nhóm dịch vụ",
@@ -2900,6 +2907,16 @@
     "copied": "Đã sao chép toàn bộ khóa",
     "keyNotRetained": "Khóa này được tạo trước khi hệ thống lưu toàn bộ giá trị. Hãy bổ sung khóa gốc hoặc tạo khóa thay thế trong phần quản lý nhóm.",
     "restoreKey": "Bổ sung khóa gốc",
-    "originalKey": "API Key gốc"
+    "originalKey": "API Key gốc",
+    "allGroups": "Tất cả nhóm",
+    "unassigned": "Chưa phân bổ",
+    "filterGroup": "Lọc theo nhóm",
+    "belongsTo": "Nhóm dịch vụ",
+    "sharedAccount": "Tài khoản dùng chung",
+    "membershipHint": "Tài khoản dùng chung xuất hiện trong từng nhóm. Hạn mức và mức sử dụng vẫn được tính cho toàn bộ tài khoản.",
+    "membershipLoadFailed": "Không tải được nhóm",
+    "membershipLoading": "Đang tải nhóm…",
+    "groupUnavailable": "Nhóm không khả dụng",
+    "deleteFiltered": "Xóa kết quả đã lọc"
   }
 }

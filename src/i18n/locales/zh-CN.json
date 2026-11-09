@@ -2804,7 +2804,14 @@
     "rate": "USD / 百万 Token",
     "reasoningNote": "推理 Token：{{count}}（已包含在输出中）。输入不含已缓存 Token。",
     "costHint": "费用按当时 Token 单价折算为 USD，不代表现金余额，不含工具附加费。",
-    "detailNote": "历史记录缺失的耗时和状态码保持未知；成功调用不会补写推测的 HTTP 状态码。"
+    "detailNote": "历史记录缺失的耗时和状态码保持未知；成功调用不会补写推测的 HTTP 状态码。",
+    "groupId": "服务分组",
+    "unassignedGroup": "未归属分组",
+    "archivedGroup": "已归档",
+    "groupIdentity": "分组 ID",
+    "keyIdentity": "客户端 Key ID",
+    "credentialIdentity": "凭证 ID",
+    "groupAttributionHint": "分组归属在请求执行时记录。之后调整账号所属分组或轮换 Key，不会改变历史记录。"
   },
   "service_groups": {
     "title": "服务分组",
@@ -2892,6 +2899,16 @@
     "copied": "已复制完整 Key",
     "keyNotRetained": "此 Key 创建于旧版本，尚未保存完整值。可补录原 Key，或在分组管理中轮换生成新 Key。",
     "restoreKey": "补录原 Key",
-    "originalKey": "原 API Key"
+    "originalKey": "原 API Key",
+    "allGroups": "全部分组",
+    "unassigned": "未分配",
+    "filterGroup": "按分组筛选",
+    "belongsTo": "所属分组",
+    "sharedAccount": "共享账号",
+    "membershipHint": "共享账号会出现在所属的每个分组中；上游额度和账号消耗统计仍为账号整体数据。",
+    "membershipLoadFailed": "分组归属加载失败",
+    "membershipLoading": "正在加载分组…",
+    "groupUnavailable": "分组已不可用",
+    "deleteFiltered": "删除筛选结果"
   }
 }

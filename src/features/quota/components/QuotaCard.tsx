@@ -23,12 +23,15 @@ import { ClaudeResetGrantDetails } from '../providers/claude/ClaudeResetGrantDet
 import { hasClaudeUsageData } from '../providers/claude/data';
 import bodyStyles from './QuotaBody.module.scss';
 import styles from './QuotaCard.module.scss';
+import { GroupMembershipBadges } from '@/features/serviceGroups/GroupMembershipControls';
+import type { GroupLabel } from '@/features/serviceGroups/membership';
 
 /** Bind the quota-page styles to the shared rendering contract. */
 const quotaClasses = bindQuotaClasses(bodyStyles, 'QuotaBody.module.scss');
 
 export type QuotaCardProps = {
   entry: QuotaFileEntry;
+  groups?: GroupLabel[];
   quota?: QuotaCardState;
   resolvedTheme: ResolvedTheme;
   canRefresh: boolean;
@@ -137,6 +140,7 @@ export function QuotaCard(props: QuotaCardProps) {
       </header>
 
       <div className={styles.body}>
+        {props.groups && <GroupMembershipBadges groups={props.groups} />}
         {status === 'idle' ? (
           <button
             type="button"

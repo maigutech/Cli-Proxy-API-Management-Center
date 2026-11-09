@@ -2806,7 +2806,14 @@
     "rate": "USD / 1M tokens",
     "reasoningNote": "Reasoning tokens: {{count}} (already included in output). Input excludes cached tokens.",
     "costHint": "Costs use the recorded token price in USD; this is not a cash balance and excludes tool surcharges.",
-    "detailNote": "Missing historical timings and status codes remain unknown. A successful call is not assigned an inferred HTTP code."
+    "detailNote": "Missing historical timings and status codes remain unknown. A successful call is not assigned an inferred HTTP code.",
+    "groupId": "Service group",
+    "unassignedGroup": "No group attribution",
+    "archivedGroup": "Archived",
+    "groupIdentity": "Group ID",
+    "keyIdentity": "Client key ID",
+    "credentialIdentity": "Credential ID",
+    "groupAttributionHint": "Group attribution is recorded when the request runs. Moving accounts or rotating keys does not change historical attribution."
   },
   "service_groups": {
     "title": "Service groups",
@@ -2894,6 +2901,16 @@
     "copied": "Full key copied",
     "keyNotRetained": "This key was created before full keys were retained. Restore the original key, or rotate it in group management to generate a new one.",
     "restoreKey": "Restore original key",
-    "originalKey": "Original API key"
+    "originalKey": "Original API key",
+    "allGroups": "All groups",
+    "unassigned": "Unassigned",
+    "filterGroup": "Filter by group",
+    "belongsTo": "Service groups",
+    "sharedAccount": "Shared account",
+    "membershipHint": "Accounts shared by multiple groups appear in each group; their upstream quota and account usage remain shared.",
+    "membershipLoadFailed": "Could not load group membership",
+    "membershipLoading": "Loading groups…",
+    "groupUnavailable": "Group unavailable",
+    "deleteFiltered": "Delete filtered results"
   }
 }

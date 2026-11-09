@@ -2806,7 +2806,14 @@
     "incomplete": "일부 사용량이 저장되지 않아 합계가 불완전할 수 있습니다.",
     "reasoningNote": "추론 토큰: {{count}} (출력에 이미 포함). 입력에는 캐시 토큰이 제외됩니다.",
     "costHint": "당시 토큰 단가로 환산한 USD 비용이며 현금 잔액이 아닙니다. 도구 추가 비용은 제외됩니다.",
-    "detailNote": "과거에 기록되지 않은 시간과 상태 코드는 알 수 없음으로 남습니다. 성공에 HTTP 코드를 추정해 넣지 않습니다."
+    "detailNote": "과거에 기록되지 않은 시간과 상태 코드는 알 수 없음으로 남습니다. 성공에 HTTP 코드를 추정해 넣지 않습니다.",
+    "groupId": "서비스 그룹",
+    "unassignedGroup": "그룹 정보 없음",
+    "archivedGroup": "보관됨",
+    "groupIdentity": "그룹 ID",
+    "keyIdentity": "클라이언트 키 ID",
+    "credentialIdentity": "자격 증명 ID",
+    "groupAttributionHint": "요청 실행 시 그룹이 기록됩니다. 계정 이동이나 키 교체는 이전 기록에 영향을 주지 않습니다."
   },
   "service_groups": {
     "title": "서비스 그룹",
@@ -2894,6 +2901,16 @@
     "copied": "전체 키가 복사되었습니다",
     "keyNotRetained": "이 키는 전체 값 저장 기능이 도입되기 전에 생성되었습니다. 기존 키를 등록하거나 그룹 관리에서 새 키로 교체하세요.",
     "restoreKey": "기존 키 등록",
-    "originalKey": "기존 API 키"
+    "originalKey": "기존 API 키",
+    "allGroups": "모든 그룹",
+    "unassigned": "미할당",
+    "filterGroup": "그룹별 필터",
+    "belongsTo": "서비스 그룹",
+    "sharedAccount": "공유 계정",
+    "membershipHint": "공유 계정은 소속된 모든 그룹에 표시됩니다. 할당량과 사용량 통계는 계정 전체 기준입니다.",
+    "membershipLoadFailed": "그룹 정보를 불러오지 못했습니다",
+    "membershipLoading": "그룹 로딩 중…",
+    "groupUnavailable": "그룹을 사용할 수 없음",
+    "deleteFiltered": "필터 결과 삭제"
   }
 }

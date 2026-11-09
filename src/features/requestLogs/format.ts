@@ -1,7 +1,9 @@
 import type { RequestLogQuery } from '@/services/api/requestLogs';
 import type { UsageRecord } from '@/services/api/accountUsage';
+import { UNASSIGNED_GROUP } from '@/features/serviceGroups/membership';
 
 export interface LogFilters {
+  groupId: string;
   range: string;
   from: string;
   to: string;
@@ -15,6 +17,7 @@ export interface LogFilters {
   requestId: string;
 }
 export const defaultFilters: LogFilters = {
+  groupId: '',
   range: 'day',
   from: '',
   to: '',
@@ -60,6 +63,8 @@ export function buildLogQuery(
     to: end.toISOString(),
     page: 1,
     pageSize,
+    groupId: f.groupId === UNASSIGNED_GROUP ? undefined : f.groupId,
+    groupUnassigned: f.groupId === UNASSIGNED_GROUP ? true : undefined,
     authIndex: f.authIndex,
     model: f.model,
     source: f.source,

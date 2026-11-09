@@ -215,3 +215,45 @@ for (const [lng, translation] of Object.entries({
     );
   });
 }
+
+test('group filters persist through pagination and distinguish unattributed history from all groups', () => {
+  const q = buildLogQuery({ ...defaultFilters, groupId: 'archived-group' })!;
+  expect(requestLogParams(pageQuery(q, 2, 3)).group_id).toBe('archived-group');
+  const unassigned = buildLogQuery({ ...defaultFilters, groupId: '__unassigned__' })!;
+  expect(requestLogParams(unassigned).group_id).toBeUndefined();
+  expect(requestLogParams(unassigned).group_unassigned).toBe(true);
+  expect(requestLogParams(buildLogQuery(defaultFilters)!).group_unassigned).toBeUndefined();
+});
+
+test('request group identity comes from immutable record attribution', async () => {
+  const group = { id: 'group-a', name: 'Archived team', archived: true };
+  const result = normalizeRequestLogs({
+    ...response,
+    groups: [group],
+    records: [{ ...record, group_id: 'group-a', key_id: 'key-a', credential_id: 'shared' }],
+  });
+  expect(result.records[0]).toMatchObject({
+    groupId: 'group-a',
+    keyId: 'key-a',
+    credentialId: 'shared',
+  });
+  expect(result.groups).toEqual([group]);
+  expect(normalizeRequestLogs(response).groups).toEqual([]);
+  const i18n = createInstance();
+  await i18n.init({ lng: 'en', resources: { en: { translation: en } } });
+  const html = renderToStaticMarkup(
+    createElement(I18nextProvider, {
+      i18n,
+      children: createElement(RequestLogTable, {
+        records: result.records,
+        groups: result.groups,
+        accounts: [],
+        onDetail() {},
+        onTrace() {},
+      }),
+    })
+  );
+  expect(html).toContain('Archived team');
+  expect(html).toContain(en.request_logs.archivedGroup);
+  expect(html).not.toContain(en.request_logs.unassignedGroup);
+});

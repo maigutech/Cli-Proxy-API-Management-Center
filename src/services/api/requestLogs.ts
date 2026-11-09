@@ -9,6 +9,8 @@ import {
 } from './accountUsage';
 
 export interface RequestLogQuery {
+  groupId?: string;
+  groupUnassigned?: boolean;
   from: string;
   to: string;
   authIndex?: string;
@@ -28,6 +30,7 @@ export interface RequestLogsResult {
   summary: UsageTotals;
   records: UsageRecord[];
   accounts: Array<{ authIndex: string; name: string }>;
+  groups: Array<{ id: string; name: string; archived: boolean }>;
   models: string[];
   total: number;
   page: number;
@@ -52,6 +55,12 @@ export function normalizeRequestLogs(raw: unknown): RequestLogsResult {
     status: normalizeUsageStatus(d.status),
     summary: normalizeUsageTotals(d.summary),
     records: d.records.map(normalizeUsageRecord),
+    groups: (Array.isArray(d.groups) ? d.groups : []).map((raw) => {
+      const g = object(raw);
+      if (typeof g.id !== 'string' || typeof g.name !== 'string')
+        throw new Error('Invalid request log group');
+      return { id: g.id, name: g.name, archived: g.archived === true };
+    }),
     accounts: d.accounts.map((raw) => {
       const a = object(raw);
       if (typeof a.auth_index !== 'string' || typeof a.name !== 'string')
@@ -76,6 +85,8 @@ export function requestLogParams(q: RequestLogQuery) {
     page: q.page,
     page_size: q.pageSize,
     snapshot: q.snapshot,
+    group_id: q.groupId || undefined,
+    group_unassigned: q.groupUnassigned || undefined,
     auth_index: q.authIndex || undefined,
     model: q.model || undefined,
     source: q.source || undefined,

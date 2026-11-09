@@ -93,6 +93,9 @@ export function normalizePriceSyncStatus(raw: unknown): PriceSyncStatus {
   };
 }
 export interface UsageRecord {
+  groupId: string;
+  keyId: string;
+  credentialId: string;
   sequence: number;
   executionId: string;
   traceId: string;
@@ -264,6 +267,9 @@ export function normalizeUsageRecord(raw: unknown): UsageRecord {
   const output = object(tokens.output);
   const cost = r.cost == null ? null : object(r.cost);
   return {
+    groupId: string(r.group_id),
+    keyId: string(r.key_id),
+    credentialId: string(r.credential_id),
     sequence: number(r.sequence),
     executionId: string(r.execution_id),
     traceId: string(r.trace_id),

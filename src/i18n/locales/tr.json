@@ -2806,7 +2806,14 @@
     "incomplete": "Bazı kullanım verileri saklanamadı. Toplamlar eksik olabilir.",
     "reasoningNote": "Akıl yürütme tokenları: {{count}} (çıktıya dahil). Girdi önbellek tokenlarını içermez.",
     "costHint": "Kaydedilen token fiyatlarıyla USD maliyeti; nakit bakiye değildir ve araç ek ücretlerini içermez.",
-    "detailNote": "Eksik geçmiş süreler ve durum kodları bilinmiyor olarak kalır. Başarıya tahmini HTTP kodu atanmaz."
+    "detailNote": "Eksik geçmiş süreler ve durum kodları bilinmiyor olarak kalır. Başarıya tahmini HTTP kodu atanmaz.",
+    "groupId": "Hizmet grubu",
+    "unassignedGroup": "Grup ataması yok",
+    "archivedGroup": "Arşivlendi",
+    "groupIdentity": "Grup kimliği",
+    "keyIdentity": "İstemci anahtarı kimliği",
+    "credentialIdentity": "Kimlik bilgisi kimliği",
+    "groupAttributionHint": "Grup, istek çalıştırılırken kaydedilir. Hesap taşıma veya anahtar değiştirme geçmiş kayıtları değiştirmez."
   },
   "service_groups": {
     "title": "Hizmet grupları",
@@ -2894,6 +2901,16 @@
     "copied": "Anahtarın tamamı kopyalandı",
     "keyNotRetained": "Bu anahtar, tam değerler saklanmaya başlamadan önce oluşturuldu. Mevcut anahtarı kaydedin veya grup yönetiminde yeni bir anahtarla değiştirin.",
     "restoreKey": "Mevcut anahtarı kaydet",
-    "originalKey": "Mevcut API anahtarı"
+    "originalKey": "Mevcut API anahtarı",
+    "allGroups": "Tüm gruplar",
+    "unassigned": "Atanmamış",
+    "filterGroup": "Gruba göre filtrele",
+    "belongsTo": "Hizmet grupları",
+    "sharedAccount": "Paylaşılan hesap",
+    "membershipHint": "Paylaşılan hesaplar ait oldukları her grupta görünür. Kota ve kullanım istatistikleri hesabın tamamına aittir.",
+    "membershipLoadFailed": "Grup bilgileri yüklenemedi",
+    "membershipLoading": "Gruplar yükleniyor…",
+    "groupUnavailable": "Grup kullanılamıyor",
+    "deleteFiltered": "Filtrelenen sonuçları sil"
   }
 }

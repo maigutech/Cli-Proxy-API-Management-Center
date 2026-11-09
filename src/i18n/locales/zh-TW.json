@@ -2832,7 +2832,14 @@
     "rate": "USD / 百萬 Token",
     "reasoningNote": "推理 Token：{{count}}（已包含在輸出中）。輸入不含已快取 Token。",
     "costHint": "費用按當時 Token 單價折算為 USD，不代表現金餘額，不含工具附加費。",
-    "detailNote": "歷史記錄缺失的耗時與狀態碼保持未知；成功呼叫不會補寫推測的 HTTP 狀態碼。"
+    "detailNote": "歷史記錄缺失的耗時與狀態碼保持未知；成功呼叫不會補寫推測的 HTTP 狀態碼。",
+    "groupId": "服務分組",
+    "unassignedGroup": "未歸屬分組",
+    "archivedGroup": "已封存",
+    "groupIdentity": "分組 ID",
+    "keyIdentity": "用戶端 Key ID",
+    "credentialIdentity": "憑證 ID",
+    "groupAttributionHint": "分組歸屬在請求執行時記錄。之後調整帳號所屬分組或輪換 Key，不會改變歷史記錄。"
   },
   "service_groups": {
     "title": "服務分組",
@@ -2920,6 +2927,16 @@
     "copied": "已複製完整 Key",
     "keyNotRetained": "此 Key 建立於舊版本，尚未儲存完整值。可補錄原 Key，或在分組管理中輪換產生新 Key。",
     "restoreKey": "補錄原 Key",
-    "originalKey": "原 API Key"
+    "originalKey": "原 API Key",
+    "allGroups": "全部分組",
+    "unassigned": "未分配",
+    "filterGroup": "依分組篩選",
+    "belongsTo": "所屬分組",
+    "sharedAccount": "共用帳號",
+    "membershipHint": "共用帳號會出現在所屬的每個分組中；上游額度和帳號消耗統計仍為帳號整體資料。",
+    "membershipLoadFailed": "分組歸屬載入失敗",
+    "membershipLoading": "正在載入分組…",
+    "groupUnavailable": "分組已無法使用",
+    "deleteFiltered": "刪除篩選結果"
   }
 }

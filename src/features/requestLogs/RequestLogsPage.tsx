@@ -34,6 +34,7 @@ import {
   type LogFilters,
 } from './format';
 import { RequestLogDetail } from './RequestLogDetail';
+import { UNASSIGNED_GROUP } from '@/features/serviceGroups/membership';
 import styles from './RequestLogsPage.module.scss';
 
 export function RequestLogsPage() {
@@ -65,16 +66,24 @@ export function RequestLogStatus({ row }: { row: UsageRecord }) {
 export function RequestLogTable({
   records,
   accounts,
+  groups = [],
   onDetail,
   onTrace,
 }: {
   records: UsageRecord[];
   accounts: RequestLogsResult['accounts'];
+  groups?: RequestLogsResult['groups'];
   onDetail: (row: UsageRecord) => void;
   onTrace: (id: string) => void;
 }) {
   const { t } = useTranslation();
   const names = new Map(accounts.map((a) => [a.authIndex, a.name]));
+  const groupNames = new Map(
+    groups.map((g) => [
+      g.id,
+      `${g.name}${g.archived ? ` (${t('request_logs.archivedGroup')})` : ''}`,
+    ])
+  );
   return (
     <Table className={styles.table} aria-label={t('request_logs.title')}>
       <TableHeader>
@@ -83,6 +92,7 @@ export function RequestLogTable({
             'time',
             'status',
             'requestId',
+            'groupId',
             'account',
             'model',
             'type',
@@ -119,6 +129,13 @@ export function RequestLogTable({
                 >
                   {id || '—'}
                 </button>
+              </TableCell>
+              <TableCell>
+                <span className={styles.account} title={row.groupId || undefined}>
+                  {row.groupId
+                    ? groupNames.get(row.groupId) || row.groupId
+                    : t('request_logs.unassignedGroup')}
+                </span>
               </TableCell>
               <TableCell>
                 <span className={styles.account} title={names.get(row.authIndex) || row.authIndex}>
@@ -340,6 +357,16 @@ export function RequestLogsWorkspace() {
               ['custom', t('request_logs.custom')],
             ])}
           </Field>
+          <Field label={t('request_logs.groupId')}>
+            {select('groupId', [
+              ['', t('service_groups.allGroups')],
+              ...(facets?.groups ?? []).map((g): [string, string] => [
+                g.id,
+                `${g.name}${g.archived ? ` (${t('request_logs.archivedGroup')})` : ''}`,
+              ]),
+              [UNASSIGNED_GROUP, t('request_logs.unassignedGroup')],
+            ])}
+          </Field>
           <Field label={t('request_logs.account')}>
             {select('authIndex', [
               ['', t('request_logs.allAccounts')],
@@ -500,6 +527,7 @@ export function RequestLogsWorkspace() {
             <RequestLogTable
               records={data.records}
               accounts={data.accounts}
+              groups={data.groups}
               onDetail={setSelected}
               onTrace={related}
             />
@@ -604,6 +632,7 @@ export function RequestLogsWorkspace() {
         >
           <RequestLogDetail
             row={selected}
+            groupName={data?.groups.find((g) => g.id === selected.groupId)?.name}
             account={
               data?.accounts.find((a) => a.authIndex === selected.authIndex)?.name ||
               selected.authIndex

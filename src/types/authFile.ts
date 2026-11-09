@@ -41,6 +41,7 @@ export interface AuthFileCooldownSnapshot {
 
 export interface AuthFileItem {
   name: string;
+  authId?: string;
   siwcBindSupported?: boolean;
   useSiwc?: boolean;
   siwcBound?: boolean;

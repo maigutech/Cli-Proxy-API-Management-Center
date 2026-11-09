@@ -290,6 +290,7 @@ const normalizeAuthFileEntry = (
 
   return {
     ...entry,
+    authId: readTextField(entry, 'id') || undefined,
     siwcBindSupported: entry.siwc_bind_supported === true,
     useSiwc: entry.use_siwc === true,
     siwcBound: entry.siwc_bound === true,
