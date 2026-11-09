@@ -18,6 +18,7 @@ import {
   IconMinimize2,
   IconRefreshCw,
   IconSearch,
+  IconSettings,
   IconSlidersHorizontal,
   IconTimer,
   IconTrash2,
@@ -46,6 +47,7 @@ import { errorLogViewerReducer } from './model/errorLogViewer';
 import { shouldExitLogFullscreen } from './model/logFullscreen';
 import { useLogFilters } from './hooks/useLogFilters';
 import { isNearBottom, useLogScroller } from './hooks/useLogScroller';
+import { LogSettingsModal } from './components/LogSettingsModal';
 import styles from './LogsPage.module.scss';
 
 const INITIAL_DISPLAY_LINES = INITIAL_VISIBLE_LINES;
@@ -62,6 +64,7 @@ export function LogsPage() {
   const requestLogEnabled = config?.requestLog ?? false;
 
   const [activeTab, setActiveTab] = useState<TabType>('logs');
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const deferredSearchQuery = useDeferredValue(searchQuery);
   const [hideManagementLogs, setHideManagementLogs] = useLocalStorage(
@@ -132,7 +135,7 @@ export function LogsPage() {
     try {
       const res = await logsApi.fetchErrorLogs();
       if (!requests.errors.isCurrent(request)) return;
-      // API 返回 { files: [...] }
+      // The API returns { files: [...] }.
       setErrorLogs(Array.isArray(res.files) ? res.files : []);
     } catch (err: unknown) {
       if (!requests.errors.isCurrent(request)) return;
@@ -422,6 +425,18 @@ export function LogsPage() {
             {t('logs.error_logs_modal_title')}
           </button>
         </div>
+        <Button
+          className={styles.settingsButton}
+          variant="secondary"
+          size="sm"
+          disabled={disableControls}
+          onClick={() => setSettingsOpen(true)}
+        >
+          <span className={styles.buttonContent}>
+            <IconSettings size={15} />
+            {t('logs.settings')}
+          </span>
+        </Button>
       </header>
 
       <div className={styles.content}>
@@ -1020,6 +1035,8 @@ export function LogsPage() {
           </Card>
         )}
       </div>
+
+      {settingsOpen && <LogSettingsModal onClose={() => setSettingsOpen(false)} />}
 
       <Modal
         open={errorLogViewer.status !== 'closed'}

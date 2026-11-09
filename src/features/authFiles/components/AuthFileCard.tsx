@@ -62,6 +62,7 @@ export type AuthFileCardProps = {
   occupancy?: SessionRoutingSnapshot | null;
   usage?: AccountUsage;
   onUsageDetails?: (file: AuthFileItem) => void;
+  onEditGroups?: (file: AuthFileItem) => void;
   /** One-time entrance delay; null/undefined disables entrance motion. */
   entranceDelayMs?: number | null;
   onShowModels: (file: AuthFileItem) => void;
@@ -95,6 +96,7 @@ export function AuthFileCard(props: AuthFileCardProps) {
     occupancy,
     usage,
     onUsageDetails,
+    onEditGroups,
     entranceDelayMs,
     onShowModels,
     onDownload,
@@ -464,6 +466,18 @@ export function AuthFileCard(props: AuthFileCardProps) {
             >
               {deleting === file.name ? <LoadingSpinner size={14} /> : <IconTrash2 size={15} />}
             </Button>
+            {onEditGroups && (
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => onEditGroups(file)}
+                disabled={disableControls || deleting === file.name}
+                aria-haspopup="dialog"
+                title={t('service_groups.editMemberships')}
+              >
+                {t('service_groups.groupButton')}
+              </Button>
+            )}
           </div>
         )}
         {!isRuntimeOnly && (

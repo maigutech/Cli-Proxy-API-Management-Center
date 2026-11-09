@@ -207,3 +207,23 @@ test('sync controls use the captured v8 client and refuse stale connections', as
   expect(post).toHaveBeenCalledTimes(1);
   expect(put).toHaveBeenCalledTimes(1);
 });
+
+test('retention settings read the current value and use only the captured connection', async () => {
+  const client = apiClient.captureConnection();
+  const get = spyOn(client, 'get').mockResolvedValue(status);
+  const put = spyOn(client, 'put').mockResolvedValue({ ...status, retention_days: 7 });
+  const captured = spyOn(apiClient, 'captureConnection').mockReturnValue(client);
+  const revision = spyOn(apiClient, 'getConnectionRevision').mockReturnValue(21);
+  mocks.push(get, put, captured, revision);
+  const api = captureUsageApi();
+  const controller = new AbortController();
+  expect((await api.status(controller.signal)).retentionDays).toBe(90);
+  expect(get).toHaveBeenCalledWith('/observability/usage/status', { signal: controller.signal });
+  expect((await api.retention(7)).retentionDays).toBe(7);
+  expect(put).toHaveBeenCalledWith('/observability/usage/settings', { retention_days: 7 });
+  revision.mockReturnValue(22);
+  await expect(api.status()).rejects.toThrow('Connection changed');
+  await expect(api.retention(30)).rejects.toThrow('Connection changed');
+  expect(get).toHaveBeenCalledTimes(1);
+  expect(put).toHaveBeenCalledTimes(1);
+});

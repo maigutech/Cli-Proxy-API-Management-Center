@@ -1094,6 +1094,13 @@
     "no_requests": "요청 없음"
   },
   "logs": {
+    "settings": "설정",
+    "settings_title": "로그 설정",
+    "retention_scope": "모든 계정의 요청 기록, 토큰 사용량 및 비용 내역에 적용됩니다. 실행 로그 파일과 배포 백업은 별도로 관리됩니다.",
+    "retention_hint": "완료 시간을 기준으로 오래된 기록을 자동 정리합니다. 최소 7일 동안 보관합니다.",
+    "retention_preset": "{{days}}일",
+    "retention_saved": "데이터 보관 설정을 저장했습니다",
+    "retention_unavailable": "사용량 저장소가 준비되지 않았습니다. 보관 기간을 아직 설정할 수 없습니다.",
     "preview_too_large": "이 요청 로그는 2 MiB 미리보기 제한을 초과합니다. 다운로드하여 확인하세요.",
     "read_status_live": "지속 읽기 중",
     "read_status_paused": "읽기 일시 중지됨",
@@ -2816,6 +2823,19 @@
     "groupAttributionHint": "요청 실행 시 그룹이 기록됩니다. 계정 이동이나 키 교체는 이전 기록에 영향을 주지 않습니다."
   },
   "service_groups": {
+    "groupButton": "그룹",
+    "editMemberships": "계정 그룹 설정",
+    "membershipEditorHint": "여러 그룹을 선택하여 이 계정을 공유할 수 있습니다.",
+    "searchGroups": "그룹 검색",
+    "noMatchingGroups": "일치하는 그룹 없음",
+    "noMembershipGroups": "사용 가능한 그룹이 없습니다. 서비스 그룹 페이지에서 먼저 생성하세요.",
+    "selectedGroups": "선택한 그룹: {{count}}",
+    "unassignedWarning": "모든 그룹을 해제하면 이 계정은 그룹 요청을 처리하지 않습니다.",
+    "membershipLastMember": "“{{group}}”에는 최소 한 개의 계정이 필요합니다. 다른 계정을 추가하거나 그룹을 비활성화하세요.",
+    "membershipModelRequired": "이 계정을 제거하면 “{{group}}”의 “{{model}}” 모델을 지원할 계정이 없습니다. 다른 계정을 추가하거나 그룹 모델을 수정하세요.",
+    "membershipConflict": "다른 작업에서 그룹이 변경되었습니다. 다시 불러온 후 선택을 확인하세요.",
+    "reloadMemberships": "그룹 다시 불러오기",
+    "membershipsSaved": "계정 그룹이 저장되었습니다",
     "title": "서비스 그룹",
     "subtitle": "One API key per group. Explicit credentials, models and capacity.",
     "refresh": "Refresh",

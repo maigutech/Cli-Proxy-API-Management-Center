@@ -44,8 +44,28 @@ export function useGroupMembership() {
     void reload();
     return invalidate;
   }, [apiBase, managementKey, connected, reload, invalidate]);
+  const updateBoard = useCallback((board: GroupBoard, revision: number) => {
+    if (
+      revision !== apiClient.getConnectionRevision() ||
+      useAuthStore.getState().connectionStatus !== 'connected'
+    )
+      return;
+    generation.current++;
+    setSnapshot({ board, revision });
+    setError('');
+    setLoading(false);
+  }, []);
   const activeBoard =
     snapshot?.revision === apiClient.getConnectionRevision() ? snapshot.board : null;
   const membership = useMemo(() => groupMembership(activeBoard), [activeBoard]);
-  return { board: activeBoard, membership, selected, setSelected, reload, error, loading };
+  return {
+    board: activeBoard,
+    membership,
+    selected,
+    setSelected,
+    reload,
+    updateBoard,
+    error,
+    loading,
+  };
 }

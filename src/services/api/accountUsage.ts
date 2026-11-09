@@ -329,6 +329,10 @@ export function captureUsageApi() {
   };
   return {
     isCurrent: current,
+    status: async (signal?: AbortSignal) => {
+      check();
+      return normalizeUsageStatus(await client.get('/observability/usage/status', { signal }));
+    },
     accounts: async (indices: string[], signal?: AbortSignal) => {
       check();
       return normalizeUsageAccounts(

@@ -1050,6 +1050,13 @@
     "no_requests": "Không có yêu cầu"
   },
   "logs": {
+    "settings": "Cấu hình",
+    "settings_title": "Cấu hình nhật ký",
+    "retention_scope": "Áp dụng cho bản ghi yêu cầu, token và chi phí của mọi tài khoản. Tệp nhật ký hệ thống và bản sao lưu triển khai được quản lý riêng.",
+    "retention_hint": "Tự động dọn bản ghi cũ theo thời điểm hoàn thành. Lưu ít nhất 7 ngày.",
+    "retention_preset": "{{days}} ngày",
+    "retention_saved": "Đã lưu cấu hình lưu trữ",
+    "retention_unavailable": "Kho dữ liệu sử dụng chưa sẵn sàng. Tạm thời không thể cấu hình thời gian lưu.",
     "title": "Trình xem Log",
     "refresh_button": "Làm mới Log",
     "clear_button": "Xóa Log",
@@ -2822,6 +2829,19 @@
     "groupAttributionHint": "Nhóm được ghi lại khi yêu cầu chạy. Chuyển tài khoản hoặc thay khóa không làm thay đổi lịch sử."
   },
   "service_groups": {
+    "groupButton": "Nhóm",
+    "editMemberships": "Đặt nhóm cho tài khoản",
+    "membershipEditorHint": "Có thể chọn nhiều nhóm để dùng chung tài khoản này.",
+    "searchGroups": "Tìm nhóm",
+    "noMatchingGroups": "Không có nhóm phù hợp",
+    "noMembershipGroups": "Chưa có nhóm. Hãy tạo nhóm tại trang Nhóm dịch vụ trước.",
+    "selectedGroups": "Số nhóm đã chọn: {{count}}",
+    "unassignedWarning": "Bỏ tất cả nhóm sẽ ngừng dùng tài khoản này cho các yêu cầu theo nhóm.",
+    "membershipLastMember": "“{{group}}” cần ít nhất một tài khoản. Hãy thêm tài khoản khác hoặc tắt nhóm trước.",
+    "membershipModelRequired": "Xóa tài khoản này sẽ khiến mô hình “{{model}}” trong “{{group}}” không có tài khoản hỗ trợ. Hãy thêm tài khoản hoặc chỉnh mô hình của nhóm.",
+    "membershipConflict": "Nhóm đã được thay đổi bởi thao tác khác. Hãy tải lại và kiểm tra lựa chọn.",
+    "reloadMemberships": "Tải lại nhóm",
+    "membershipsSaved": "Đã lưu nhóm của tài khoản",
     "title": "Nhóm dịch vụ",
     "subtitle": "One API key per group. Explicit credentials, models and capacity.",
     "refresh": "Refresh",

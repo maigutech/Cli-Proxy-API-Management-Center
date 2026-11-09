@@ -65,6 +65,7 @@ import { ModelPricesSheet } from '@/features/usage/ModelPricesSheet';
 import { UsageOverview } from '@/features/usage/UsageOverview';
 import { useAccountUsage } from '@/features/usage/useAccountUsage';
 import { useGroupMembership } from '@/features/serviceGroups/useGroupMembership';
+import { AccountGroupsModal } from '@/features/serviceGroups/AccountGroupsModal';
 import { groupCounts, matchesGroup } from '@/features/serviceGroups/membership';
 import { GroupMembershipFilter } from '@/features/serviceGroups/GroupMembershipControls';
 import styles from './AuthFilesPage.module.scss';
@@ -102,6 +103,7 @@ export function AuthFilesPage() {
   const { board: groupBoard, selected: selectedGroup, membership } = groups;
   const setSelectedGroup = groups.setSelected;
 
+  const [groupFile, setGroupFile] = useState<AuthFileItem | null>(null);
   const [usageFile, setUsageFile] = useState<AuthFileItem | null>(null);
   const [pricesOpen, setPricesOpen] = useState(false);
   const [modelTestFile, setModelTestFile] = useState<AuthFileItem | null>(null);
@@ -818,6 +820,7 @@ export function AuthFilesPage() {
                 occupancy={occupancy[String(file.authIndex ?? '')]}
                 usage={usage?.data?.accounts[String(file.authIndex ?? '')]}
                 onUsageDetails={setUsageFile}
+                onEditGroups={groupBoard?.mode === 'grouped' ? setGroupFile : undefined}
                 entranceDelayMs={cardEntranceDelay(index)}
                 onShowModels={showModels}
                 onDownload={handleDownload}
@@ -914,6 +917,14 @@ export function AuthFilesPage() {
         />
       )}
       {pricesOpen && <ModelPricesSheet onClose={() => setPricesOpen(false)} />}
+      {groupFile && (
+        <AccountGroupsModal
+          key={groupFile.authId ?? groupFile.name}
+          file={groupFile}
+          onClose={() => setGroupFile(null)}
+          onSaved={groups.updateBoard}
+        />
+      )}
 
       {modelTestFile && (
         <AccountModelTestModal

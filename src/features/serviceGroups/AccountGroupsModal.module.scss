@@ -1,0 +1,59 @@
+.content {
+  display: grid;
+  gap: 14px;
+  :global(.form-group) {
+    margin: 0;
+  }
+}
+.account {
+  font-size: 14px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.hint {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.options {
+  display: grid;
+  gap: 6px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+.option {
+  border: 1px solid var(--border-color);
+  border-radius: 9px;
+  background: var(--bg-primary);
+  &:focus-within {
+    border-color: var(--primary-color);
+  }
+}
+.selected {
+  background: var(--bg-secondary);
+  border-color: var(--text-tertiary);
+}
+.checkbox {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+}
+.groupLabel {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  overflow-wrap: anywhere;
+  small {
+    color: var(--text-secondary);
+    font-size: 11px;
+  }
+}
+.summary {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-secondary);
+  font-size: 12px;
+}

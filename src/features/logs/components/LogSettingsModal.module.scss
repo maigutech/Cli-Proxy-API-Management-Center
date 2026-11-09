@@ -1,0 +1,22 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  :global(.form-group) {
+    margin: 0;
+  }
+}
+
+.scope {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

@@ -1092,6 +1092,13 @@
     "no_requests": "无请求"
   },
   "logs": {
+    "settings": "配置",
+    "settings_title": "日志配置",
+    "retention_scope": "适用于所有账号的请求记录、Token 和费用明细。运行日志和部署备份单独管理。",
+    "retention_hint": "按请求完成时间自动清理，至少保留 7 天。",
+    "retention_preset": "{{days}} 天",
+    "retention_saved": "数据保留设置已保存",
+    "retention_unavailable": "用量存储尚未就绪，暂时无法设置保留天数。",
     "preview_too_large": "报文超过 2 MiB 预览限制，请下载查看",
     "read_status_live": "持续读取",
     "read_status_paused": "读取已暂停",
@@ -2814,6 +2821,19 @@
     "groupAttributionHint": "分组归属在请求执行时记录。之后调整账号所属分组或轮换 Key，不会改变历史记录。"
   },
   "service_groups": {
+    "groupButton": "分组",
+    "editMemberships": "设置所属分组",
+    "membershipEditorHint": "可多选；选中的分组都能使用此账号。",
+    "searchGroups": "搜索分组",
+    "noMatchingGroups": "没有匹配的分组",
+    "noMembershipGroups": "暂无可选分组，请先在服务分组页面创建。",
+    "selectedGroups": "已选 {{count}} 个分组",
+    "unassignedWarning": "取消全部分组后，此账号将不再承接分组请求。",
+    "membershipLastMember": "“{{group}}”至少需要保留一个账号，请先添加其他账号或停用该分组。",
+    "membershipModelRequired": "移出后，“{{group}}”中的模型“{{model}}”将没有支持账号，请先补充账号或调整分组模型。",
+    "membershipConflict": "分组已被其他操作修改，请重新加载后再选择。",
+    "reloadMemberships": "重新加载分组",
+    "membershipsSaved": "所属分组已保存",
     "title": "服务分组",
     "subtitle": "一个分组，一个 API Key。按组分配账号、模型和服务容量。",
     "refresh": "刷新",

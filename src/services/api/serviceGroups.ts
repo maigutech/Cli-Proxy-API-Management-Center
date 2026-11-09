@@ -147,8 +147,20 @@ export function normalizeGroupBoard(value: unknown): GroupBoard {
   };
 }
 export function captureServiceGroupsApi() {
+  const revision = apiClient.getConnectionRevision();
   const client = apiClient.captureConnection();
   return {
+    revision,
+    isCurrent: () => revision === apiClient.getConnectionRevision(),
+    setMemberships: async (credentialId: string, groupIds: string[], version: number) => {
+      if (revision !== apiClient.getConnectionRevision()) throw new Error('Connection changed');
+      return normalizeGroupBoard(
+        await client.put(
+          `/service-groups/credentials/${encodeURIComponent(credentialId)}/memberships`,
+          { version, group_ids: groupIds }
+        )
+      );
+    },
     list: async () => normalizeGroupBoard(await client.get('/service-groups')),
     key: async (group: ServiceGroup) => {
       const result = object(

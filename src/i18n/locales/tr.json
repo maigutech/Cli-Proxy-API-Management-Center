@@ -1094,6 +1094,13 @@
     "no_requests": "İstek Yok"
   },
   "logs": {
+    "settings": "Ayarlar",
+    "settings_title": "Günlük ayarları",
+    "retention_scope": "Tüm hesapların istek kayıtları, token kullanımı ve maliyet ayrıntıları için geçerlidir. Çalışma günlükleri ve dağıtım yedekleri ayrı yönetilir.",
+    "retention_hint": "Eski kayıtlar tamamlanma zamanına göre otomatik temizlenir. En az 7 gün saklanır.",
+    "retention_preset": "{{days}} gün",
+    "retention_saved": "Veri saklama ayarları kaydedildi",
+    "retention_unavailable": "Kullanım depolaması hazır değil. Saklama ayarları geçici olarak kullanılamıyor.",
     "preview_too_large": "Bu İstek Günlüğü 2 MiB Önizleme Sınırını Aşıyor. Görmek için İndir.",
     "read_status_live": "Sürekli Okunuyor",
     "read_status_paused": "Okuma Duraklatıldı",
@@ -2816,6 +2823,19 @@
     "groupAttributionHint": "Grup, istek çalıştırılırken kaydedilir. Hesap taşıma veya anahtar değiştirme geçmiş kayıtları değiştirmez."
   },
   "service_groups": {
+    "groupButton": "Gruplar",
+    "editMemberships": "Hesap gruplarını ayarla",
+    "membershipEditorHint": "Bu hesabı paylaşmak için birden fazla grup seçebilirsiniz.",
+    "searchGroups": "Grup ara",
+    "noMatchingGroups": "Eşleşen grup yok",
+    "noMembershipGroups": "Kullanılabilir grup yok. Önce Hizmet Grupları sayfasında bir grup oluşturun.",
+    "selectedGroups": "Seçilen grup: {{count}}",
+    "unassignedWarning": "Tüm gruplar kaldırılırsa bu hesap grup isteklerini işlemez.",
+    "membershipLastMember": "“{{group}}” en az bir hesap içermelidir. Önce başka bir hesap ekleyin veya grubu devre dışı bırakın.",
+    "membershipModelRequired": "Bu hesap kaldırılırsa “{{group}}” grubundaki “{{model}}” modelini destekleyen hesap kalmaz. Önce başka bir hesap ekleyin veya grup modellerini güncelleyin.",
+    "membershipConflict": "Gruplar başka bir işlemle değiştirildi. Yeniden yükleyip seçiminizi kontrol edin.",
+    "reloadMemberships": "Grupları yeniden yükle",
+    "membershipsSaved": "Hesap grupları kaydedildi",
     "title": "Hizmet grupları",
     "subtitle": "One API key per group. Explicit credentials, models and capacity.",
     "refresh": "Refresh",

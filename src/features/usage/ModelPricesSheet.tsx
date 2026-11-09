@@ -63,8 +63,6 @@ export function ModelPricesSheet({ onClose }: { onClose: () => void }) {
   }, [editor, selected]);
   const [dirty, setDirty] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [retention, setRetention] = useState('90');
-  const [savedRetention, setSavedRetention] = useState(90);
   const [revision, setRevision] = useState(0);
   const stale = !api.isCurrent();
   const tiers = ['default', 'priority', 'flex', 'ultrafast', 'batch'];
@@ -78,8 +76,6 @@ export function ModelPricesSheet({ onClose }: { onClose: () => void }) {
       .then((data) => {
         if (active && api.isCurrent()) {
           setPrices(data.prices);
-          setRetention(String(data.status.retentionDays));
-          setSavedRetention(data.status.retentionDays);
         }
       })
       .catch((cause: unknown) => {
@@ -96,7 +92,7 @@ export function ModelPricesSheet({ onClose }: { onClose: () => void }) {
   }, [api, revision, t]);
 
   const confirmDiscard = () =>
-    (!dirty && Number(retention) === savedRetention) ||
+    !dirty ||
     stale ||
     new Promise<boolean>((resolve) =>
       showConfirmation({
@@ -157,40 +153,6 @@ export function ModelPricesSheet({ onClose }: { onClose: () => void }) {
         setDirty(false);
         setEditor(false);
         setRevision((v) => v + 1);
-      }
-    } catch (cause) {
-      if (api.isCurrent())
-        setError(cause instanceof Error ? cause.message : t('account_usage.saveFailed'));
-    } finally {
-      if (api.isCurrent()) setSaving(false);
-    }
-  };
-  const saveRetention = async () => {
-    const days = Number(retention);
-    if (!Number.isInteger(days) || days < 7 || days > 3650) {
-      setError(t('account_usage.invalidRetention'));
-      return;
-    }
-    if (days < savedRetention) {
-      const ok = await new Promise<boolean>((resolve) =>
-        showConfirmation({
-          title: t('account_usage.retention'),
-          message: t('account_usage.retentionWarning'),
-          variant: 'danger',
-          confirmText: t('common.save'),
-          cancelText: t('common.cancel'),
-          onConfirm: () => resolve(true),
-          onCancel: () => resolve(false),
-        })
-      );
-      if (!ok) return;
-    }
-    setSaving(true);
-    try {
-      await api.retention(days);
-      if (api.isCurrent()) {
-        setSavedRetention(days);
-        setError('');
       }
     } catch (cause) {
       if (api.isCurrent())
@@ -397,24 +359,6 @@ export function ModelPricesSheet({ onClose }: { onClose: () => void }) {
                 </table>
               </div>
             )}
-            <div className={styles.section}>
-              <Input
-                type="number"
-                min="7"
-                max="3650"
-                label={t('account_usage.retention')}
-                value={retention}
-                onChange={(e) => setRetention(e.target.value)}
-                disabled={saving}
-              />
-              <Button
-                variant="secondary"
-                disabled={saving || Number(retention) === savedRetention}
-                onClick={() => void saveRetention()}
-              >
-                {t('account_usage.saveRetention')}
-              </Button>
-            </div>
           </>
         )}
       </div>

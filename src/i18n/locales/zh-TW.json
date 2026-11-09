@@ -1120,6 +1120,13 @@
     "no_requests": "無請求"
   },
   "logs": {
+    "settings": "設定",
+    "settings_title": "日誌設定",
+    "retention_scope": "適用於所有帳號的請求記錄、Token 與費用明細。執行日誌及部署備份另行管理。",
+    "retention_hint": "依請求完成時間自動清理，至少保留 7 天。",
+    "retention_preset": "{{days}} 天",
+    "retention_saved": "資料保留設定已儲存",
+    "retention_unavailable": "用量儲存尚未就緒，暫時無法設定保留天數。",
     "preview_too_large": "封包超過 2 MiB 預覽限制，請下載查看",
     "read_status_live": "持續讀取",
     "read_status_paused": "讀取已暫停",
@@ -2842,6 +2849,19 @@
     "groupAttributionHint": "分組歸屬在請求執行時記錄。之後調整帳號所屬分組或輪換 Key，不會改變歷史記錄。"
   },
   "service_groups": {
+    "groupButton": "分組",
+    "editMemberships": "設定所屬分組",
+    "membershipEditorHint": "可複選；選中的分組都能使用此帳號。",
+    "searchGroups": "搜尋分組",
+    "noMatchingGroups": "沒有符合的分組",
+    "noMembershipGroups": "暫無可選分組，請先在服務分組頁面建立。",
+    "selectedGroups": "已選 {{count}} 個分組",
+    "unassignedWarning": "取消全部分組後，此帳號將不再承接分組請求。",
+    "membershipLastMember": "「{{group}}」至少需要保留一個帳號，請先新增其他帳號或停用該分組。",
+    "membershipModelRequired": "移出後，「{{group}}」中的模型「{{model}}」將沒有支援帳號，請先補充帳號或調整分組模型。",
+    "membershipConflict": "分組已被其他操作修改，請重新載入後再選擇。",
+    "reloadMemberships": "重新載入分組",
+    "membershipsSaved": "所屬分組已儲存",
     "title": "服務分組",
     "subtitle": "一个分組，一个 API Key。按組分配帳号、模型和服務容量。",
     "refresh": "刷新",

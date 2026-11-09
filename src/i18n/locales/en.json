@@ -1094,6 +1094,13 @@
     "no_requests": "No requests"
   },
   "logs": {
+    "settings": "Settings",
+    "settings_title": "Log settings",
+    "retention_scope": "Applies to request records, token usage and cost details for all accounts. Runtime log files and deployment backups are managed separately.",
+    "retention_hint": "Older records are cleaned up automatically by completion time. Keep at least 7 days.",
+    "retention_preset": "{{days}} days",
+    "retention_saved": "Data retention settings saved",
+    "retention_unavailable": "Usage storage is not ready. Retention settings are temporarily unavailable.",
     "preview_too_large": "This request log exceeds the 2 MiB preview limit. Download it to view.",
     "read_status_live": "Reading continuously",
     "read_status_paused": "Reading paused",
@@ -2816,6 +2823,19 @@
     "groupAttributionHint": "Group attribution is recorded when the request runs. Moving accounts or rotating keys does not change historical attribution."
   },
   "service_groups": {
+    "groupButton": "Groups",
+    "editMemberships": "Set account groups",
+    "membershipEditorHint": "Select multiple groups to share this account across them.",
+    "searchGroups": "Search groups",
+    "noMatchingGroups": "No matching groups",
+    "noMembershipGroups": "No groups available. Create one on the Service Groups page first.",
+    "selectedGroups": "Selected groups: {{count}}",
+    "unassignedWarning": "Removing all groups stops this account from serving group requests.",
+    "membershipLastMember": "“{{group}}” needs at least one account. Add another account or disable the group first.",
+    "membershipModelRequired": "Removing this account leaves model “{{model}}” in “{{group}}” without support. Add another account or update the group models first.",
+    "membershipConflict": "Groups changed in another operation. Reload and review your selection.",
+    "reloadMemberships": "Reload groups",
+    "membershipsSaved": "Account groups saved",
     "title": "Service groups",
     "subtitle": "One API key per group. Explicit credentials, models and capacity.",
     "refresh": "Refresh",
