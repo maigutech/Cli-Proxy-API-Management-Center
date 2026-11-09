@@ -1,6 +1,8 @@
 import { useState, type CSSProperties } from 'react';
 import { getAuthFileRefreshKey } from '@/features/authFiles/manualRefresh';
 import { useTranslation } from 'react-i18next';
+import { useNow } from '@/hooks/useNow';
+import { getProbePresentation } from '@/features/authFiles/probePresentation';
 import { Button } from '@/components/ui/Button';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { SelectionCheckbox } from '@/components/ui/SelectionCheckbox';
@@ -59,6 +61,7 @@ export type AuthFileCardProps = {
   probeStatus?: CodexDegradationProbeStatus;
   /** Whether the degradation probe is enabled on the server. */
   probeEnabled?: boolean;
+  probeMode?: string;
   occupancy?: SessionRoutingSnapshot | null;
   usage?: AccountUsage;
   onUsageDetails?: (file: AuthFileItem) => void;
@@ -93,6 +96,7 @@ export function AuthFileCard(props: AuthFileCardProps) {
     statusBarCache,
     probeStatus,
     probeEnabled,
+    probeMode,
     occupancy,
     usage,
     onUsageDetails,
@@ -134,28 +138,22 @@ export function AuthFileCard(props: AuthFileCardProps) {
   // probe has actually observed. Pure observability — it never changes routing.
   const requiresSignIn = file.requiresSignIn === true;
   const showProbe = providerKey === 'codex' && Boolean(probeStatus) && !requiresSignIn;
-  const probeFailed = Boolean(probeStatus?.last_error?.trim());
-  const probeState = probeStatus?.state ?? '';
-  const probeVerdict = probeStatus?.last_verdict ?? '';
-  const probeTone: 'ok' | 'warn' | 'danger' =
-    probeState === 'held'
-      ? 'danger'
-      : probeFailed || probeState === 'suspect' || probeState === 'recovering'
-        ? 'warn'
-        : 'ok';
+  const now = useNow(showProbe);
+  const probe = getProbePresentation(probeStatus, probeMode, probeEnabled, now);
   const probeStateLabel = showProbe
-    ? probeFailed
-      ? t('auth_files.probe_failed')
-      : t(`auth_files.probe_state_${probeState}`, { defaultValue: probeState })
+    ? t(`auth_files.${probe.stateKey}`, { defaultValue: probeStatus?.state ?? '' })
     : '';
+  const probeActionLabel = t(`auth_files.${probe.actionKey}`);
+  const probeVerdict = probeStatus?.last_verdict ?? '';
   const probeVerdictLabel =
-    probeVerdict && !probeFailed
+    probeVerdict && !probe.failed
       ? t(`auth_files.probe_verdict_${probeVerdict}`, { defaultValue: probeVerdict })
       : '';
   const probeTooltip = (() => {
     if (!showProbe || !probeStatus) return '';
     const lines: string[] = [];
-    lines.push(`${t('auth_files.probe_label')}: ${probeStateLabel}`);
+    lines.push(`${t('auth_files.probe_label')}: ${probeStateLabel} · ${probeActionLabel}`);
+    lines.push(t('auth_files.probe_assessment_hint'));
     if (probeEnabled === false) lines.push(t('auth_files.probe_disabled'));
     if (probeVerdictLabel) {
       const prob =
@@ -187,7 +185,7 @@ export function AuthFileCard(props: AuthFileCardProps) {
         `${t('auth_files.probe_next_check')}: ${formatDateTimeValue(probeStatus.next_check_at)}`
       );
     }
-    if (probeStatus.hold_applied && probeStatus.held_until) {
+    if (probe.holdActive && probeStatus.held_until) {
       lines.push(
         `${t('auth_files.probe_held_until')}: ${formatDateTimeValue(probeStatus.held_until)}`
       );
@@ -317,12 +315,10 @@ export function AuthFileCard(props: AuthFileCardProps) {
         {showProbe && (
           <div className={styles.probeRow} title={probeTooltip}>
             <span className={styles.probeLabel}>{t('auth_files.probe_label')}</span>
-            <span className={`${styles.probeBadge} ${styles[`probe_${probeTone}`]}`}>
+            <span className={`${styles.probeBadge} ${styles[`probe_${probe.tone}`]}`}>
               <span className={styles.probeDot} aria-hidden="true" />
               {probeStateLabel}
-              {probeVerdictLabel ? (
-                <span className={styles.probeVerdict}>· {probeVerdictLabel}</span>
-              ) : null}
+              <span className={styles.probeVerdict}>· {probeActionLabel}</span>
             </span>
           </div>
         )}

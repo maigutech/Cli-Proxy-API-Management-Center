@@ -817,6 +817,7 @@ export function AuthFilesPage() {
                   codexProbe.byAuth.get(file.name)
                 }
                 probeEnabled={codexProbe.settings.enabled}
+                probeMode={codexProbe.settings.mode}
                 occupancy={occupancy[String(file.authIndex ?? '')]}
                 usage={usage?.data?.accounts[String(file.authIndex ?? '')]}
                 onUsageDetails={setUsageFile}
