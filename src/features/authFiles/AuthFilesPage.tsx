@@ -818,6 +818,8 @@ export function AuthFilesPage() {
                 }
                 probeEnabled={codexProbe.settings.enabled}
                 probeMode={codexProbe.settings.mode}
+                probeSubmitting={codexProbe.submitting.has(String(file.authIndex ?? ''))}
+                onRunProbe={(account) => void codexProbe.run(String(account.authIndex ?? ''))}
                 occupancy={occupancy[String(file.authIndex ?? '')]}
                 usage={usage?.data?.accounts[String(file.authIndex ?? '')]}
                 onUsageDetails={setUsageFile}

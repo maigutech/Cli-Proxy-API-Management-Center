@@ -212,6 +212,7 @@
 
 .probeRow {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
   font-family: $font-mono;
@@ -574,4 +575,30 @@
   .actions :global(.btn:active:not(:disabled)) {
     transform: none;
   }
+}
+
+.probeButton {
+  margin-left: auto;
+  font-family: $font-family;
+  white-space: nowrap;
+}
+
+.probeChecked,
+.probeError {
+  flex-basis: 100%;
+  min-width: 0;
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
+
+.probeError {
+  color: var(--viz-warning);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.probe_neutral {
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
 }
