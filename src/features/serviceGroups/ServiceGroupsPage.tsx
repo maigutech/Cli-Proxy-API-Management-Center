@@ -15,6 +15,7 @@ import {
 } from '@/services/api/serviceGroups';
 import { getErrorMessage } from '@/utils/helpers';
 import { groupValidation, newGroup, supportedModels } from './logic';
+import { GroupKeyControl } from './GroupKeyControl';
 import styles from './ServiceGroupsPage.module.scss';
 
 type Tab = 'overview' | 'members' | 'models' | 'policy' | 'usage';
@@ -31,7 +32,6 @@ export function ServiceGroupsPage() {
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [secret, setSecret] = useState('');
   const [preview, setPreview] = useState<MigrationPreview | null>(null);
   const [confirm, setConfirm] = useState<{
     kind: 'rotate' | 'archive';
@@ -66,7 +66,6 @@ export function ServiceGroupsPage() {
     setLoading(false);
     setBoard(null);
     setDraft(null);
-    setSecret('');
     setPreview(null);
     setConfirm(null);
     setUsage(null);
@@ -111,10 +110,9 @@ export function ServiceGroupsPage() {
     const revision = current();
     void act(async (api) => {
       await api.preview(draft);
-      const result = await api.save(draft, draftVersion);
+      await api.save(draft, draftVersion);
       if (revision !== current()) return;
       setDraft(null);
-      if (result.key) setSecret(result.key);
       await load();
     });
   };
@@ -143,9 +141,8 @@ export function ServiceGroupsPage() {
     const operation = confirm;
     void act(async (api) => {
       if (operation.kind === 'rotate') {
-        const key = await api.rotate(operation.group.id, board.version);
+        await api.rotate(operation.group.id, board.version);
         if (revision !== current()) return;
-        setSecret(key);
       } else await api.archive(operation.group.id, board.version);
       if (revision !== current()) return;
       setConfirm(null);
@@ -202,7 +199,12 @@ export function ServiceGroupsPage() {
                     </span>
                   </div>
                   <p className={styles.note}>{group.note || t('service_groups.noNote')}</p>
-                  <code>{group.keyPrefix}</code>
+                  <GroupKeyControl
+                    key={`${apiClient.getConnectionRevision()}:${group.id}:${group.keyVersion}:${group.keyAvailable}`}
+                    group={group}
+                    disabled={busy}
+                    onRestored={load}
+                  />
                   <p>
                     {t('service_groups.resources', {
                       members: group.members.length,
@@ -326,7 +328,15 @@ export function ServiceGroupsPage() {
                   />
                   {draft.id && (
                     <>
-                      <Input label={t('service_groups.key')} value={draft.keyPrefix} readOnly />
+                      <GroupKeyControl
+                        key={`${apiClient.getConnectionRevision()}:${draft.id}:${draft.keyVersion}:${draft.keyAvailable}`}
+                        group={draft}
+                        disabled={busy}
+                        onRestored={async () => {
+                          setDraft(null);
+                          await load();
+                        }}
+                      />
                       <Button
                         variant="secondary"
                         onClick={() => setConfirm({ kind: 'rotate', group: draft })}
@@ -579,30 +589,6 @@ export function ServiceGroupsPage() {
             </div>
           </div>
         )}
-      </Modal>
-      <Modal
-        open={!!secret}
-        title={t('service_groups.newKey')}
-        onClose={() => setSecret('')}
-        footer={<Button onClick={() => setSecret('')}>{t('service_groups.done')}</Button>}
-      >
-        <p>{t('service_groups.secretHelp')}</p>
-        <textarea
-          className={`input ${styles.secret}`}
-          readOnly
-          value={secret}
-          aria-label={t('service_groups.newKey')}
-        />
-        <Button
-          variant="secondary"
-          onClick={() => {
-            void navigator.clipboard
-              .writeText(secret)
-              .catch(() => setError(t('service_groups.copyFailed')));
-          }}
-        >
-          {t('service_groups.copy')}
-        </Button>
       </Modal>
       <Modal
         open={!!preview}

@@ -22,6 +22,7 @@ export interface ServiceGroup {
   keyId: string;
   keyPrefix: string;
   keyVersion: number;
+  keyAvailable: boolean;
 }
 export interface GroupCredential {
   id: string;
@@ -77,6 +78,7 @@ export function normalizeGroup(value: unknown): ServiceGroup {
     keyId: str(v.key_id),
     keyPrefix: str(v.key_prefix),
     keyVersion: num(v.key_version),
+    keyAvailable: v.key_available === true,
     maxConcurrent: num(policy.max_concurrent_requests),
     allowAuto: policy.allow_auto === true,
     members: array(v.members).map((m) => {
@@ -148,6 +150,21 @@ export function captureServiceGroupsApi() {
   const client = apiClient.captureConnection();
   return {
     list: async () => normalizeGroupBoard(await client.get('/service-groups')),
+    key: async (group: ServiceGroup) => {
+      const result = object(
+        await client.get(
+          `/service-groups/${encodeURIComponent(group.id)}/key?key_version=${group.keyVersion}`
+        )
+      );
+      if (!str(result.key) || num(result.key_version) !== group.keyVersion)
+        throw new Error('Invalid service group key response');
+      return str(result.key);
+    },
+    restoreKey: (group: ServiceGroup, key: string) =>
+      client.put(`/service-groups/${encodeURIComponent(group.id)}/key`, {
+        key,
+        key_version: group.keyVersion,
+      }),
     save: async (group: ServiceGroup, version: number) => {
       const body = { group: serializeGroup(group), version };
       const result = object(

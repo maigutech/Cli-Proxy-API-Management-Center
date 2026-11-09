@@ -2868,9 +2868,9 @@
     "cost": "预估费用",
     "newKey": "保存新的 API Key",
     "done": "完成",
-    "secretHelp": "秘密仅显示这一次，请立即保存，之后无法再次查询。",
+    "secretHelp": "Key 已保存，可随时在分组中查看和复制。",
     "copy": "复制 Key",
-    "copyFailed": "复制失败，请选中 Key 手动复制。",
+    "copyFailed": "复制失败，请显示完整 Key 后手动复制。",
     "activate": "启用分组访问",
     "migrationCounts": "{{keys}} 个现有 Key → {{keys}} 个分组，每组初始有 {{members}} 个凭证、{{models}} 个模型。",
     "migrationNotice": "现有 Key 保持有效。后续新导入凭证和新模型需要明确分配。已有 Realtime 临时凭据需要重新申请；已有长连接在当前回合结束后需要重新认证。",
@@ -2886,6 +2886,12 @@
     "invalidWeight": "权重需为 0～1000000 的整数。",
     "baseUrl": "接口地址",
     "tokens": "Token 用量",
-    "keysManaged": "已启用分组模式，请在「服务分组」中创建和轮换客户端 API Key。"
+    "keysManaged": "已启用分组模式，请在「服务分组」中创建和轮换客户端 API Key。",
+    "showKey": "显示完整 Key",
+    "hideKey": "隐藏 Key",
+    "copied": "已复制完整 Key",
+    "keyNotRetained": "此 Key 创建于旧版本，尚未保存完整值。可补录原 Key，或在分组管理中轮换生成新 Key。",
+    "restoreKey": "补录原 Key",
+    "originalKey": "原 API Key"
   }
 }

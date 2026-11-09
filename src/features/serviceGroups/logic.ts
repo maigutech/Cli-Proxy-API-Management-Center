@@ -13,6 +13,7 @@ export const newGroup = (): ServiceGroup => ({
   keyId: '',
   keyPrefix: '',
   keyVersion: 0,
+  keyAvailable: false,
 });
 export function supportedModels(group: ServiceGroup, credentials: GroupCredential[]): string[] {
   const ids = new Set(group.members.map((m) => m.credentialId));

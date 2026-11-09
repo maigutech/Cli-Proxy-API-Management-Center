@@ -2864,9 +2864,9 @@
     "cost": "Estimated cost",
     "newKey": "Save your new API key",
     "done": "Done",
-    "secretHelp": "This secret is shown once. Save it now; it cannot be retrieved later.",
+    "secretHelp": "Ключ сохранён. Его можно просмотреть и скопировать в группе в любое время.",
     "copy": "Copy key",
-    "copyFailed": "Copy failed. Select and copy the key manually.",
+    "copyFailed": "Не удалось скопировать. Покажите полный ключ и скопируйте вручную.",
     "activate": "Enable grouped access",
     "migrationCounts": "{{keys}} existing keys → {{keys}} groups, each with {{members}} credentials and {{models}} models.",
     "migrationNotice": "Existing keys remain valid. Newly imported credentials and new models will require explicit assignment. Existing Realtime temporary credentials must be reissued, and existing connections must authenticate again after their current turn.",
@@ -2882,6 +2882,12 @@
     "invalidWeight": "Weight must be a whole number between 0 and 1000000.",
     "baseUrl": "Base URL",
     "tokens": "Tokens",
-    "keysManaged": "Client API keys are managed in Service groups."
+    "keysManaged": "Client API keys are managed in Service groups.",
+    "showKey": "Показать полный ключ",
+    "hideKey": "Скрыть ключ",
+    "copied": "Полный ключ скопирован",
+    "keyNotRetained": "Этот ключ создан до включения хранения полного значения. Сохраните исходный ключ или замените его в настройках группы.",
+    "restoreKey": "Сохранить исходный ключ",
+    "originalKey": "Исходный API-ключ"
   }
 }
