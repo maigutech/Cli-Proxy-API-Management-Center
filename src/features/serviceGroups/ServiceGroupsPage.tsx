@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -9,13 +9,15 @@ import { apiClient } from '@/services/api/client';
 import {
   captureServiceGroupsApi,
   type GroupBoard,
+  type GroupCredential,
   type GroupUsage,
   type MigrationPreview,
   type ServiceGroup,
 } from '@/services/api/serviceGroups';
 import { getErrorMessage } from '@/utils/helpers';
-import { groupValidation, newGroup, supportedModels } from './logic';
+import { appendModels, groupValidation, newGroup, supportedModels } from './logic';
 import { GroupKeyControl } from './GroupKeyControl';
+import { GroupModelCandidates } from './GroupModelCandidates';
 import styles from './ServiceGroupsPage.module.scss';
 
 type Tab = 'overview' | 'members' | 'models' | 'policy' | 'usage';
@@ -28,6 +30,8 @@ export function ServiceGroupsPage() {
   const [board, setBoard] = useState<GroupBoard | null>(null);
   const [draft, setDraft] = useState<ServiceGroup | null>(null);
   const [draftVersion, setDraftVersion] = useState(0);
+  const [editorSession, setEditorSession] = useState(0);
+  const [modelCredentials, setModelCredentials] = useState<GroupCredential[] | null>(null);
   const [tab, setTab] = useState<Tab>('overview');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
@@ -66,6 +70,7 @@ export function ServiceGroupsPage() {
     setLoading(false);
     setBoard(null);
     setDraft(null);
+    setModelCredentials(null);
     setPreview(null);
     setConfirm(null);
     setUsage(null);
@@ -90,6 +95,8 @@ export function ServiceGroupsPage() {
     }
   };
   const open = (group: ServiceGroup) => {
+    setEditorSession((value) => value + 1);
+    setModelCredentials(null);
     setDraft(structuredClone(group));
     setDraftVersion(board?.version ?? 0);
     setTab('overview');
@@ -97,13 +104,19 @@ export function ServiceGroupsPage() {
     setSearch('');
     setError('');
   };
-  const update = (change: Partial<ServiceGroup>) =>
+  const update = (change: Partial<ServiceGroup>) => {
+    if (
+      change.members &&
+      JSON.stringify(change.members.map((m) => m.credentialId).sort()) !==
+        JSON.stringify(draft?.members.map((m) => m.credentialId).sort())
+    ) {
+      setModelCredentials(null);
+    }
     setDraft((old) => (old ? { ...old, ...change } : old));
-  const models = useMemo(
-    () => (draft ? supportedModels(draft, board?.credentials ?? []) : []),
-    [draft, board]
-  );
-  const validation = draft ? groupValidation(draft, board?.credentials ?? []) : null;
+  };
+  const credentials = modelCredentials ?? board?.credentials ?? [];
+  const models = draft ? supportedModels(draft, credentials) : [];
+  const validation = draft ? groupValidation(draft, credentials) : null;
   const current = () => apiClient.getConnectionRevision();
   const save = () => {
     if (!draft || !board || validation) return;
@@ -487,14 +500,22 @@ export function ServiceGroupsPage() {
               {tab === 'models' && (
                 <>
                   <p>{t('service_groups.modelHelp')}</p>
-                  <Button
-                    variant="secondary"
-                    onClick={() =>
-                      update({ models: models.map((name) => ({ name, target: name })) })
+                  <GroupModelCandidates
+                    key={JSON.stringify([
+                      editorSession,
+                      apiClient.getConnectionRevision(),
+                      draft.members.map((m) => m.credentialId).sort(),
+                    ])}
+                    members={draft.members}
+                    models={draft.models}
+                    disabled={busy}
+                    onFetched={setModelCredentials}
+                    onAdd={(selected) =>
+                      setDraft((old) =>
+                        old ? { ...old, models: appendModels(old.models, selected) } : old
+                      )
                     }
-                  >
-                    {t('service_groups.useSupported')}
-                  </Button>
+                  />
                   {draft.models.map((model, index) => (
                     <div className={styles.modelRow} key={index}>
                       <Input

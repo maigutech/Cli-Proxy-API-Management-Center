@@ -2861,7 +2861,6 @@
     "inherit": "Inherit",
     "refreshIdentities": "Prepare newly imported credentials",
     "modelHelp": "Only models in this list are authorized. Edit the public name to create a group alias.",
-    "useSupported": "Use supported models",
     "publicModel": "Public name",
     "targetModel": "Target model",
     "chooseModel": "Choose a model",
@@ -2911,6 +2910,17 @@
     "membershipLoadFailed": "Could not load group membership",
     "membershipLoading": "Loading groups…",
     "groupUnavailable": "Group unavailable",
-    "deleteFiltered": "Delete filtered results"
+    "deleteFiltered": "Delete filtered results",
+    "fetchModels": "Fetch pool models",
+    "fetchingModels": "Fetching…",
+    "selectMembersFirst": "Select accounts in the credential pool first",
+    "fetchModelsHelp": "Fetch the models currently registered for the selected accounts and choose from the combined list. Add models and save the group to apply permissions. Existing models and aliases are preserved.",
+    "modelsFetched": "Fetched {{total}} models · {{time}}",
+    "disabledModelMembers": "Skipped {{total}} disabled accounts. Temporary cooldowns do not remove model capabilities.",
+    "noPoolModels": "No models found for the selected pool. Check account status and model configuration.",
+    "modelAlreadyMapped": "Already mapped",
+    "clearModelSelection": "Clear selection",
+    "selectAllModels": "Select all new models",
+    "addSelectedModels": "Add selected ({{total}})"
   }
 }

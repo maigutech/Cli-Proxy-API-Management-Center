@@ -49,6 +49,11 @@ export interface GroupBoard {
   credentials: GroupCredential[];
   statuses: Record<string, GroupStatus[]>;
 }
+export interface GroupModelCandidates {
+  models: string[];
+  credentials: GroupCredential[];
+  fetchedAt: string;
+}
 export interface MigrationPreview {
   token: string;
   version: number;
@@ -150,6 +155,18 @@ export function captureServiceGroupsApi() {
   const client = apiClient.captureConnection();
   return {
     list: async () => normalizeGroupBoard(await client.get('/service-groups')),
+    modelCandidates: async (members: GroupMember[]): Promise<GroupModelCandidates> => {
+      const result = object(
+        await client.post('/service-groups/model-candidates', {
+          members: members.map((m) => ({ credential_id: m.credentialId })),
+        })
+      );
+      return {
+        models: [...new Set(strings(result.models))].filter((id) => id && id !== 'auto').sort(),
+        credentials: normalizeGroupBoard(result).credentials,
+        fetchedAt: str(result.fetched_at),
+      };
+    },
     key: async (group: ServiceGroup) => {
       const result = object(
         await client.get(
