@@ -24,6 +24,7 @@ export type VisualConfigFieldPath =
   | 'transientErrorCooldownSeconds'
   | 'videoResultAuthCacheTTL'
   | 'claudeHeaderTimezone'
+  | 'codexWeeklyQuotaLimitPercent'
   | 'codexStreamBootstrapTimeout'
   | 'antigravityConnectionPoolIdleTimeout'
   | 'antigravityConnectionPoolMaxIdleConnsPerHost'
@@ -58,6 +59,7 @@ export type VisualConfigValidationErrorCode =
   | 'port_range'
   | 'integer'
   | 'non_negative_integer'
+  | 'integer_range_1_100'
   | 'integer_range_1_3600';
 
 export type VisualConfigValidationErrors = Partial<
@@ -149,6 +151,7 @@ export type VisualConfigValues = {
   codexDisableCloaking: boolean;
   codexModelLevelCooling: boolean;
   codexStreamBootstrapBuffering: boolean;
+  codexWeeklyQuotaLimitPercent: string;
   codexStreamBootstrapTimeout: string;
   codexOptimizeMultiAgentV2: boolean;
   codexOrphanDelegationCompatibility: boolean;
@@ -257,6 +260,7 @@ export const DEFAULT_VISUAL_VALUES: VisualConfigValues = {
   codexDisableCloaking: false,
   codexModelLevelCooling: false,
   codexStreamBootstrapBuffering: false,
+  codexWeeklyQuotaLimitPercent: '',
   codexStreamBootstrapTimeout: '',
   codexOptimizeMultiAgentV2: false,
   codexOrphanDelegationCompatibility: false,

@@ -36,6 +36,7 @@
   color: var(--text-tertiary);
 }
 .track {
+  position: relative;
   height: 5px;
   border-radius: 5px;
   overflow: hidden;
@@ -98,4 +99,26 @@
     font-size: 10px;
     background: transparent;
   }
+}
+
+.threshold {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--text-secondary);
+  transform: translateX(-1px);
+}
+.protection {
+  display: grid;
+  gap: 3px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--text-tertiary);
+}
+.paused {
+  padding: 7px 9px;
+  border-radius: 6px;
+  color: var(--warning-text);
+  background: color-mix(in srgb, var(--viz-warning) 12%, transparent);
 }

@@ -57,6 +57,18 @@ export function SectionOAuthBehavior({
         </SettingList>
 
         <SettingList title={t('config_management.visual.additions.codexTitle')}>
+          <TextSetting
+            fieldId="codexWeeklyQuotaLimitPercent"
+            size="sm"
+            label={t('config_management.visual.additions.codexWeeklyQuotaLimitPercent.label')}
+            description={t('config_management.visual.additions.codexWeeklyQuotaLimitPercent.hint')}
+            type="number"
+            placeholder="90"
+            value={values.codexWeeklyQuotaLimitPercent}
+            onChange={(codexWeeklyQuotaLimitPercent) => onChange({ codexWeeklyQuotaLimitPercent })}
+            disabled={disabled}
+            error={getValidationMessage(t, validationErrors?.codexWeeklyQuotaLimitPercent)}
+          />
           <ToggleSetting
             fieldId="codexDisableCloaking"
             label={t('config_management.visual.additions.codexDisableCloaking.label')}

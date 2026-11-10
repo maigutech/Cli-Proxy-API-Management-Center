@@ -6,7 +6,12 @@ import {
   useNotificationStore,
   useQuotaStore,
 } from '@/stores';
-import type { AuthFileItem, ClaudeQuotaState, CodexQuotaState } from '@/types';
+import type {
+  AuthFileItem,
+  ClaudeQuotaState,
+  CodexQuotaState,
+  CodexWeeklyQuotaProtection,
+} from '@/types';
 import { getStatusFromError, resolveQuotaErrorMessage } from '@/utils/quota';
 import { getQuotaCacheKey } from '@/utils/quota/identity';
 import { isRuntimeOnlyAuthFile, type QuotaProviderType } from '@/features/authFiles/constants';
@@ -35,10 +40,11 @@ export type AuthFileQuotaSectionProps = {
   quotaType: QuotaProviderType;
   disableControls: boolean;
   weeklyQuota?: UsageQuota | null;
+  weeklyProtection?: CodexWeeklyQuotaProtection;
 };
 
 export function AuthFileQuotaSection(props: AuthFileQuotaSectionProps) {
-  const { file, quotaType, disableControls, weeklyQuota } = props;
+  const { file, quotaType, disableControls, weeklyQuota, weeklyProtection } = props;
   const { t } = useTranslation();
   const showNotification = useNotificationStore((state) => state.showNotification);
   const showConfirmation = useNotificationStore((state) => state.showConfirmation);
@@ -196,6 +202,7 @@ export function AuthFileQuotaSection(props: AuthFileQuotaSectionProps) {
   if (quotaType === 'codex') {
     return (
       <CompactCodexQuota
+        protection={weeklyProtection}
         quota={quota as CodexQuotaState | undefined}
         weekly={weeklyQuota}
         error={quotaStatus === 'error' ? quotaErrorMessage : undefined}

@@ -1459,6 +1459,10 @@
         "routingSessionRebindOn": {
           "label": "會話重新綁定策略",
           "hint": "選擇「配額或驗證失敗」後，暫時故障保留原帳號綁定，並使用備用帳號；返回時機由維持時間決定。"
+        },
+        "codexWeeklyQuotaLimitPercent": {
+          "label": "Codex 7d 使用上限（%）",
+          "hint": "全域套用至所有 Codex OAuth 帳號。範圍 1–100，留空預設 90%。達到上限後暫停請求與探測，等待上游重設；修改並儲存上限會依已有額度資料立即重新判斷。已送出的請求仍可能完成。"
         }
       },
       "search": {
@@ -1748,7 +1752,8 @@
         "integer_range_1_3600": "請輸入 1 到 3600 之間的整數",
         "payload_invalid_number": "請輸入有效數字",
         "payload_invalid_boolean": "請選擇 true 或 false",
-        "payload_invalid_json": "請輸入有效的 JSON"
+        "payload_invalid_json": "請輸入有效的 JSON",
+        "integer_range_1_100": "請輸入 1 到 100 的整數。"
       },
       "common": {
         "edit": "編輯",
@@ -2663,6 +2668,9 @@
     }
   },
   "account_usage": {
+    "weeklyProtectionLimit": "7d 上限 {{threshold}}% · 達到後暫停至額度重設",
+    "weeklyProtectionPaused": "已暫停請求：7d 已用達到 {{threshold}}%",
+    "weeklyProtectionReset": "恢復時間：{{time}}（上游額度重設）",
     "overview": "帳號消耗概覽",
     "today": "今日折算消耗",
     "sevenDays": "近 7 天折算消耗",

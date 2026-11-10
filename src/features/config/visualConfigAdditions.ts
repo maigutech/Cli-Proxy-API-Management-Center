@@ -12,6 +12,11 @@ import { readConfigBoolean } from './visualConfigBoolean';
 // under upstream.*/client.codex; only OAuth-only provider paths keep oauth.providers.*.
 export const ADDITION_FIELDS = [
   {
+    key: 'codexWeeklyQuotaLimitPercent',
+    path: 'oauth.providers.codex.weekly-quota-limit-percent'.split('.'),
+    kind: 'integer',
+  },
+  {
     key: 'routingMaxActiveSessions',
     path: 'routing.max-active-sessions-per-credential'.split('.'),
     kind: 'integer',
@@ -326,6 +331,7 @@ export function validateVisualAdditions(
     transientErrorCooldownSeconds: undefined,
     videoResultAuthCacheTTL: undefined,
     claudeHeaderTimezone: undefined,
+    codexWeeklyQuotaLimitPercent: undefined,
     codexStreamBootstrapTimeout: undefined,
     antigravityConnectionPoolIdleTimeout: undefined,
     antigravityConnectionPoolMaxIdleConnsPerHost: undefined,
@@ -349,6 +355,13 @@ export function validateVisualAdditions(
     ) {
       Object.assign(errors, { [key]: signed ? 'integer' : 'non_negative_integer' });
     }
+  }
+  const weeklyLimit = values.codexWeeklyQuotaLimitPercent.trim();
+  if (
+    weeklyLimit &&
+    (!/^\d+$/.test(weeklyLimit) || Number(weeklyLimit) < 1 || Number(weeklyLimit) > 100)
+  ) {
+    errors.codexWeeklyQuotaLimitPercent = 'integer_range_1_100';
   }
   for (const key of [
     'videoResultAuthCacheTTL',

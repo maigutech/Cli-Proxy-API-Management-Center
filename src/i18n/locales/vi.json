@@ -1494,7 +1494,8 @@
         "udp_port_capacity": "Phạm vi UDP phải chứa số cổng tối thiểu bằng hai lần số lượng phiên tối đa hiệu dụng (0 phiên sẽ tính là 32)",
         "invalid_ice_servers": "Mỗi máy chủ ICE cần ít nhất một URL stun:, stuns:, turn:, hoặc turns: hợp lệ",
         "integer_range_0_65535": "Nhập số nguyên từ 0 đến 65535",
-        "integer": "Nhập một số nguyên"
+        "integer": "Nhập một số nguyên",
+        "integer_range_1_100": "Nhập số nguyên từ 1 đến 100."
       },
       "common": {
         "edit": "Chỉnh sửa",
@@ -1681,6 +1682,10 @@
         "routingSessionRebindOn": {
           "label": "Lỗi hạn mức/xác thực",
           "hint": "Giữ tài khoản dự phòng cần bật gắn kết phiên và chọn gắn lại khi lỗi hạn mức/xác thực trong cài đặt chung. Lưu thay đổi tài khoản trước khi mở cài đặt chung."
+        },
+        "codexWeeklyQuotaLimitPercent": {
+          "label": "Giới hạn sử dụng Codex 7 ngày (%)",
+          "hint": "Áp dụng cho mọi tài khoản Codex OAuth. Nhập 1–100; để trống dùng 90%. Khi đạt giới hạn, tạm dừng yêu cầu và kiểm tra đến khi phía trên đặt lại hạn mức. Lưu giới hạn mới sẽ đánh giá lại dữ liệu đã lưu ngay. Yêu cầu đã gửi vẫn có thể hoàn tất."
         }
       }
     },
@@ -2643,6 +2648,9 @@
     }
   },
   "account_usage": {
+    "weeklyProtectionLimit": "Giới hạn 7d {{threshold}}% · Tạm dừng đến khi đặt lại",
+    "weeklyProtectionPaused": "Đã tạm dừng yêu cầu: mức dùng 7d đạt {{threshold}}%",
+    "weeklyProtectionReset": "Tiếp tục lúc {{time}} (đặt lại hạn mức phía nhà cung cấp)",
     "overview": "Chi phí tài khoản",
     "today": "Chi phí quy đổi hôm nay",
     "sevenDays": "Chi phí quy đổi 7 ngày",

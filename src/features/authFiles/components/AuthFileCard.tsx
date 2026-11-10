@@ -2,6 +2,7 @@ import { useState, type CSSProperties } from 'react';
 import { getAuthFileRefreshKey } from '@/features/authFiles/manualRefresh';
 import { useTranslation } from 'react-i18next';
 import { useNow } from '@/hooks/useNow';
+import { weeklyQuotaProtectionActive } from './codexQuotaSummary';
 import { getProbePresentation } from '@/features/authFiles/probePresentation';
 import { Button } from '@/components/ui/Button';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
@@ -143,6 +144,8 @@ export function AuthFileCard(props: AuthFileCardProps) {
   const showProbe = providerKey === 'codex' && !isRuntimeOnly && !requiresSignIn;
   const probeRunning = probeSubmitting || probeStatus?.in_flight === true;
   const now = useNow(showProbe);
+  const weeklyProtection = usage?.weeklyQuotaProtection ?? file.weeklyQuotaProtection;
+  const weeklyPaused = weeklyQuotaProtectionActive(weeklyProtection, now);
   const probe = getProbePresentation(probeStatus, probeMode, probeEnabled, now);
   const probeStateLabel = showProbe
     ? t(`auth_files.${probe.stateKey}`, { defaultValue: probeStatus?.state ?? '' })
@@ -336,9 +339,17 @@ export function AuthFileCard(props: AuthFileCardProps) {
                 size="sm"
                 className={styles.probeButton}
                 loading={probeRunning}
-                disabled={disableControls || file.disabled || !probeEnabled || !authIndexKey}
+                disabled={
+                  disableControls || file.disabled || !probeEnabled || !authIndexKey || weeklyPaused
+                }
                 onClick={() => onRunProbe(file)}
-                title={t(probeEnabled ? 'auth_files.probe_run_hint' : 'auth_files.probe_disabled')}
+                title={
+                  weeklyPaused
+                    ? t('account_usage.weeklyProtectionPaused', {
+                        threshold: weeklyProtection?.thresholdPercent,
+                      })
+                    : t(probeEnabled ? 'auth_files.probe_run_hint' : 'auth_files.probe_disabled')
+                }
                 aria-label={t('auth_files.probe_run_account', { name: identity.primary })}
               >
                 {t(probeRunning ? 'auth_files.probe_running' : 'auth_files.probe_run')}
@@ -400,6 +411,7 @@ export function AuthFileCard(props: AuthFileCardProps) {
           quotaType={quotaType}
           disableControls={disableControls}
           weeklyQuota={usage?.quota}
+          weeklyProtection={weeklyProtection}
         />
       )}
 

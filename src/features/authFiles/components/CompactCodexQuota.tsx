@@ -1,27 +1,31 @@
 import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import type { CodexQuotaState } from '@/types';
+import type { CodexQuotaState, CodexWeeklyQuotaProtection } from '@/types';
 import type { UsageQuota } from '@/services/api/accountUsage';
 import { useNow } from '@/hooks/useNow';
 import { dateLabel } from '@/features/usage/format';
-import { compactCodexWindows } from './codexQuotaSummary';
+import { compactCodexWindows, weeklyQuotaProtectionActive } from './codexQuotaSummary';
 import styles from './CompactCodexQuota.module.scss';
 
 export function CompactCodexQuota({
   quota,
   weekly,
+  protection,
   refresh,
   details,
   error,
 }: {
   quota?: CodexQuotaState;
   weekly?: UsageQuota | null;
+  protection?: CodexWeeklyQuotaProtection;
   refresh: ReactNode;
   details?: ReactNode;
   error?: string;
 }) {
   const { t } = useTranslation();
-  const windows = compactCodexWindows(quota, weekly, useNow());
+  const now = useNow();
+  const windows = compactCodexWindows(quota, weekly, now, protection);
+  const paused = weeklyQuotaProtectionActive(protection, now);
   return (
     <section className={styles.root} aria-label={t('account_usage.quotaUsage')}>
       <div className={styles.meters}>
@@ -68,6 +72,13 @@ export function CompactCodexQuota({
                 aria-valuenow={used ?? undefined}
                 aria-valuetext={hint}
               >
+                {window.id === 'weekly' && protection && (
+                  <i
+                    className={styles.threshold}
+                    style={{ left: `${protection.thresholdPercent}%` }}
+                    aria-hidden="true"
+                  />
+                )}
                 {used != null && (
                   <span
                     className={used >= 95 ? styles.high : used >= 80 ? styles.medium : styles.low}
@@ -79,6 +90,23 @@ export function CompactCodexQuota({
           );
         })}
       </div>
+      {protection && (
+        <div className={`${styles.protection} ${paused ? styles.paused : ''}`} role="status">
+          <span>
+            {t(
+              paused
+                ? 'account_usage.weeklyProtectionPaused'
+                : 'account_usage.weeklyProtectionLimit',
+              { threshold: protection.thresholdPercent }
+            )}
+          </span>
+          {paused && protection.resetsAt && (
+            <span>
+              {t('account_usage.weeklyProtectionReset', { time: dateLabel(protection.resetsAt) })}
+            </span>
+          )}
+        </div>
+      )}
       <div className={styles.footer}>
         {details && (
           <details className={styles.details}>

@@ -38,6 +38,14 @@ const L = (key: string) => `config_management.visual.${key}`;
 
 export const CONFIG_FIELD_SEARCH_INDEX: ConfigFieldSearchEntry[] = [
   {
+    fieldId: 'codexWeeklyQuotaLimitPercent',
+    sectionId: 'advanced',
+    labelKey: L('additions.codexWeeklyQuotaLimitPercent.label'),
+    hintKey: L('additions.codexWeeklyQuotaLimitPercent.hint'),
+    yamlKeys: ['oauth', 'providers', 'codex', 'weekly-quota-limit-percent'],
+    keywords: ['7d', 'quota', '90', '额度', '限额'],
+  },
+  {
     fieldId: 'routingMaxActiveSessions',
     sectionId: 'network',
     labelKey: L('additions.routingMaxActiveSessions.label'),

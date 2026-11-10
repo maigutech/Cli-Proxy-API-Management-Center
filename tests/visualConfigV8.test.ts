@@ -169,6 +169,7 @@ routing:
 
 describe('v8 scalar read/write path parity', () => {
   const numericFields = new Set([
+    'codexWeeklyQuotaLimitPercent',
     'routingMaxActiveSessions',
     'routingMaxConcurrentRequests',
     'port',

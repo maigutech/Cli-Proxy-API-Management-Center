@@ -1433,6 +1433,10 @@
         "routingSessionRebindOn": {
           "label": "Quota/auth failures",
           "hint": "Failover hold requires global session affinity and the “Quota/auth failures” rebind policy. Save account changes before opening global settings."
+        },
+        "codexWeeklyQuotaLimitPercent": {
+          "label": "Codex 7d usage limit (%)",
+          "hint": "Global limit for all Codex OAuth accounts. Enter 1–100; blank defaults to 90%. At the limit, requests and probes pause until upstream reset. Saving a new limit re-evaluates stored usage immediately. In-flight requests may finish."
         }
       },
       "search": {
@@ -1722,7 +1726,8 @@
         "integer_range_1_3600": "Enter a whole number between 1 and 3600",
         "payload_invalid_number": "Enter a valid number",
         "payload_invalid_boolean": "Choose true or false",
-        "payload_invalid_json": "Enter valid JSON"
+        "payload_invalid_json": "Enter valid JSON",
+        "integer_range_1_100": "Enter an integer from 1 to 100."
       },
       "common": {
         "edit": "Edit",
@@ -2637,6 +2642,9 @@
     }
   },
   "account_usage": {
+    "weeklyProtectionLimit": "7d cap {{threshold}}% · Pause until reset when reached",
+    "weeklyProtectionPaused": "Requests paused: 7d usage reached {{threshold}}%",
+    "weeklyProtectionReset": "Resumes at {{time}} (upstream quota reset)",
     "overview": "Account consumption",
     "today": "Today's equivalent cost",
     "sevenDays": "Last 7 days' equivalent cost",
