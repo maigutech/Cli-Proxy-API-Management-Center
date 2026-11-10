@@ -583,6 +583,10 @@ export const authFilesApi = {
     access_token: string;
     account_id?: string;
     email?: string;
+    // An opaque workspace token carries no plan claim, and the plan decides which
+    // model catalog the account is offered, so the server requires it rather than
+    // guessing a tier.
+    plan_type?: string;
     proxy_url?: string;
     codex_originator?: string;
     codex_version?: string;

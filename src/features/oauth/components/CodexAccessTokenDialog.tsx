@@ -1,8 +1,11 @@
+import { useId } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Modal } from '@/components/ui/Modal';
 import { Input } from '@/components/ui/Input';
+import { Select } from '@/components/ui/Select';
 import { IconLoader2 } from '@/components/ui/icons';
 import type { CodexAccessTokenState, CodexAccessTokenForm } from '../hooks/useCodexAccessTokenImport';
+import { CODEX_PLAN_TYPES } from '../hooks/useCodexAccessTokenImport';
 import { DialogTitle, type DialogHeading } from './OAuthFlowDialog';
 import dialogStyles from './OAuthFlowDialog.module.scss';
 
@@ -29,6 +32,12 @@ export function CodexAccessTokenDialog({
 }: CodexAccessTokenDialogProps) {
   const { t } = useTranslation();
   const result = state.result;
+  const planFieldId = useId();
+  // Plan names are product names, so they read the same in every locale.
+  const planOptions = CODEX_PLAN_TYPES.map((plan) => ({
+    value: plan,
+    label: plan.charAt(0).toUpperCase() + plan.slice(1),
+  }));
 
   const resultRows = result
     ? [
@@ -98,6 +107,20 @@ export function CodexAccessTokenDialog({
               spellCheck={false}
               autoComplete="off"
             />
+
+            <div className="form-group">
+              <label htmlFor={planFieldId}>{t('codex_access_token.plan_label')}</label>
+              <Select
+                id={planFieldId}
+                value={state.planType}
+                options={planOptions}
+                onChange={(value) => onFieldChange('planType', value)}
+                placeholder={t('codex_access_token.plan_placeholder')}
+                ariaLabel={t('codex_access_token.plan_label')}
+                fullWidth
+              />
+              <div className="hint">{t('codex_access_token.plan_hint')}</div>
+            </div>
 
             <Input
               label={t('codex_access_token.email_label')}
