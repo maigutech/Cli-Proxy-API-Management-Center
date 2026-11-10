@@ -17,6 +17,9 @@ export interface CodexAccessTokenForm {
   accessToken: string;
   accountId: string;
   email: string;
+  /** Plan tier. A JWT token carries it; an opaque workspace token does not, and
+   * it decides the model catalog, so the server rejects an import without it. */
+  planType: string;
   proxyUrl: string;
 }
 
@@ -30,8 +33,12 @@ const EMPTY_FORM: CodexAccessTokenForm = {
   accessToken: '',
   accountId: '',
   email: '',
+  planType: '',
   proxyUrl: '',
 };
+
+/** Plan values the server maps to a Codex model catalog. */
+export const CODEX_PLAN_TYPES = ['team', 'business', 'pro', 'plus', 'go', 'free'] as const;
 
 /**
  * Register a Codex account from a static Codex Access Token (headless, no browser
@@ -63,6 +70,7 @@ export function useCodexAccessTokenImport(options: {
         access_token: accessToken,
         account_id: state.accountId.trim() || undefined,
         email: state.email.trim() || undefined,
+        plan_type: state.planType.trim() || undefined,
         proxy_url: proxyUrl || undefined,
       });
       const result: CodexAccessTokenResult = {
