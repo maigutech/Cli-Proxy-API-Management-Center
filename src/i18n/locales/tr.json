@@ -250,6 +250,15 @@
     "card_toggle": "{{name}} Kimlik Bilgisini Etkinleştir",
     "card_requests": "İstekler",
     "probe_label": "Bozulma yoklaması",
+    "probe_run": "Şimdi denetle",
+    "probe_running": "Denetleniyor…",
+    "probe_run_account": "{{name}} hesabını performans düşüşü için denetle",
+    "probe_run_hint": "Her denetim 3 gerçek model isteği gönderir ve hesap kotasını kullanır. Sunucunun gözlem veya duraklatma ayarları geçerlidir.",
+    "probe_not_checked": "Henüz denetlenmedi",
+    "probe_busy": "Denetim kapasitesi dolu. Çalışan denetimler bitince tekrar deneyin.",
+    "probe_ineligible": "Bu hesap denetlenemiyor. Etkinlik, oturum ve kota durumunu kontrol edin.",
+    "probe_unavailable": "Denetim kullanılamıyor. Sunucunun manuel denetimleri desteklediğini ve etkinleştirdiğini doğrulayın.",
+    "probe_start_failed": "Denetim başlatılamadı. Lütfen tekrar deneyin.",
     "probe_disabled": "Yoklama sunucuda kapalı",
     "probe_last_verdict": "Son karar",
     "probe_replies": "Örneklenen yanıt",
@@ -1427,6 +1436,10 @@
         "routingSessionRebindOn": {
           "label": "Kota/kimlik doğrulama hataları",
           "hint": "Yedekte tutma için genel oturum bağlılığı ve kota/kimlik doğrulama hatalarında yeniden bağlama gerekir. Genel ayarlara geçmeden değişiklikleri kaydedin."
+        },
+        "codexWeeklyQuotaLimitPercent": {
+          "label": "Codex 7 günlük kullanım sınırı (%)",
+          "hint": "Tüm Codex OAuth hesaplarına uygulanır. 1–100 girin; boş bırakılırsa %90 kullanılır. Sınıra ulaşınca istekler ve kontroller üst sağlayıcı sıfırlamasına kadar durur. Yeni sınır kaydedildiğinde kayıtlı kullanım hemen yeniden değerlendirilir. Gönderilmiş istekler tamamlanabilir."
         }
       },
       "search": {
@@ -1716,7 +1729,8 @@
         "integer_range_1_3600": "1 ile 3600 Arasında Bir Tam Sayı Gir",
         "payload_invalid_number": "Geçerli Bir Sayı Gir",
         "payload_invalid_boolean": "true veya false Seç",
-        "payload_invalid_json": "Geçerli JSON Gir"
+        "payload_invalid_json": "Geçerli JSON Gir",
+        "integer_range_1_100": "1 ile 100 arasında bir tam sayı girin."
       },
       "common": {
         "edit": "Düzenle",
@@ -2631,6 +2645,9 @@
     }
   },
   "account_usage": {
+    "weeklyProtectionLimit": "7d sınırı {{threshold}}% · Ulaşınca sıfırlamaya kadar duraklar",
+    "weeklyProtectionPaused": "İstekler duraklatıldı: 7d kullanım {{threshold}}% oldu",
+    "weeklyProtectionReset": "Devam zamanı: {{time}} (sağlayıcı kota sıfırlaması)",
     "overview": "Hesap tüketimi",
     "today": "Bugünkü eşdeğer maliyet",
     "sevenDays": "Son 7 günün eşdeğer maliyeti",

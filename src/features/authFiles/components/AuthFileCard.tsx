@@ -2,6 +2,7 @@ import { useState, type CSSProperties } from 'react';
 import { getAuthFileRefreshKey } from '@/features/authFiles/manualRefresh';
 import { useTranslation } from 'react-i18next';
 import { useNow } from '@/hooks/useNow';
+import { weeklyQuotaProtectionActive } from './codexQuotaSummary';
 import { getProbePresentation } from '@/features/authFiles/probePresentation';
 import { Button } from '@/components/ui/Button';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
@@ -62,6 +63,8 @@ export type AuthFileCardProps = {
   /** Whether the degradation probe is enabled on the server. */
   probeEnabled?: boolean;
   probeMode?: string;
+  probeSubmitting?: boolean;
+  onRunProbe?: (file: AuthFileItem) => void;
   occupancy?: SessionRoutingSnapshot | null;
   usage?: AccountUsage;
   onUsageDetails?: (file: AuthFileItem) => void;
@@ -97,6 +100,8 @@ export function AuthFileCard(props: AuthFileCardProps) {
     probeStatus,
     probeEnabled,
     probeMode,
+    probeSubmitting,
+    onRunProbe,
     occupancy,
     usage,
     onUsageDetails,
@@ -134,11 +139,13 @@ export function AuthFileCard(props: AuthFileCardProps) {
     (authIndexKey && statusBarCache.get(authIndexKey)) ||
     statusBarDataFromRecentRequests(file.recentRequests ?? []);
 
-  // Codex degradation-probe badge: shown only for Codex accounts the
-  // probe has actually observed. Pure observability — it never changes routing.
+  // Manual checks use the same server policy as scheduled checks.
   const requiresSignIn = file.requiresSignIn === true;
-  const showProbe = providerKey === 'codex' && Boolean(probeStatus) && !requiresSignIn;
+  const showProbe = providerKey === 'codex' && !isRuntimeOnly && !requiresSignIn;
+  const probeRunning = probeSubmitting || probeStatus?.in_flight === true;
   const now = useNow(showProbe);
+  const weeklyProtection = usage?.weeklyQuotaProtection ?? file.weeklyQuotaProtection;
+  const weeklyPaused = weeklyQuotaProtectionActive(weeklyProtection, now);
   const probe = getProbePresentation(probeStatus, probeMode, probeEnabled, now);
   const probeStateLabel = showProbe
     ? t(`auth_files.${probe.stateKey}`, { defaultValue: probeStatus?.state ?? '' })
@@ -313,13 +320,52 @@ export function AuthFileCard(props: AuthFileCardProps) {
         </div>
         <ProviderStatusBar statusData={statusData} styles={styles} />
         {showProbe && (
-          <div className={styles.probeRow} title={probeTooltip}>
+          <div className={styles.probeRow}>
             <span className={styles.probeLabel}>{t('auth_files.probe_label')}</span>
-            <span className={`${styles.probeBadge} ${styles[`probe_${probe.tone}`]}`}>
+            <span
+              className={`${styles.probeBadge} ${styles[`probe_${probe.tone}`]}`}
+              title={probeTooltip}
+              role="status"
+            >
               <span className={styles.probeDot} aria-hidden="true" />
               {probeStateLabel}
-              <span className={styles.probeVerdict}>· {probeActionLabel}</span>
+              {probeStatus?.last_checked_at && (
+                <span className={styles.probeVerdict}>· {probeActionLabel}</span>
+              )}
             </span>
+            {onRunProbe && (
+              <Button
+                variant="secondary"
+                size="sm"
+                className={styles.probeButton}
+                loading={probeRunning}
+                disabled={
+                  disableControls || file.disabled || !probeEnabled || !authIndexKey || weeklyPaused
+                }
+                onClick={() => onRunProbe(file)}
+                title={
+                  weeklyPaused
+                    ? t('account_usage.weeklyProtectionPaused', {
+                        threshold: weeklyProtection?.thresholdPercent,
+                      })
+                    : t(probeEnabled ? 'auth_files.probe_run_hint' : 'auth_files.probe_disabled')
+                }
+                aria-label={t('auth_files.probe_run_account', { name: identity.primary })}
+              >
+                {t(probeRunning ? 'auth_files.probe_running' : 'auth_files.probe_run')}
+              </Button>
+            )}
+            {probeStatus?.last_checked_at && (
+              <span className={styles.probeChecked}>
+                {t('auth_files.probe_last_checked')}:{' '}
+                {formatDateTimeValue(probeStatus.last_checked_at)}
+              </span>
+            )}
+            {probeStatus?.last_error && (
+              <span className={styles.probeError} title={probeStatus.last_error}>
+                {probeStatus.last_error}
+              </span>
+            )}
           </div>
         )}
       </div>
@@ -365,6 +411,7 @@ export function AuthFileCard(props: AuthFileCardProps) {
           quotaType={quotaType}
           disableControls={disableControls}
           weeklyQuota={usage?.quota}
+          weeklyProtection={weeklyProtection}
         />
       )}
 

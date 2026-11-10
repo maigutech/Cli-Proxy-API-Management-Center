@@ -1,4 +1,5 @@
 import { apiClient } from './client';
+import type { CodexWeeklyQuotaProtection } from '@/types';
 
 export interface UsageTotals {
   requests: number;
@@ -35,6 +36,7 @@ export interface UsageQuota {
   estimateReason: string;
 }
 export interface AccountUsage {
+  weeklyQuotaProtection?: CodexWeeklyQuotaProtection;
   today: UsageTotals;
   sevenDays: UsageTotals;
   trackingSince: string;
@@ -226,6 +228,37 @@ export function serializeModelPrice(p: ModelPrice) {
     long_context: p.longContext && rates(p.longContext),
   };
 }
+export function normalizeWeeklyQuotaProtection(
+  raw: unknown
+): CodexWeeklyQuotaProtection | undefined {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return undefined;
+  const d = raw as Record<string, unknown>;
+  const threshold = d.threshold_percent;
+  if (
+    typeof threshold !== 'number' ||
+    !Number.isFinite(threshold) ||
+    threshold <= 0 ||
+    threshold > 100 ||
+    typeof d.paused !== 'boolean'
+  )
+    return undefined;
+  const reset = string(d.resets_at);
+  if (d.paused && !Number.isFinite(Date.parse(reset))) return undefined;
+  return {
+    thresholdPercent: threshold,
+    paused: d.paused,
+    usedPercent:
+      typeof d.used_percent === 'number' &&
+      Number.isFinite(d.used_percent) &&
+      d.used_percent >= 0 &&
+      d.used_percent <= 100
+        ? d.used_percent
+        : undefined,
+    resetsAt: reset || undefined,
+    observedAt: string(d.observed_at) || undefined,
+  };
+}
+
 function normalizeQuota(raw: unknown): UsageQuota {
   const d = object(raw);
   return {
@@ -254,6 +287,7 @@ export function normalizeUsageAccounts(raw: unknown): UsageAccounts {
           trackingSince: string(a.tracking_since),
           exclusive: a.exclusive === true,
           quota: a.quota == null ? null : normalizeQuota(a.quota),
+          weeklyQuotaProtection: normalizeWeeklyQuotaProtection(a.weekly_quota_protection),
         },
       ];
     })

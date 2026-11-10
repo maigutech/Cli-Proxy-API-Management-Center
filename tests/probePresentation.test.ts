@@ -75,6 +75,30 @@ describe('degradation probe assessment and scheduling status', () => {
     expect(getProbePresentation(held, 'shadow', false, now).actionKey).toBe('probe_not_paused');
   });
 
+  test('unprobed and inconclusive checks cannot claim a healthy result', () => {
+    expect(getProbePresentation(undefined, 'shadow', true, now)).toMatchObject({
+      stateKey: 'probe_not_checked',
+      tone: 'neutral',
+    });
+    expect(
+      getProbePresentation({ auth_id: 'new', state: 'clear', in_flight: true }, 'shadow', true, now)
+    ).toMatchObject({
+      stateKey: 'probe_not_checked',
+      tone: 'neutral',
+    });
+    expect(
+      getProbePresentation(
+        { auth_id: 'new', state: 'clear', last_verdict: 'inconclusive' },
+        'shadow',
+        true,
+        now
+      )
+    ).toMatchObject({
+      stateKey: 'probe_verdict_inconclusive',
+      tone: 'neutral',
+    });
+  });
+
   test('healthy observations remain green', () => {
     expect(
       getProbePresentation(
@@ -100,6 +124,15 @@ describe('degradation probe assessment and scheduling status', () => {
         'probe_observation_not_paused',
         'probe_not_paused',
         'probe_assessment_hint',
+        'probe_run',
+        'probe_running',
+        'probe_run_account',
+        'probe_run_hint',
+        'probe_not_checked',
+        'probe_busy',
+        'probe_ineligible',
+        'probe_unavailable',
+        'probe_start_failed',
       ]) {
         expect(messages[key]).toBeTruthy();
       }

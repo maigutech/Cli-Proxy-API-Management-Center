@@ -87,6 +87,7 @@ export const SECTION_VALIDATION_FIELDS: Record<VisualSectionId, readonly VisualC
     ],
     advanced: [
       'claudeHeaderTimezone',
+      'codexWeeklyQuotaLimitPercent',
       'codexStreamBootstrapTimeout',
       'antigravityConnectionPoolIdleTimeout',
       'antigravityConnectionPoolMaxIdleConnsPerHost',
@@ -121,6 +122,7 @@ export const FIELD_VALUE_KEYS: Record<string, readonly string[]> = {
   codexDisableCloaking: ['codexDisableCloaking'],
   codexModelLevelCooling: ['codexModelLevelCooling'],
   codexStreamBootstrapBuffering: ['codexStreamBootstrapBuffering'],
+  codexWeeklyQuotaLimitPercent: ['codexWeeklyQuotaLimitPercent'],
   codexStreamBootstrapTimeout: ['codexStreamBootstrapTimeout'],
   codexOptimizeMultiAgentV2: ['codexOptimizeMultiAgentV2'],
   codexOrphanDelegationCompatibility: ['codexOrphanDelegationCompatibility'],

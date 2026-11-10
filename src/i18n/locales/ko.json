@@ -250,6 +250,15 @@
     "card_toggle": "{{name}} 자격 증명 활성화",
     "card_requests": "요청",
     "probe_label": "성능 저하 탐지",
+    "probe_run": "지금 검사",
+    "probe_running": "검사 중…",
+    "probe_run_account": "{{name}}의 성능 저하 검사",
+    "probe_run_hint": "검사마다 실제 모델 요청 3회를 전송하여 할당량을 사용합니다. 서버의 관찰 또는 일시 중지 설정을 따릅니다.",
+    "probe_not_checked": "아직 검사 안 함",
+    "probe_busy": "검사 한도에 도달했습니다. 진행 중인 검사가 끝나면 다시 시도하세요.",
+    "probe_ineligible": "이 계정을 검사할 수 없습니다. 활성화, 로그인 및 할당량 상태를 확인하세요.",
+    "probe_unavailable": "검사할 수 없습니다. 서버의 수동 검사 지원 및 활성화 여부를 확인하세요.",
+    "probe_start_failed": "검사를 시작하지 못했습니다. 다시 시도하세요.",
     "probe_disabled": "서버에서 탐지 비활성화됨",
     "probe_last_verdict": "최근 판정",
     "probe_replies": "표본 응답 수",
@@ -1427,6 +1436,10 @@
         "routingSessionRebindOn": {
           "label": "할당량/인증 오류",
           "hint": "장애 전환 유지는 전역 세션 고정과 할당량/인증 오류 시 재연결 정책이 필요합니다. 전역 설정을 열기 전에 계정 변경을 저장하세요."
+        },
+        "codexWeeklyQuotaLimitPercent": {
+          "label": "Codex 7일 사용 한도 (%)",
+          "hint": "모든 Codex OAuth 계정에 적용됩니다. 1–100 입력, 빈 값은 90%입니다. 한도 도달 시 상위 서비스 초기화까지 요청과 검사를 중지합니다. 새 한도를 저장하면 저장된 사용량을 즉시 다시 평가합니다. 이미 전송된 요청은 완료될 수 있습니다."
         }
       },
       "search": {
@@ -1716,7 +1729,8 @@
         "integer_range_1_3600": "1에서 3600 사이의 정수를 입력하세요",
         "payload_invalid_number": "유효한 숫자를 입력하세요",
         "payload_invalid_boolean": "true 또는 false를 선택하세요",
-        "payload_invalid_json": "유효한 JSON을 입력하세요"
+        "payload_invalid_json": "유효한 JSON을 입력하세요",
+        "integer_range_1_100": "1에서 100 사이의 정수를 입력하세요."
       },
       "common": {
         "edit": "편집",
@@ -2631,6 +2645,9 @@
     }
   },
   "account_usage": {
+    "weeklyProtectionLimit": "7d 한도 {{threshold}}% · 도달 시 초기화까지 중지",
+    "weeklyProtectionPaused": "요청 중지: 7d 사용량이 {{threshold}}%에 도달",
+    "weeklyProtectionReset": "재개 시간: {{time}} (업스트림 할당량 초기화)",
     "overview": "계정 사용량",
     "today": "오늘 환산 비용",
     "sevenDays": "최근 7일 환산 비용",

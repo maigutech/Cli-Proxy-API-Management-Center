@@ -1,10 +1,4 @@
-/**
- * Codex degradation-probe (降智探针) observability API.
- *
- * Read-only view of the server's per-account Codex answer-quality probe: its
- * settings and the latest verdict/state for each probed credential. Used only to
- * display probe results in the panel; it never changes probe behaviour.
- */
+/** Codex account quality probe status and manual checks. */
 
 import { apiClient } from './client';
 import { isRecord } from '@/utils/helpers';
@@ -31,6 +25,7 @@ export interface CodexDegradationProbeStatus {
   held_until?: string;
   hold_applied?: boolean;
   last_error?: string;
+  in_flight?: boolean;
 }
 
 export interface CodexDegradationProbeSettings {
@@ -67,17 +62,8 @@ function normalizeResponse(raw: unknown): CodexDegradationProbeResponse {
 }
 
 export const codexDegradationProbeApi = {
-  /**
-   * Fetch probe settings and per-credential state. Resolves to an empty,
-   * disabled result on any error (older servers without the route, probe off),
-   * so the caller can treat "no data" and "probe unavailable" the same way.
-   */
-  get: async (): Promise<CodexDegradationProbeResponse> => {
-    try {
-      const raw = await apiClient.get<unknown>('/routing/codex-degradation-probe');
-      return normalizeResponse(raw);
-    } catch {
-      return EMPTY_RESPONSE;
-    }
-  },
+  get: async (): Promise<CodexDegradationProbeResponse> =>
+    normalizeResponse(await apiClient.get<unknown>('/routing/codex-degradation-probe')),
+  run: async (authIndex: string): Promise<{ started: boolean }> =>
+    apiClient.post('/routing/codex-degradation-probe', { auth_index: authIndex }),
 };

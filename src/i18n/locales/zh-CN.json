@@ -250,6 +250,15 @@
     "card_toggle": "启用认证文件 {{name}}",
     "card_requests": "请求记录",
     "probe_label": "降智探测",
+    "probe_run": "立即探测",
+    "probe_running": "探测中…",
+    "probe_run_account": "探测 {{name}} 是否降智",
+    "probe_run_hint": "每轮发送 3 次真实模型请求，会消耗账号额度；沿用服务端的观察或暂停设置。",
+    "probe_not_checked": "尚未探测",
+    "probe_busy": "探测任务已满，请等待当前探测完成后重试。",
+    "probe_ineligible": "该账号暂不能探测，请检查启用、登录和额度状态。",
+    "probe_unavailable": "探测不可用，请检查服务端已启用探测且支持手动探测。",
+    "probe_start_failed": "启动探测失败，请稍后重试。",
     "probe_disabled": "服务端未启用探测",
     "probe_last_verdict": "最近判定",
     "probe_replies": "采样回复数",
@@ -1425,6 +1434,10 @@
         "routingSessionRebindOn": {
           "label": "会话重新绑定策略",
           "hint": "选择“配额或认证失败”后，临时故障保留原账号绑定，并使用备用账号；恢复后的返回时机由保持时间决定。"
+        },
+        "codexWeeklyQuotaLimitPercent": {
+          "label": "Codex 7d 使用上限（%）",
+          "hint": "全局适用于所有 Codex OAuth 账号。范围 1–100，留空默认 90%。达到上限后暂停请求和探测，等待上游重置；修改并保存上限会按已有额度数据立即重新判断。已发出的请求仍可能完成。"
         }
       },
       "search": {
@@ -1714,7 +1727,8 @@
         "integer_range_1_3600": "请输入 1 到 3600 之间的整数",
         "payload_invalid_number": "请输入有效数字",
         "payload_invalid_boolean": "请选择 true 或 false",
-        "payload_invalid_json": "请输入有效的 JSON"
+        "payload_invalid_json": "请输入有效的 JSON",
+        "integer_range_1_100": "请输入 1 到 100 的整数。"
       },
       "common": {
         "edit": "编辑",
@@ -2629,6 +2643,9 @@
     }
   },
   "account_usage": {
+    "weeklyProtectionLimit": "7d 上限 {{threshold}}% · 达到后暂停至额度重置",
+    "weeklyProtectionPaused": "已暂停请求：7d 已用达到 {{threshold}}%",
+    "weeklyProtectionReset": "恢复时间：{{time}}（上游额度重置）",
     "overview": "账号消耗概览",
     "today": "今日折算消耗",
     "sevenDays": "近 7 天折算消耗",

@@ -39,7 +39,16 @@ export interface AuthFileCooldownSnapshot {
   records: AuthFileCooldown[] | null;
 }
 
+export interface CodexWeeklyQuotaProtection {
+  thresholdPercent: number;
+  paused: boolean;
+  usedPercent?: number;
+  resetsAt?: string;
+  observedAt?: string;
+}
+
 export interface AuthFileItem {
+  weeklyQuotaProtection?: CodexWeeklyQuotaProtection;
   name: string;
   authId?: string;
   siwcBindSupported?: boolean;

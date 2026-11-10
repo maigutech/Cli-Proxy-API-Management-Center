@@ -1,3 +1,4 @@
+import { normalizeWeeklyQuotaProtection } from './accountUsage';
 /**
  * Auth files and OAuth excluded-model API
  */
@@ -291,6 +292,7 @@ const normalizeAuthFileEntry = (
   return {
     ...entry,
     authId: readTextField(entry, 'id') || undefined,
+    weeklyQuotaProtection: normalizeWeeklyQuotaProtection(entry.weekly_quota_protection),
     siwcBindSupported: entry.siwc_bind_supported === true,
     useSiwc: entry.use_siwc === true,
     siwcBound: entry.siwc_bound === true,
