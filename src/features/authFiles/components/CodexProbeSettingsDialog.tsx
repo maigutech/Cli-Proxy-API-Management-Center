@@ -10,6 +10,10 @@ import type {
   CodexDegradationProbeSettingsUpdate,
 } from '@/services/api/codexDegradationProbe';
 
+/** Documented in the scorer as frequently mistaken for gpt-5.5 on healthy
+ * accounts, so it is the one profile that should not be a probe target. */
+const UNRELIABLE_PROBE_MODEL = 'gpt-6-sol';
+
 export interface CodexProbeSettingsDialogProps {
   open: boolean;
   settings: CodexDegradationProbeSettings;
@@ -43,7 +47,14 @@ export function CodexProbeSettingsDialog({
     setModel(settings['probe-model'] ?? '');
   }, [open, settings]);
 
-  const modelOptions = availableModels.map((value) => ({ value, label: value }));
+  // gpt-6-sol has a reference profile, so the server accepts it, but it is
+  // routinely mistaken for gpt-5.5 even on healthy accounts: picking it makes
+  // the probe report degradation that is not there. Offer it, flagged.
+  const modelOptions = availableModels.map((value) => ({
+    value,
+    label: value === UNRELIABLE_PROBE_MODEL ? `${value} — ${t('auth_files.probe_model_unreliable')}` : value,
+  }));
+  const modelUnreliable = model === UNRELIABLE_PROBE_MODEL;
   const intervalValue = Number(interval);
   const intervalInvalid = interval.trim() !== '' && (!Number.isFinite(intervalValue) || intervalValue < 0);
 
@@ -95,6 +106,11 @@ export function CodexProbeSettingsDialog({
             fullWidth
           />
           <div className="hint">{t('auth_files.probe_settings_model_hint')}</div>
+          {modelUnreliable && (
+            <div className="error-box" role="alert">
+              {t('auth_files.probe_model_unreliable_warning')}
+            </div>
+          )}
         </div>
 
         <div>

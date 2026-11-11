@@ -241,6 +241,8 @@
     "probe_settings_model": "Yoklama modeli",
     "probe_settings_model_placeholder": "Mevcut modeli koru",
     "probe_settings_model_hint": "Yalnızca parmak izinde referans profili bulunan modeller yoklanabilir; başka bir model tüm kimlikleri anormal gösterir.",
+    "probe_model_unreliable": "önerilmez",
+    "probe_model_unreliable_warning": "Bu model sağlıklı hesaplarda bile sıklıkla gpt-5.5 sanılır; yoklama olmayan bir bozulma bildirir. gpt-6-astra tercih edin.",
     "probe_settings_saved": "Yoklama ayarları kaydedildi",
     "probe_settings_failed": "Yoklama ayarları kaydedilemedi",
     "title": "Kimlik Dosyası Yönetimi",

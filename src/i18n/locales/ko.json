@@ -241,6 +241,8 @@
     "probe_settings_model": "probe 모델",
     "probe_settings_model_placeholder": "현재 모델 유지",
     "probe_settings_model_hint": "지문에 참조 프로필이 있는 모델만 검사할 수 있습니다. 다른 모델은 모든 자격 증명을 비정상으로 판정합니다.",
+    "probe_model_unreliable": "권장하지 않음",
+    "probe_model_unreliable_warning": "이 모델은 정상 계정에서도 gpt-5.5로 자주 오인되므로, 실제로는 없는 성능 저하를 보고하게 됩니다. gpt-6-astra를 권장합니다.",
     "probe_settings_saved": "probe 설정을 저장했습니다",
     "probe_settings_failed": "probe 설정을 저장하지 못했습니다",
     "title": "인증 파일 관리",
