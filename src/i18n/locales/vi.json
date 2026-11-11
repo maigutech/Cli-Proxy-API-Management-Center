@@ -241,6 +241,8 @@
     "probe_settings_model": "Mô hình dò",
     "probe_settings_model_placeholder": "Giữ mô hình hiện tại",
     "probe_settings_model_hint": "Chỉ có thể dò các mô hình có hồ sơ tham chiếu; mô hình khác sẽ khiến mọi thông tin xác thực bị coi là bất thường.",
+    "probe_model_unreliable": "không khuyến nghị",
+    "probe_model_unreliable_warning": "Mô hình này thường bị nhầm với gpt-5.5 ngay cả trên tài khoản bình thường, nên phép dò sẽ báo suy giảm không có thật. Nên dùng gpt-6-astra.",
     "probe_settings_saved": "Đã lưu cài đặt dò",
     "probe_settings_failed": "Không lưu được cài đặt dò",
     "title": "Quản lý File xác thực",

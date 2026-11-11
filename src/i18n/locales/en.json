@@ -241,6 +241,8 @@
     "probe_settings_model": "Probe model",
     "probe_settings_model_placeholder": "Keep the current model",
     "probe_settings_model_hint": "Only models the fingerprint has a reference profile for can be probed; any other would score every credential abnormal.",
+    "probe_model_unreliable": "not recommended",
+    "probe_model_unreliable_warning": "This model is routinely mistaken for gpt-5.5 even on healthy accounts, so the probe will report degradation that is not there. Prefer gpt-6-astra.",
     "probe_settings_saved": "Probe settings saved",
     "probe_settings_failed": "Could not save the probe settings",
     "title": "Auth Files Management",

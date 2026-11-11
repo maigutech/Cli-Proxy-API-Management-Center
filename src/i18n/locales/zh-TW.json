@@ -241,6 +241,8 @@
     "probe_settings_model": "探測模型",
     "probe_settings_model_placeholder": "保持目前模型",
     "probe_settings_model_hint": "只能選指紋庫裡有參考樣貌的模型；選其它模型會讓所有憑證都被判為異常。",
+    "probe_model_unreliable": "不建議",
+    "probe_model_unreliable_warning": "該模型即使在健康帳號上也經常被誤認成 gpt-5.5，用它探測會把正常帳號判成降級。建議用 gpt-6-astra。",
     "probe_settings_saved": "探測設定已儲存",
     "probe_settings_failed": "儲存探測設定失敗",
     "title": "驗證檔案管理",
