@@ -263,6 +263,7 @@
     "card_requests": "Requests",
     "probe_label": "Degradation probe",
     "probe_run": "Probe now",
+    "probe_run_sweep_off": "Background probing is off; this checks just this account now.",
     "probe_running": "Probing…",
     "probe_run_account": "Check {{name}} for degradation",
     "probe_run_hint": "Each check sends 3 real model requests and uses account quota. Server observation or hold settings still apply.",

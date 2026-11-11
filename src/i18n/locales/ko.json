@@ -263,6 +263,7 @@
     "card_requests": "요청",
     "probe_label": "성능 저하 탐지",
     "probe_run": "지금 검사",
+    "probe_run_sweep_off": "백그라운드 정기 검사는 꺼져 있습니다. 여기서는 이 계정만 지금 검사합니다.",
     "probe_running": "검사 중…",
     "probe_run_account": "{{name}}의 성능 저하 검사",
     "probe_run_hint": "검사마다 실제 모델 요청 3회를 전송하여 할당량을 사용합니다. 서버의 관찰 또는 일시 중지 설정을 따릅니다.",

@@ -263,6 +263,7 @@
     "card_requests": "İstekler",
     "probe_label": "Bozulma yoklaması",
     "probe_run": "Şimdi denetle",
+    "probe_run_sweep_off": "Arka plan yoklaması kapalı; burası yalnızca bu hesabı şimdi kontrol eder.",
     "probe_running": "Denetleniyor…",
     "probe_run_account": "{{name}} hesabını performans düşüşü için denetle",
     "probe_run_hint": "Her denetim 3 gerçek model isteği gönderir ve hesap kotasını kullanır. Sunucunun gözlem veya duraklatma ayarları geçerlidir.",
