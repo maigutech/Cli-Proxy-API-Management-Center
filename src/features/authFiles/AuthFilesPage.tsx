@@ -30,6 +30,7 @@ import { getAuthFileRefreshKey } from '@/features/authFiles/manualRefresh';
 import { AuthFileRefreshResults } from '@/features/authFiles/components/AuthFileRefreshResults';
 import { AuthFileModelsModal } from '@/features/authFiles/components/AuthFileModelsModal';
 import { AuthFilesToolbar } from '@/features/authFiles/components/AuthFilesToolbar';
+import { CodexProbeSettingsDialog } from '@/features/authFiles/components/CodexProbeSettingsDialog';
 import { BatchActionBar } from '@/features/authFiles/components/BatchActionBar';
 import { OAuthExcludedCard } from '@/features/authFiles/components/OAuthExcludedCard';
 import { OAuthModelAliasCard } from '@/features/authFiles/components/OAuthModelAliasCard';
@@ -178,6 +179,7 @@ export function AuthFilesPage() {
 
   const statusBarCache = useAuthFilesStatusBarCache(files);
   const codexProbe = useCodexDegradationProbe();
+  const [probeSettingsOpen, setProbeSettingsOpen] = useState(false);
 
   const {
     excluded,
@@ -752,6 +754,22 @@ export function AuthFilesPage() {
                   onResetEnabledOnly: () => setStatusFilterMode('all'),
                 })
           }
+        />
+
+        {/* The probe is a pool-wide setting, so it sits beside the list it
+            annotates rather than on each card. */}
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Button variant="secondary" size="sm" onClick={() => setProbeSettingsOpen(true)}>
+            {t('auth_files.probe_settings_title')}
+          </Button>
+        </div>
+
+        <CodexProbeSettingsDialog
+          open={probeSettingsOpen}
+          settings={codexProbe.settings}
+          availableModels={codexProbe.availableModels}
+          onSave={codexProbe.updateSettings}
+          onClose={() => setProbeSettingsOpen(false)}
         />
 
         {error && (

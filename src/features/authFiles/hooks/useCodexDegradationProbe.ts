@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import {
   codexDegradationProbeApi,
   type CodexDegradationProbeSettings,
+  type CodexDegradationProbeSettingsUpdate,
   type CodexDegradationProbeStatus,
 } from '@/services/api/codexDegradationProbe';
 import { apiClient } from '@/services/api/client';
@@ -38,6 +39,7 @@ export function useCodexDegradationProbe() {
   const managementKey = useAuthStore((state) => state.managementKey);
   const authenticated = useAuthStore((state) => state.isAuthenticated);
   const [settings, setSettings] = useState<CodexDegradationProbeSettings>({ enabled: false });
+  const [availableModels, setAvailableModels] = useState<string[]>([]);
   const [credentials, setCredentials] = useState<CodexDegradationProbeStatus[]>([]);
   const [submitting, setSubmitting] = useState<Set<string>>(new Set());
   const sessionRef = useRef<ProbeSession | null>(null);
@@ -57,6 +59,7 @@ export function useCodexDegradationProbe() {
           const result = await codexDegradationProbeApi.get();
           if (!current() || request !== sequence) return;
           setSettings(result.settings);
+          setAvailableModels(result.availableModels);
           setCredentials(result.credentials);
           running = result.credentials.some((status) => status.in_flight);
         } catch {
@@ -116,6 +119,37 @@ export function useCodexDegradationProbe() {
     [showNotification, t]
   );
 
+  // Saving reloads the server's running config, so the change applies without a
+  // restart; reload the status afterwards so the UI shows what is now in force.
+  const updateSettings = useCallback(
+    async (update: CodexDegradationProbeSettingsUpdate): Promise<boolean> => {
+      try {
+        await codexDegradationProbeApi.updateSettings(update);
+        await sessionRef.current?.load();
+        showNotification(t('auth_files.probe_settings_saved'), 'success');
+        return true;
+      } catch (error) {
+        const message = (error as { message?: string })?.message;
+        showNotification(
+          message
+            ? `${t('auth_files.probe_settings_failed')}: ${message}`
+            : t('auth_files.probe_settings_failed'),
+          'error'
+        );
+        return false;
+      }
+    },
+    [showNotification, t]
+  );
+
   const byAuth = useMemo(() => buildIndex(credentials), [credentials]);
-  return { settings, byAuth, hasData: credentials.length > 0, submitting, run };
+  return {
+    settings,
+    availableModels,
+    byAuth,
+    hasData: credentials.length > 0,
+    submitting,
+    run,
+    updateSettings,
+  };
 }

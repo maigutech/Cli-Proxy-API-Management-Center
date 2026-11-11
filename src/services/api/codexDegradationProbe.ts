@@ -38,16 +38,30 @@ export interface CodexDegradationProbeSettings {
   'max-held-ratio'?: number;
   'healthy-probability'?: number;
   'abnormal-probability'?: number;
+  /** Model each check requests. The verdict only means "the replies did (not)
+   * look like this model", so it must be one of availableModels. */
+  'probe-model'?: string;
 }
 
 export interface CodexDegradationProbeResponse {
   settings: CodexDegradationProbeSettings;
   credentials: CodexDegradationProbeStatus[];
+  /** Models the fingerprint has a reference profile for. A model outside this
+   * list can never be the top candidate, so it is not offerable as a target. */
+  availableModels: string[];
+}
+
+/** The fields an operator may change; the rest stay as configured. */
+export interface CodexDegradationProbeSettingsUpdate {
+  enabled?: boolean;
+  interval_minutes?: number;
+  probe_model?: string;
 }
 
 const EMPTY_RESPONSE: CodexDegradationProbeResponse = {
   settings: { enabled: false },
   credentials: [],
+  availableModels: [],
 };
 
 function normalizeResponse(raw: unknown): CodexDegradationProbeResponse {
@@ -58,7 +72,10 @@ function normalizeResponse(raw: unknown): CodexDegradationProbeResponse {
   const credentials = Array.isArray(raw.credentials)
     ? (raw.credentials.filter(isRecord) as unknown as CodexDegradationProbeStatus[])
     : [];
-  return { settings, credentials };
+  const availableModels = Array.isArray(raw.available_models)
+    ? raw.available_models.filter((model): model is string => typeof model === 'string')
+    : [];
+  return { settings, credentials, availableModels };
 }
 
 export const codexDegradationProbeApi = {
@@ -66,4 +83,6 @@ export const codexDegradationProbeApi = {
     normalizeResponse(await apiClient.get<unknown>('/routing/codex-degradation-probe')),
   run: async (authIndex: string): Promise<{ started: boolean }> =>
     apiClient.post('/routing/codex-degradation-probe', { auth_index: authIndex }),
+  updateSettings: async (update: CodexDegradationProbeSettingsUpdate): Promise<void> =>
+    apiClient.put('/routing/codex-degradation-probe/settings', update),
 };
