@@ -263,6 +263,7 @@
     "card_requests": "請求記錄",
     "probe_label": "降智探測",
     "probe_run": "立即探測",
+    "probe_run_sweep_off": "背景定期探測已關閉；這裡只對該帳號立刻檢測一次。",
     "probe_running": "探測中…",
     "probe_run_account": "探測 {{name}} 是否降智",
     "probe_run_hint": "每輪傳送 3 次真實模型請求，會消耗帳號額度；沿用伺服器的觀察或暫停設定。",

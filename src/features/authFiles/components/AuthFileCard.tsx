@@ -339,16 +339,18 @@ export function AuthFileCard(props: AuthFileCardProps) {
                 size="sm"
                 className={styles.probeButton}
                 loading={probeRunning}
-                disabled={
-                  disableControls || file.disabled || !probeEnabled || !authIndexKey || weeklyPaused
-                }
+                // The probe switch governs the scheduled sweep, not this: asking
+                // about one account on demand stays available while the sweep is
+                // off, which is the only way to check without re-enabling
+                // background probing for the whole pool.
+                disabled={disableControls || file.disabled || !authIndexKey || weeklyPaused}
                 onClick={() => onRunProbe(file)}
                 title={
                   weeklyPaused
                     ? t('account_usage.weeklyProtectionPaused', {
                         threshold: weeklyProtection?.thresholdPercent,
                       })
-                    : t(probeEnabled ? 'auth_files.probe_run_hint' : 'auth_files.probe_disabled')
+                    : t(probeEnabled ? 'auth_files.probe_run_hint' : 'auth_files.probe_run_sweep_off')
                 }
                 aria-label={t('auth_files.probe_run_account', { name: identity.primary })}
               >
