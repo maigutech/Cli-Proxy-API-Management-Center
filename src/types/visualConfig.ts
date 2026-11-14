@@ -16,6 +16,9 @@ export type CodexLiveICEServerDraft = {
 export type VisualConfigFieldPath =
   | 'routingMaxActiveSessions'
   | 'routingMaxConcurrentRequests'
+  | 'routingBaseRpm'
+  | 'routingRpmStickyBuffer'
+  | 'routingRpmStrategy'
   | 'routingSessionIdleTTL'
   | 'routingSessionFailoverTTL'
   | 'routingSessionRebindOn'
@@ -137,6 +140,9 @@ export type VisualConfigValues = {
 
   routingMaxActiveSessions: string;
   routingMaxConcurrentRequests: string;
+  routingBaseRpm: string;
+  routingRpmStickyBuffer: string;
+  routingRpmStrategy: string;
   routingSessionIdleTTL: string;
   routingSessionFailoverTTL: string;
   routingSessionRebindOn: string;
@@ -246,6 +252,9 @@ export const DEFAULT_VISUAL_VALUES: VisualConfigValues = {
 
   routingMaxActiveSessions: '',
   routingMaxConcurrentRequests: '',
+  routingBaseRpm: '',
+  routingRpmStickyBuffer: '',
+  routingRpmStrategy: '',
   routingSessionIdleTTL: '',
   routingSessionFailoverTTL: '',
   routingSessionRebindOn: '',

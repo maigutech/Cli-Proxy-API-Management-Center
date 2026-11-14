@@ -1453,6 +1453,18 @@
         "codexWeeklyQuotaLimitPercent": {
           "label": "Codex 7d 使用上限（%）",
           "hint": "全局适用于所有 Codex OAuth 账号。范围 1–100，留空默认 90%。达到上限后暂停请求和探测，等待上游重置；修改并保存上限会按已有额度数据立即重新判断。已发出的请求仍可能完成。"
+        },
+        "routingBaseRpm": {
+          "label": "全局每分钟请求上限（RPM）",
+          "hint": "0 表示不限。每个账号按自然分钟统计成功请求；达到上限后只继续已持有的会话，新会话交给其他账号。账号可单独覆盖。"
+        },
+        "routingRpmStickyBuffer": {
+          "label": "全局 RPM 粘性缓冲",
+          "hint": "达到上限后，已持有的会话还能继续的请求数。0 表示自动：请求并发上限 + 活跃 session 上限，且不少于上限的五分之一。"
+        },
+        "routingRpmStrategy": {
+          "label": "全局 RPM 超限策略",
+          "hint": "分级：缓冲用完后账号暂停到下一分钟。粘性豁免：已持有的会话始终放行。"
         }
       },
       "search": {
@@ -2618,10 +2630,21 @@
     "readOnly": "此凭证由其他配置管理，无法在这里修改。",
     "rebindAny": "任意凭证故障",
     "rebindQuota": "配额或认证失败",
-    "card_hint": "当前使用量 / 生效上限，每 5 秒刷新一次；短请求可能发生在两次刷新之间。",
+    "card_hint": "当前使用量 / 生效上限，每 5 秒刷新一次；短请求可能发生在两次刷新之间。RPM 为本分钟已成功的请求数。",
     "card_unknown": "暂时无法获取当前使用量，将自动重试。",
     "requestsShort": "并发",
-    "sessionsShort": "会话"
+    "sessionsShort": "会话",
+    "baseRpm": "每分钟请求上限（RPM）",
+    "baseRpmHint": "0 表示不限。按自然分钟统计此账号成功的请求；达到上限后只继续此账号已持有的会话，新会话交给其他账号。",
+    "rpmStickyBuffer": "RPM 粘性缓冲",
+    "rpmStickyBufferHint": "达到上限后，已持有的会话还能继续的请求数，用完后此账号暂停到下一分钟。0 表示自动：请求并发上限 + 活跃 session 上限，且不少于上限的五分之一。",
+    "rpm": "每分钟请求",
+    "rpmShort": "RPM",
+    "rpmBuffer": "（缓冲 {{count}}）",
+    "rpmStrategy": "RPM 超限策略",
+    "rpmStrategyHint": "分级：缓冲用完后连已持有的会话也转到其他账号。粘性豁免：已持有的会话始终放行，只拦新会话。所有账号都超限时返回 429，并提示到下一分钟再试。",
+    "rpmStrategy_tiered": "分级（默认）",
+    "rpmStrategy_sticky_exempt": "粘性豁免"
   },
   "account_test": {
     "title": "测试模型",

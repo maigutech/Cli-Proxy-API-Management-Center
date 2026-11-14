@@ -1455,6 +1455,18 @@
         "codexWeeklyQuotaLimitPercent": {
           "label": "Codex 7 günlük kullanım sınırı (%)",
           "hint": "Tüm Codex OAuth hesaplarına uygulanır. 1–100 girin; boş bırakılırsa %90 kullanılır. Sınıra ulaşınca istekler ve kontroller üst sağlayıcı sıfırlamasına kadar durur. Yeni sınır kaydedildiğinde kayıtlı kullanım hemen yeniden değerlendirilir. Gönderilmiş istekler tamamlanabilir."
+        },
+        "routingBaseRpm": {
+          "label": "Genel dakika başına istek (RPM)",
+          "hint": "0 sınırsızdır. Her hesabın başarılı isteklerini takvim dakikası başına sayar; sınır aşılınca hesap yalnızca tuttuğu oturumları sürdürür. Hesaplar bunu geçersiz kılabilir."
+        },
+        "routingRpmStickyBuffer": {
+          "label": "Genel RPM yapışkan tampon",
+          "hint": "Sınırdan sonra tutulan oturumların yapabileceği ek istek sayısı. 0 otomatiktir: eşzamanlı istek sınırı + etkin oturum sınırı, en az sınırın beşte biri."
+        },
+        "routingRpmStrategy": {
+          "label": "Genel RPM aşım stratejisi",
+          "hint": "Kademeli: tampon bitince hesap bir sonraki dakikaya kadar bekler. Yapışkan muaf: tutulan oturumlar her zaman sürer."
         }
       },
       "search": {
@@ -2623,7 +2635,18 @@
     "card_hint": "Mevcut kullanım / etkin sınır. Her 5 saniyede yenilenir; kısa istekler ölçümler arasına denk gelebilir.",
     "card_unknown": "Mevcut kullanım alınamıyor. Otomatik olarak yeniden denenecek.",
     "requestsShort": "İstek",
-    "sessionsShort": "Oturum"
+    "sessionsShort": "Oturum",
+    "baseRpm": "Dakika başına istek (RPM)",
+    "baseRpmHint": "0 sınırsızdır. Bu hesabın başarılı isteklerini takvim dakikası başına sayar; sınır aşılınca yalnızca zaten tuttuğu oturumları sürdürür, yeni oturumlar diğer hesaplara gider.",
+    "rpmStickyBuffer": "RPM yapışkan tampon",
+    "rpmStickyBufferHint": "Sınırdan sonra tutulan oturumların yapabileceği ek istek sayısı; bitince hesap bir sonraki dakikaya kadar bekler. 0 otomatiktir: eşzamanlı istek sınırı + etkin oturum sınırı, en az sınırın beşte biri.",
+    "rpm": "Dakika başına istek",
+    "rpmShort": "RPM",
+    "rpmBuffer": "(tampon {{count}})",
+    "rpmStrategy": "RPM aşım stratejisi",
+    "rpmStrategyHint": "Kademeli: tampon bitince tutulan oturumlar da diğer hesaplara geçer. Yapışkan muaf: tutulan oturumlar her zaman sürer, yalnızca yeni oturumlar reddedilir. Tüm hesaplar sınırı aşınca istek bir sonraki dakikada yeniden denenmek üzere 429 alır.",
+    "rpmStrategy_tiered": "Kademeli (varsayılan)",
+    "rpmStrategy_sticky_exempt": "Yapışkan muaf"
   },
   "account_test": {
     "title": "Modeli test et",

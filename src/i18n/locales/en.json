@@ -1455,6 +1455,18 @@
         "codexWeeklyQuotaLimitPercent": {
           "label": "Codex 7d usage limit (%)",
           "hint": "Global limit for all Codex OAuth accounts. Enter 1–100; blank defaults to 90%. At the limit, requests and probes pause until upstream reset. Saving a new limit re-evaluates stored usage immediately. In-flight requests may finish."
+        },
+        "routingBaseRpm": {
+          "label": "Global requests per minute (RPM)",
+          "hint": "0 is unlimited. Counts each account's successful requests per clock minute; past the limit an account only continues sessions it already holds. Accounts can override it."
+        },
+        "routingRpmStickyBuffer": {
+          "label": "Global RPM sticky buffer",
+          "hint": "Requests held sessions may still make past the limit. 0 is automatic: concurrent request limit + active session limit, at least a fifth of the limit."
+        },
+        "routingRpmStrategy": {
+          "label": "Global RPM overflow strategy",
+          "hint": "Tiered: once the buffer is used up the account pauses until the next minute. Sticky exempt: held sessions always continue."
         }
       },
       "search": {
@@ -2623,7 +2635,18 @@
     "card_hint": "Current / effective limit. Refreshed every 5 seconds; very short requests may fall between samples.",
     "card_unknown": "Current occupancy is unavailable. The display will retry automatically.",
     "requestsShort": "Req",
-    "sessionsShort": "Sessions"
+    "sessionsShort": "Sessions",
+    "baseRpm": "Requests per minute (RPM)",
+    "baseRpmHint": "0 is unlimited. Counts this account's successful requests per clock minute; past the limit it only continues sessions it already holds and new sessions go to other accounts.",
+    "rpmStickyBuffer": "RPM sticky buffer",
+    "rpmStickyBufferHint": "Requests held sessions may still make past the limit; then the account pauses until the next minute. 0 is automatic: concurrent request limit + active session limit, at least a fifth of the limit.",
+    "rpm": "Requests per minute",
+    "rpmShort": "RPM",
+    "rpmBuffer": "(buffer {{count}})",
+    "rpmStrategy": "RPM overflow strategy",
+    "rpmStrategyHint": "Tiered: once the buffer is used up, held sessions move to other accounts too. Sticky exempt: held sessions always continue; only new sessions are turned away. When every account is over its limit the request gets 429 with a retry at the next minute.",
+    "rpmStrategy_tiered": "Tiered (default)",
+    "rpmStrategy_sticky_exempt": "Sticky exempt"
   },
   "account_test": {
     "title": "Test model",

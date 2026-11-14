@@ -53,9 +53,26 @@ describe('account occupancy cards', () => {
     expect(text).toContain('0 / ∞');
     expect(text).not.toContain('0 / 0');
   });
+  test('shows requests this minute against the account RPM limit', () => {
+    const text = render({
+      ...raw,
+      current_rpm: 12,
+      rpm_sticky_buffer_effective: 13,
+      effective: { ...values, base_rpm: 60, rpm_sticky_buffer: 0, rpm_strategy: 'tiered' },
+    } as typeof raw);
+    expect(text).toContain('RPM');
+    expect(text).toContain('12 / 60');
+  });
+  test('an account without an RPM limit shows it as unlimited, also on an older backend', () => {
+    // An older backend sends no RPM fields at all: the card still renders and
+    // reads as "no limit" rather than failing the whole page.
+    const legacy = render({ ...raw, concurrent_requests: 1, active_sessions: 1 });
+    expect(legacy).toContain('0 / ∞');
+    expect(legacy).toContain('RPM');
+  });
   test('unavailable accounts show unknown rather than a fabricated zero', () => {
     const text = render(null);
-    expect(text.match(/— \/ —/g)).toHaveLength(2);
+    expect(text.match(/— \/ —/g)).toHaveLength(3);
     expect(text).not.toContain('0 /');
     expect(() =>
       normalizeSessionRoutingStatus({

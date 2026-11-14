@@ -1455,6 +1455,18 @@
         "codexWeeklyQuotaLimitPercent": {
           "label": "Codex 7일 사용 한도 (%)",
           "hint": "모든 Codex OAuth 계정에 적용됩니다. 1–100 입력, 빈 값은 90%입니다. 한도 도달 시 상위 서비스 초기화까지 요청과 검사를 중지합니다. 새 한도를 저장하면 저장된 사용량을 즉시 다시 평가합니다. 이미 전송된 요청은 완료될 수 있습니다."
+        },
+        "routingBaseRpm": {
+          "label": "전역 분당 요청 한도 (RPM)",
+          "hint": "0은 무제한입니다. 계정마다 성공한 요청을 분 단위로 집계하며, 한도를 넘으면 보유한 세션만 계속합니다. 계정별로 덮어쓸 수 있습니다."
+        },
+        "routingRpmStickyBuffer": {
+          "label": "전역 RPM 고정 버퍼",
+          "hint": "한도를 넘은 뒤에도 보유한 세션이 더 보낼 수 있는 요청 수입니다. 0은 자동: 동시 요청 한도 + 활성 세션 한도, 최소 한도의 1/5."
+        },
+        "routingRpmStrategy": {
+          "label": "전역 RPM 초과 전략",
+          "hint": "단계별: 버퍼를 다 쓰면 다음 분까지 계정을 쉽니다. 고정 예외: 보유한 세션은 항상 계속합니다."
         }
       },
       "search": {
@@ -2623,7 +2635,18 @@
     "card_hint": "현재 사용량 / 적용 한도. 5초마다 갱신하며 짧은 요청은 측정 사이에 끝날 수 있습니다.",
     "card_unknown": "현재 사용량을 가져올 수 없습니다. 자동으로 다시 시도합니다.",
     "requestsShort": "요청",
-    "sessionsShort": "세션"
+    "sessionsShort": "세션",
+    "baseRpm": "분당 요청 한도 (RPM)",
+    "baseRpmHint": "0은 무제한입니다. 이 계정의 성공한 요청을 분 단위로 집계하며, 한도를 넘으면 이미 보유한 세션만 계속하고 새 세션은 다른 계정으로 보냅니다.",
+    "rpmStickyBuffer": "RPM 고정 버퍼",
+    "rpmStickyBufferHint": "한도를 넘은 뒤에도 보유한 세션이 더 보낼 수 있는 요청 수이며, 다 쓰면 다음 분까지 이 계정을 쉽니다. 0은 자동: 동시 요청 한도 + 활성 세션 한도, 최소 한도의 1/5.",
+    "rpm": "분당 요청",
+    "rpmShort": "RPM",
+    "rpmBuffer": "(버퍼 {{count}})",
+    "rpmStrategy": "RPM 초과 전략",
+    "rpmStrategyHint": "단계별: 버퍼를 다 쓰면 보유한 세션도 다른 계정으로 옮깁니다. 고정 예외: 보유한 세션은 항상 계속하고 새 세션만 거절합니다. 모든 계정이 한도를 넘으면 다음 분에 재시도하라는 429를 반환합니다.",
+    "rpmStrategy_tiered": "단계별 (기본)",
+    "rpmStrategy_sticky_exempt": "고정 예외"
   },
   "account_test": {
     "title": "모델 테스트",

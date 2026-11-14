@@ -172,6 +172,8 @@ describe('v8 scalar read/write path parity', () => {
     'codexWeeklyQuotaLimitPercent',
     'routingMaxActiveSessions',
     'routingMaxConcurrentRequests',
+    'routingBaseRpm',
+    'routingRpmStickyBuffer',
     'port',
     'errorLogsMaxFiles',
     'logsMaxTotalSizeMb',
@@ -201,9 +203,11 @@ describe('v8 scalar read/write path parity', () => {
             ? '1'
             : field === 'routingStrategy'
               ? 'fill-first'
-              : field === 'disableImageGeneration'
-                ? 'chat'
-                : 'fixture-updated';
+              : field === 'routingRpmStrategy'
+                ? 'sticky_exempt'
+                : field === 'disableImageGeneration'
+                  ? 'chat'
+                  : 'fixture-updated';
       const config = runVisualConfig(fixture, [{ [field]: value }]);
       const output = config.applyVisualChangesToYaml(fixture);
       const path = [...entry.yamlKeys!];

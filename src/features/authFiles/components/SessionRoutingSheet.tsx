@@ -10,6 +10,7 @@ import { useAuthStore, useNotificationStore } from '@/stores';
 import type { AuthFileItem } from '@/types';
 import {
   captureSessionRoutingApi,
+  rpmStrategies,
   type SessionRoutingSnapshot,
 } from '@/services/api/sessionRouting';
 import { notifyAuthFilesChanged } from '../authFilesEvents';
@@ -178,6 +179,22 @@ export function SessionRoutingSheet({
                       {formatLimit(snapshot.effective.maxConcurrentRequests)}
                     </strong>
                   </div>
+                  <div>
+                    <span>{t('session_routing.rpm')}</span>
+                    <strong>
+                      {snapshot.currentRpm} / {formatLimit(snapshot.effective.baseRpm)}
+                      {snapshot.effective.baseRpm > 0 && (
+                        <>
+                          {' '}
+                          <span className={styles.note}>
+                            {t('session_routing.rpmBuffer', {
+                              count: snapshot.rpmStickyBufferEffective,
+                            })}
+                          </span>
+                        </>
+                      )}
+                    </strong>
+                  </div>
                 </div>
                 <p className={styles.note}>{t('session_routing.description')}</p>
                 <p className={styles.note}>
@@ -236,6 +253,56 @@ export function SessionRoutingSheet({
                     />
                   </div>
                 ))}
+                <div className={styles.field}>
+                  <div className={styles.fieldHeader}>
+                    <span id="session-routing-rpmStrategy">{t('session_routing.rpmStrategy')}</span>
+                    <Select
+                      value={draft.rpmStrategy.inherit ? 'inherit' : 'custom'}
+                      ariaLabelledBy="session-routing-rpmStrategy"
+                      disabled={disabled}
+                      options={[
+                        { value: 'inherit', label: t('session_routing.inherit') },
+                        { value: 'custom', label: t('session_routing.custom') },
+                      ]}
+                      onChange={(mode) =>
+                        setDraft({
+                          ...draft,
+                          rpmStrategy: {
+                            inherit: mode === 'inherit',
+                            value: draft.rpmStrategy.inherit
+                              ? snapshot.effective.rpmStrategy
+                              : draft.rpmStrategy.value,
+                          },
+                        })
+                      }
+                    />
+                  </div>
+                  <Select
+                    value={
+                      draft.rpmStrategy.inherit
+                        ? snapshot.defaults.rpmStrategy
+                        : draft.rpmStrategy.value
+                    }
+                    ariaLabel={t('session_routing.rpmStrategy')}
+                    disabled={disabled || draft.rpmStrategy.inherit}
+                    options={rpmStrategies.map((value) => ({
+                      value,
+                      label: t(`session_routing.rpmStrategy_${value}`),
+                    }))}
+                    onChange={(value) =>
+                      setDraft({
+                        ...draft,
+                        rpmStrategy: {
+                          inherit: false,
+                          value: rpmStrategies.includes(value as (typeof rpmStrategies)[number])
+                            ? (value as (typeof rpmStrategies)[number])
+                            : 'tiered',
+                        },
+                      })
+                    }
+                  />
+                  <p className={styles.note}>{t('session_routing.rpmStrategyHint')}</p>
+                </div>
                 {!snapshot.failoverEnabled && (
                   <div className={styles.note}>
                     {t('session_routing.failoverPrerequisite')}{' '}
