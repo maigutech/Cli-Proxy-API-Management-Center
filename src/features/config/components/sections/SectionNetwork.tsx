@@ -247,6 +247,40 @@ export function SectionNetwork({
           onChange={(routingMaxConcurrentRequests) => onChange({ routingMaxConcurrentRequests })}
         />
         <TextSetting
+          fieldId="routingBaseRpm"
+          size="sm"
+          label={t('config_management.visual.additions.routingBaseRpm.label')}
+          description={t('config_management.visual.additions.routingBaseRpm.hint')}
+          value={values.routingBaseRpm}
+          disabled={disabled}
+          type="number"
+          error={getValidationMessage(t, validationErrors?.routingBaseRpm)}
+          onChange={(routingBaseRpm) => onChange({ routingBaseRpm })}
+        />
+        <TextSetting
+          fieldId="routingRpmStickyBuffer"
+          size="sm"
+          label={t('config_management.visual.additions.routingRpmStickyBuffer.label')}
+          description={t('config_management.visual.additions.routingRpmStickyBuffer.hint')}
+          value={values.routingRpmStickyBuffer}
+          disabled={disabled}
+          type="number"
+          error={getValidationMessage(t, validationErrors?.routingRpmStickyBuffer)}
+          onChange={(routingRpmStickyBuffer) => onChange({ routingRpmStickyBuffer })}
+        />
+        <SelectSetting
+          fieldId="routingRpmStrategy"
+          label={t('config_management.visual.additions.routingRpmStrategy.label')}
+          description={t('config_management.visual.additions.routingRpmStrategy.hint')}
+          value={values.routingRpmStrategy || 'tiered'}
+          disabled={disabled}
+          options={[
+            { value: 'tiered', label: t('session_routing.rpmStrategy_tiered') },
+            { value: 'sticky_exempt', label: t('session_routing.rpmStrategy_sticky_exempt') },
+          ]}
+          onChange={(routingRpmStrategy) => onChange({ routingRpmStrategy })}
+        />
+        <TextSetting
           fieldId="routingSessionIdleTTL"
           size="sm"
           label={t('config_management.visual.additions.routingSessionIdleTTL.label')}

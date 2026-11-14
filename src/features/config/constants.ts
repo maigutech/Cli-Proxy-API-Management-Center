@@ -69,6 +69,9 @@ export const SECTION_VALIDATION_FIELDS: Record<VisualSectionId, readonly VisualC
     network: [
       'routingMaxActiveSessions',
       'routingMaxConcurrentRequests',
+      'routingBaseRpm',
+      'routingRpmStickyBuffer',
+      'routingRpmStrategy',
       'routingSessionIdleTTL',
       'routingSessionFailoverTTL',
       'routingSessionRebindOn',
@@ -108,6 +111,9 @@ export const SECTION_VALIDATION_FIELDS: Record<VisualSectionId, readonly VisualC
 export const FIELD_VALUE_KEYS: Record<string, readonly string[]> = {
   routingMaxActiveSessions: ['routingMaxActiveSessions'],
   routingMaxConcurrentRequests: ['routingMaxConcurrentRequests'],
+  routingBaseRpm: ['routingBaseRpm'],
+  routingRpmStickyBuffer: ['routingRpmStickyBuffer'],
+  routingRpmStrategy: ['routingRpmStrategy'],
   routingSessionIdleTTL: ['routingSessionIdleTTL'],
   routingSessionFailoverTTL: ['routingSessionFailoverTTL'],
   routingSessionRebindOn: ['routingSessionRebindOn'],

@@ -26,6 +26,17 @@ export const ADDITION_FIELDS = [
     path: 'routing.max-concurrent-requests-per-credential'.split('.'),
     kind: 'integer',
   },
+  {
+    key: 'routingBaseRpm',
+    path: 'routing.base-rpm-per-credential'.split('.'),
+    kind: 'integer',
+  },
+  {
+    key: 'routingRpmStickyBuffer',
+    path: 'routing.rpm-sticky-buffer'.split('.'),
+    kind: 'integer',
+  },
+  { key: 'routingRpmStrategy', path: 'routing.rpm-strategy'.split('.'), kind: 'string' },
   { key: 'routingSessionIdleTTL', path: 'routing.session-idle-ttl'.split('.'), kind: 'string' },
   {
     key: 'routingSessionFailoverTTL',
@@ -324,6 +335,9 @@ export function validateVisualAdditions(
   const errors: VisualConfigValidationErrors = {
     routingMaxActiveSessions: undefined,
     routingMaxConcurrentRequests: undefined,
+    routingBaseRpm: undefined,
+    routingRpmStickyBuffer: undefined,
+    routingRpmStrategy: undefined,
     routingSessionIdleTTL: undefined,
     routingSessionFailoverTTL: undefined,
     routingSessionRebindOn: undefined,

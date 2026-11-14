@@ -1481,6 +1481,18 @@
         "codexWeeklyQuotaLimitPercent": {
           "label": "Codex 7d 使用上限（%）",
           "hint": "全域套用至所有 Codex OAuth 帳號。範圍 1–100，留空預設 90%。達到上限後暫停請求與探測，等待上游重設；修改並儲存上限會依已有額度資料立即重新判斷。已送出的請求仍可能完成。"
+        },
+        "routingBaseRpm": {
+          "label": "全域每分鐘請求上限（RPM）",
+          "hint": "0 表示不限。每個帳號按自然分鐘統計成功請求；達到上限後只繼續已持有的會話，新會話交給其他帳號。帳號可單獨覆蓋。"
+        },
+        "routingRpmStickyBuffer": {
+          "label": "全域 RPM 黏性緩衝",
+          "hint": "達到上限後，已持有的會話還能繼續的請求數。0 表示自動：請求並發上限 + 活躍 session 上限，且不少於上限的五分之一。"
+        },
+        "routingRpmStrategy": {
+          "label": "全域 RPM 超限策略",
+          "hint": "分級：緩衝用完後帳號暫停到下一分鐘。黏性豁免：已持有的會話始終放行。"
         }
       },
       "search": {
@@ -2649,7 +2661,18 @@
     "card_hint": "目前使用量 / 生效上限，每 5 秒重新整理；短請求可能發生在兩次更新之間。",
     "card_unknown": "暫時無法取得目前使用量，將自動重試。",
     "requestsShort": "並行",
-    "sessionsShort": "工作階段"
+    "sessionsShort": "工作階段",
+    "baseRpm": "每分鐘請求上限（RPM）",
+    "baseRpmHint": "0 表示不限。按自然分鐘統計此帳號成功的請求；達到上限後只繼續此帳號已持有的會話，新會話交給其他帳號。",
+    "rpmStickyBuffer": "RPM 黏性緩衝",
+    "rpmStickyBufferHint": "達到上限後，已持有的會話還能繼續的請求數，用完後此帳號暫停到下一分鐘。0 表示自動：請求並發上限 + 活躍 session 上限，且不少於上限的五分之一。",
+    "rpm": "每分鐘請求",
+    "rpmShort": "RPM",
+    "rpmBuffer": "（緩衝 {{count}}）",
+    "rpmStrategy": "RPM 超限策略",
+    "rpmStrategyHint": "分級：緩衝用完後連已持有的會話也轉到其他帳號。黏性豁免：已持有的會話始終放行，只攔新會話。所有帳號都超限時返回 429，並提示到下一分鐘再試。",
+    "rpmStrategy_tiered": "分級（預設）",
+    "rpmStrategy_sticky_exempt": "黏性豁免"
   },
   "account_test": {
     "title": "測試模型",

@@ -15,6 +15,13 @@ export function AccountOccupancy({ snapshot }: { snapshot?: SessionRoutingSnapsh
       current: snapshot?.activeSessions,
       limit: snapshot?.effective.maxActiveSessions,
     },
+    // Marked full from the base RPM on: past it the account only continues the
+    // sessions it already holds, which is when operators want to notice.
+    {
+      label: 'rpm',
+      current: snapshot?.currentRpm,
+      limit: snapshot?.effective.baseRpm,
+    },
   ];
   return (
     <div
