@@ -144,7 +144,7 @@ export function AccountGroupsModal({
             type="submit"
             form={formId}
             loading={saving}
-            disabled={stale || loading || conflict || !credential || !dirty || Boolean(issue)}
+            disabled={stale || loading || conflict || !credential || !dirty}
           >
             {t('common.save')}
           </Button>
@@ -230,9 +230,11 @@ export function AccountGroupsModal({
                   <p className={styles.hint}>{t('service_groups.unassignedWarning')}</p>
                 )}
                 {issue && (
-                  <div className="error-box" role="alert">
+                  // Informational: a group may be left without accounts, or a model
+                  // without support, and answers with "no authorized credential".
+                  <p className={styles.hint} role="status">
                     {t(`service_groups.${issue.key}`, issue)}
-                  </div>
+                  </p>
                 )}
               </>
             ) : (

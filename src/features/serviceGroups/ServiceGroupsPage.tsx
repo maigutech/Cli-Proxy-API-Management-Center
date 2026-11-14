@@ -15,7 +15,14 @@ import {
   type ServiceGroup,
 } from '@/services/api/serviceGroups';
 import { getErrorMessage } from '@/utils/helpers';
-import { appendModels, groupValidation, newGroup, supportedModels } from './logic';
+import {
+  appendModels,
+  groupIssues,
+  newGroup,
+  poolModels,
+  supportedModels,
+  type GroupIssue,
+} from './logic';
 import { GroupKeyControl } from './GroupKeyControl';
 import { GroupModelCandidates } from './GroupModelCandidates';
 import styles from './ServiceGroupsPage.module.scss';
@@ -115,11 +122,23 @@ export function ServiceGroupsPage() {
     setDraft((old) => (old ? { ...old, ...change } : old));
   };
   const credentials = modelCredentials ?? board?.credentials ?? [];
-  const models = draft ? supportedModels(draft, credentials) : [];
-  const validation = draft ? groupValidation(draft, credentials) : null;
+  const memberModels = draft ? supportedModels(draft, credentials) : [];
+  // Targets can be chosen from the whole pool, so models can be set up before
+  // their accounts; rows no member supports yet are flagged, not blocked.
+  const models = [
+    ...new Set([...memberModels, ...poolModels([...(board?.credentials ?? []), ...credentials])]),
+  ];
+  const issues = draft ? groupIssues(draft, credentials) : [];
+  const blocking = issues.filter((issue) => issue.blocking);
+  const warnings = issues.filter((issue) => !issue.blocking);
+  const issueText = (issue: GroupIssue) => t(`service_groups.${issue.key}`, issue.params);
+  const fieldIssue = (match: (issue: GroupIssue) => boolean) => {
+    const found = issues.find((issue) => issue.blocking && match(issue));
+    return found ? issueText(found) : undefined;
+  };
   const current = () => apiClient.getConnectionRevision();
   const save = () => {
-    if (!draft || !board || validation) return;
+    if (!draft || !board || blocking.length) return;
     const revision = current();
     void act(async (api) => {
       await api.preview(draft);
@@ -282,7 +301,7 @@ export function ServiceGroupsPage() {
             <Button variant="secondary" disabled={busy} onClick={() => setDraft(null)}>
               {t('service_groups.cancel')}
             </Button>
-            <Button disabled={!!validation} loading={busy} onClick={save}>
+            <Button disabled={blocking.length > 0} loading={busy} onClick={save}>
               {t('service_groups.save')}
             </Button>
           </div>
@@ -301,6 +320,11 @@ export function ServiceGroupsPage() {
                   onClick={() => (name === 'usage' ? loadUsage() : setTab(name))}
                 >
                   {t(`service_groups.${name}`)}
+                  {blocking.some((issue) => issue.tab === name) && (
+                    <span className={styles.tabBadge}>
+                      {blocking.filter((issue) => issue.tab === name).length}
+                    </span>
+                  )}
                 </button>
               ))}
             </div>
@@ -309,7 +333,44 @@ export function ServiceGroupsPage() {
                 {error}
               </div>
             )}
-            {validation && <p className={styles.notice}>{t(`service_groups.${validation}`)}</p>}
+            {blocking.length > 0 && (
+              <div role="alert" className="error-box">
+                <strong>{t('service_groups.issuesBlocking')}</strong>
+                <ul className={styles.issueList}>
+                  {blocking.map((issue, index) => (
+                    <li key={`${issue.key}-${index}`}>
+                      <button
+                        type="button"
+                        className={styles.issueTab}
+                        onClick={() => setTab(issue.tab)}
+                      >
+                        {t(`service_groups.${issue.tab}`)}
+                      </button>
+                      {issueText(issue)}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {warnings.length > 0 && (
+              <div className={`${styles.notice} ${styles.warningNotice}`}>
+                <strong>{t('service_groups.issuesWarning')}</strong>
+                <ul className={styles.issueList}>
+                  {warnings.map((issue, index) => (
+                    <li key={`${issue.key}-${index}`}>
+                      <button
+                        type="button"
+                        className={styles.issueTab}
+                        onClick={() => setTab(issue.tab)}
+                      >
+                        {t(`service_groups.${issue.tab}`)}
+                      </button>
+                      {issueText(issue)}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
             <div role="tabpanel">
               {tab === 'overview' && (
                 <>
@@ -317,6 +378,7 @@ export function ServiceGroupsPage() {
                     label={t('service_groups.name')}
                     value={draft.name}
                     maxLength={120}
+                    error={fieldIssue((issue) => issue.field === 'name')}
                     onChange={(e) => update({ name: e.target.value })}
                   />
                   <Input
@@ -460,6 +522,11 @@ export function ServiceGroupsPage() {
                                   max={1000000}
                                   value={member.weight ?? ''}
                                   placeholder={t('service_groups.inherit')}
+                                  error={fieldIssue(
+                                    (issue) =>
+                                      issue.key === 'invalidWeight' &&
+                                      issue.credentialId === credential.id
+                                  )}
                                   onChange={(e) =>
                                     update({
                                       members: draft.members.map((m) =>
@@ -521,6 +588,9 @@ export function ServiceGroupsPage() {
                       <Input
                         label={t('service_groups.publicModel')}
                         value={model.name}
+                        error={fieldIssue(
+                          (issue) => issue.modelIndex === index && issue.modelField === 'name'
+                        )}
                         onChange={(e) =>
                           update({
                             models: draft.models.map((m, i) =>
@@ -549,6 +619,18 @@ export function ServiceGroupsPage() {
                             </option>
                           ))}
                         </select>
+                        {issues
+                          .filter(
+                            (issue) => issue.modelIndex === index && issue.modelField === 'target'
+                          )
+                          .map((issue) => (
+                            <span
+                              key={issue.key}
+                              className={issue.blocking ? 'error-box' : styles.cooldown}
+                            >
+                              {issueText(issue)}
+                            </span>
+                          ))}
                       </label>
                       <Button
                         variant="ghost"
@@ -577,6 +659,7 @@ export function ServiceGroupsPage() {
                     min={0}
                     max={100000}
                     value={draft.maxConcurrent}
+                    error={fieldIssue((issue) => issue.field === 'maxConcurrent')}
                     onChange={(e) => update({ maxConcurrent: Number(e.target.value) })}
                   />
                   <label className={styles.check}>

@@ -16,6 +16,12 @@ export function credentialGroupIds(board: GroupBoard, credentialId: string): str
     .map((group) => group.id);
 }
 
+/**
+ * What removing a credential from enabled groups leaves behind: a group with
+ * no accounts, or a model no remaining account supports. Both are allowed;
+ * the group then answers those requests with "no authorized credential". The
+ * editor shows the result so the operator knows, without blocking the change.
+ */
 export function membershipRemovalIssue(
   board: GroupBoard,
   credentialId: string,

@@ -309,3 +309,39 @@
     font-size: 22px;
   }
 }
+.issueList {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  li {
+    margin: 2px 0;
+  }
+}
+.issueTab {
+  border: 0;
+  background: none;
+  padding: 0;
+  margin-right: 6px;
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  &::after {
+    content: '·';
+    margin-left: 6px;
+  }
+}
+.warningNotice {
+  color: var(--warning-color, #ad6600);
+}
+.tabBadge {
+  display: inline-block;
+  min-width: 18px;
+  margin-left: 6px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--error-color, #d93025);
+  color: #fff;
+  font-size: 11px;
+  line-height: 18px;
+  text-align: center;
+}
