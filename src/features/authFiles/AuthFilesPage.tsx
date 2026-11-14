@@ -66,6 +66,7 @@ import { ModelPricesSheet } from '@/features/usage/ModelPricesSheet';
 import { UsageOverview } from '@/features/usage/UsageOverview';
 import { useAccountUsage } from '@/features/usage/useAccountUsage';
 import { useGroupMembership } from '@/features/serviceGroups/useGroupMembership';
+import { membershipCredential } from '@/features/serviceGroups/accountMembership';
 import { AccountGroupsModal } from '@/features/serviceGroups/AccountGroupsModal';
 import { groupCounts, matchesGroup } from '@/features/serviceGroups/membership';
 import { GroupMembershipFilter } from '@/features/serviceGroups/GroupMembershipControls';
@@ -770,6 +771,9 @@ export function AuthFilesPage() {
           availableModels={codexProbe.availableModels}
           onSave={codexProbe.updateSettings}
           onClose={() => setProbeSettingsOpen(false)}
+          board={groupBoard}
+          policyState={codexProbe.policyState}
+          onPolicyLock={codexProbe.setPolicyLock}
         />
 
         {error && (
@@ -834,6 +838,10 @@ export function AuthFilesPage() {
                   codexProbe.byAuth.get(String(file.authIndex ?? '')) ??
                   codexProbe.byAuth.get(file.name)
                 }
+                policyRecord={(() => {
+                  const credentialId = membershipCredential(groupBoard, file)?.id;
+                  return credentialId ? codexProbe.policyState.records[credentialId] : undefined;
+                })()}
                 probeEnabled={codexProbe.settings.enabled}
                 probeMode={codexProbe.settings.mode}
                 probeSubmitting={codexProbe.submitting.has(String(file.authIndex ?? ''))}

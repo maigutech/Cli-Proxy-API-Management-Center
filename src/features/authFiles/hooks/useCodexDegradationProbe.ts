@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   codexDegradationProbeApi,
+  type CodexDegradationPolicyState,
   type CodexDegradationProbeSettings,
   type CodexDegradationProbeSettingsUpdate,
   type CodexDegradationProbeStatus,
@@ -41,6 +42,10 @@ export function useCodexDegradationProbe() {
   const [settings, setSettings] = useState<CodexDegradationProbeSettings>({ enabled: false });
   const [availableModels, setAvailableModels] = useState<string[]>([]);
   const [credentials, setCredentials] = useState<CodexDegradationProbeStatus[]>([]);
+  const [policyState, setPolicyState] = useState<CodexDegradationPolicyState>({
+    records: {},
+    actions: [],
+  });
   const [submitting, setSubmitting] = useState<Set<string>>(new Set());
   const sessionRef = useRef<ProbeSession | null>(null);
 
@@ -61,6 +66,7 @@ export function useCodexDegradationProbe() {
           setSettings(result.settings);
           setAvailableModels(result.availableModels);
           setCredentials(result.credentials);
+          setPolicyState(result.policyState);
           running = result.credentials.some((status) => status.in_flight);
         } catch {
           // Keep the last result; an unavailable status route is not a verdict.
@@ -78,6 +84,7 @@ export function useCodexDegradationProbe() {
     sessionRef.current = session;
     setSettings({ enabled: false });
     setCredentials([]);
+    setPolicyState({ records: {}, actions: [] });
     setSubmitting(new Set());
     if (authenticated) void session.load();
     return () => {
@@ -142,6 +149,27 @@ export function useCodexDegradationProbe() {
     [showNotification, t]
   );
 
+  // Locking only changes who the policy may touch, so the new state is shown
+  // straight from the response without waiting for the next poll.
+  const setPolicyLock = useCallback(
+    async (credentialId: string, locked: boolean): Promise<boolean> => {
+      try {
+        setPolicyState(await codexDegradationProbeApi.setPolicyLock(credentialId, locked));
+        return true;
+      } catch (error) {
+        const message = (error as { message?: string })?.message;
+        showNotification(
+          message
+            ? `${t('auth_files.policy_lock_failed')}: ${message}`
+            : t('auth_files.policy_lock_failed'),
+          'error'
+        );
+        return false;
+      }
+    },
+    [showNotification, t]
+  );
+
   const byAuth = useMemo(() => buildIndex(credentials), [credentials]);
   return {
     settings,
@@ -151,5 +179,7 @@ export function useCodexDegradationProbe() {
     submitting,
     run,
     updateSettings,
+    policyState,
+    setPolicyLock,
   };
 }

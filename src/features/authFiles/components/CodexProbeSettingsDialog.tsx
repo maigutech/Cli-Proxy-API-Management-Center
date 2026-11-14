@@ -6,9 +6,19 @@ import { Select } from '@/components/ui/Select';
 import { ToggleSwitch } from '@/components/ui/ToggleSwitch';
 import { Button } from '@/components/ui/Button';
 import type {
+  CodexDegradationPolicyState,
   CodexDegradationProbeSettings,
   CodexDegradationProbeSettingsUpdate,
 } from '@/services/api/codexDegradationProbe';
+import type { GroupBoard } from '@/services/api/serviceGroups';
+import { CodexDegradationPolicySection } from './CodexDegradationPolicySection';
+import {
+  DAILY_PROBE_INTERVAL_MINUTES,
+  policyDraftFrom,
+  policyIssues,
+  policySettingsFrom,
+  type PolicyDraft,
+} from './degradationPolicy';
 
 /** Documented in the scorer as frequently mistaken for gpt-5.5 on healthy
  * accounts, so it is the one profile that should not be a probe target. */
@@ -21,6 +31,10 @@ export interface CodexProbeSettingsDialogProps {
   availableModels: string[];
   onSave: (update: CodexDegradationProbeSettingsUpdate) => Promise<boolean>;
   onClose: () => void;
+  /** Service groups, for the degradation policy; null until loaded. */
+  board?: GroupBoard | null;
+  policyState?: CodexDegradationPolicyState;
+  onPolicyLock?: (credentialId: string, locked: boolean) => Promise<boolean>;
 }
 
 export function CodexProbeSettingsDialog({
@@ -29,6 +43,9 @@ export function CodexProbeSettingsDialog({
   availableModels,
   onSave,
   onClose,
+  board = null,
+  policyState = { records: {}, actions: [] },
+  onPolicyLock = async () => false,
 }: CodexProbeSettingsDialogProps) {
   const { t } = useTranslation();
   const intervalId = useId();
@@ -36,6 +53,7 @@ export function CodexProbeSettingsDialog({
   const [enabled, setEnabled] = useState(false);
   const [interval, setInterval] = useState('');
   const [model, setModel] = useState('');
+  const [policy, setPolicy] = useState<PolicyDraft>(() => policyDraftFrom(undefined));
   const [saving, setSaving] = useState(false);
 
   // Re-seed from the server every time the dialog opens so it never shows a
@@ -45,6 +63,7 @@ export function CodexProbeSettingsDialog({
     setEnabled(settings.enabled === true);
     setInterval(String(settings['interval-minutes'] ?? ''));
     setModel(settings['probe-model'] ?? '');
+    setPolicy(policyDraftFrom(settings.policy));
   }, [open, settings]);
 
   // gpt-6-sol has a reference profile, so the server accepts it, but it is
@@ -52,25 +71,34 @@ export function CodexProbeSettingsDialog({
   // the probe report degradation that is not there. Offer it, flagged.
   const modelOptions = availableModels.map((value) => ({
     value,
-    label: value === UNRELIABLE_PROBE_MODEL ? `${value} — ${t('auth_files.probe_model_unreliable')}` : value,
+    label:
+      value === UNRELIABLE_PROBE_MODEL
+        ? `${value} — ${t('auth_files.probe_model_unreliable')}`
+        : value,
   }));
   const modelUnreliable = model === UNRELIABLE_PROBE_MODEL;
   const intervalValue = Number(interval);
-  const intervalInvalid = interval.trim() !== '' && (!Number.isFinite(intervalValue) || intervalValue < 0);
+  const intervalInvalid =
+    interval.trim() !== '' && (!Number.isFinite(intervalValue) || intervalValue < 0);
+  const grouped = board?.mode === 'grouped';
+  // The policy is only sent where service groups exist; without them there is
+  // nothing for it to move and the server would refuse it.
+  const issues = grouped ? policyIssues(policy, enabled, board) : [];
 
   const save = async () => {
-    if (intervalInvalid) return;
+    if (intervalInvalid || issues.length) return;
     setSaving(true);
     const update: CodexDegradationProbeSettingsUpdate = { enabled };
     if (interval.trim() !== '') update.interval_minutes = Math.trunc(intervalValue);
     if (model.trim() !== '') update.probe_model = model.trim();
+    if (grouped) update.policy = policySettingsFrom(policy);
     const ok = await onSave(update);
     setSaving(false);
     if (ok) onClose();
   };
 
   return (
-    <Modal open={open} onClose={onClose} width={520} title={t('auth_files.probe_settings_title')}>
+    <Modal open={open} onClose={onClose} width={640} title={t('auth_files.probe_settings_title')}>
       <div className="stack">
         <p className="hint">{t('auth_files.probe_settings_description')}</p>
 
@@ -113,8 +141,25 @@ export function CodexProbeSettingsDialog({
           )}
         </div>
 
+        {grouped && (
+          <CodexDegradationPolicySection
+            draft={policy}
+            onChange={setPolicy}
+            board={board}
+            intervalMinutes={interval}
+            onUseDailyInterval={() => setInterval(String(DAILY_PROBE_INTERVAL_MINUTES))}
+            issues={issues}
+            policyState={policyState}
+            onLock={onPolicyLock}
+          />
+        )}
+
         <div>
-          <Button variant="primary" onClick={save} disabled={saving || intervalInvalid}>
+          <Button
+            variant="primary"
+            onClick={save}
+            disabled={saving || intervalInvalid || issues.length > 0}
+          >
             {t('common.save')}
           </Button>
         </div>

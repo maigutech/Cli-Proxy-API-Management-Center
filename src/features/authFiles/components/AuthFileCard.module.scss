@@ -602,3 +602,9 @@
   color: var(--text-secondary);
   background: var(--bg-secondary);
 }
+
+/* The degradation policy's state sits beside the probe verdict it acts on. */
+.policyBadge {
+  color: var(--viz-warning);
+  border-color: currentColor;
+}

@@ -35,7 +35,11 @@ import {
 import { deriveAuthFileIdentity } from '@/features/authFiles/identity';
 import { resolveAuthFileQuotaType } from '@/features/authFiles/logic';
 import type { AuthFileStatusBarData } from '@/features/authFiles/hooks/useAuthFilesStatusBarCache';
-import type { CodexDegradationProbeStatus } from '@/services/api/codexDegradationProbe';
+import type {
+  CodexDegradationProbeStatus,
+  CodexDegradationRecord,
+} from '@/services/api/codexDegradationProbe';
+import { policyBadge } from './degradationPolicy';
 import { AuthFileQuotaSection } from '@/features/authFiles/components/AuthFileQuotaSection';
 import { AuthFileCooldownSection } from './AuthFileCooldownSection';
 import { AccountOccupancy } from './AccountOccupancy';
@@ -60,6 +64,8 @@ export type AuthFileCardProps = {
   statusBarCache: Map<string, AuthFileStatusBarData>;
   /** Codex degradation-probe state for this account, when the probe has seen it. */
   probeStatus?: CodexDegradationProbeStatus;
+  /** What the degradation policy has done or is about to do with this account. */
+  policyRecord?: CodexDegradationRecord;
   /** Whether the degradation probe is enabled on the server. */
   probeEnabled?: boolean;
   probeMode?: string;
@@ -98,6 +104,7 @@ export function AuthFileCard(props: AuthFileCardProps) {
     quotaFilterType,
     statusBarCache,
     probeStatus,
+    policyRecord,
     probeEnabled,
     probeMode,
     probeSubmitting,
@@ -143,6 +150,7 @@ export function AuthFileCard(props: AuthFileCardProps) {
   const requiresSignIn = file.requiresSignIn === true;
   const showProbe = providerKey === 'codex' && !isRuntimeOnly && !requiresSignIn;
   const probeRunning = probeSubmitting || probeStatus?.in_flight === true;
+  const policyKey = policyBadge(policyRecord);
   const now = useNow(showProbe);
   const weeklyProtection = usage?.weeklyQuotaProtection ?? file.weeklyQuotaProtection;
   const weeklyPaused = weeklyQuotaProtectionActive(weeklyProtection, now);
@@ -333,6 +341,14 @@ export function AuthFileCard(props: AuthFileCardProps) {
                 <span className={styles.probeVerdict}>· {probeActionLabel}</span>
               )}
             </span>
+            {policyKey && (
+              <span
+                className={`${styles.probeBadge} ${styles.policyBadge}`}
+                title={policyRecord?.last_skip_reason || undefined}
+              >
+                {t(`auth_files.${policyKey}`)}
+              </span>
+            )}
             {onRunProbe && (
               <Button
                 variant="secondary"
@@ -350,7 +366,11 @@ export function AuthFileCard(props: AuthFileCardProps) {
                     ? t('account_usage.weeklyProtectionPaused', {
                         threshold: weeklyProtection?.thresholdPercent,
                       })
-                    : t(probeEnabled ? 'auth_files.probe_run_hint' : 'auth_files.probe_run_sweep_off')
+                    : t(
+                        probeEnabled
+                          ? 'auth_files.probe_run_hint'
+                          : 'auth_files.probe_run_sweep_off'
+                      )
                 }
                 aria-label={t('auth_files.probe_run_account', { name: identity.primary })}
               >
