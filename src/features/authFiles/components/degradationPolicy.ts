@@ -93,7 +93,6 @@ export function policyIssues(
     if (board?.mode !== 'grouped') issues.push('policy_issue_groups_inactive');
     if (!probeEnabled) issues.push('policy_issue_probe_off');
     if (!draft.managedGroups.length) issues.push('policy_issue_no_managed');
-    if (!draft.canaryCredentials.length) issues.push('policy_issue_no_canary');
     if (draft.managedGroups.some((id) => !usableGroup(id)))
       issues.push('policy_issue_missing_group');
     if (draft.degradedGroup && !usableGroup(draft.degradedGroup))
