@@ -85,9 +85,8 @@ describe('degradation policy editor', () => {
       canaryCredentials: ['cred-a'],
     };
     expect(policyIssues(ok, true, board)).toEqual([]);
-    expect(policyIssues({ ...ok, canaryCredentials: [] }, true, board)).toEqual([
-      'policy_issue_no_canary',
-    ]);
+    // Canaries are optional.
+    expect(policyIssues({ ...ok, canaryCredentials: [] }, true, board)).toEqual([]);
     expect(policyIssues(ok, false, board)).toEqual(['policy_issue_probe_off']);
     expect(
       policyIssues({ ...ok, managedGroups: ['customers', 'degraded'] }, true, board)
@@ -200,7 +199,7 @@ describe('degradation policy section', () => {
           board: withCredentials,
           intervalMinutes: '360',
           onUseDailyInterval: () => {},
-          issues: ['policy_issue_no_canary'],
+          issues: ['policy_issue_no_managed'],
           policyState: {
             records: {
               'cred-a': { tier: 'degraded', removed_groups: ['customers'], healthy_streak: 1 },
@@ -224,7 +223,7 @@ describe('degradation policy section', () => {
     expect(html).toContain('Customers');
     expect(html).toContain('alice@x');
     expect(html).not.toContain('claude-key'); // only Codex accounts can be canaries
-    expect(html).toContain('auth_files.policy_issue_no_canary');
+    expect(html).toContain('auth_files.policy_issue_no_managed');
     expect(html).toContain('auth_files.policy_badge_degraded');
     expect(html).toContain('auth_files.policy_action_demote');
     expect(html).toContain('left Customers');
