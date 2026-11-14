@@ -24,6 +24,9 @@ export interface CodexDegradationPolicySectionProps {
   issues: string[];
   policyState: CodexDegradationPolicyState;
   onLock: (credentialId: string, locked: boolean) => Promise<boolean>;
+  /** Moves one account, or all when credentialId is omitted, back to the
+   * groups it left. Works with the policy disabled. */
+  onRestore: (credentialId?: string) => Promise<boolean>;
 }
 
 /**
@@ -39,10 +42,12 @@ export function CodexDegradationPolicySection({
   issues,
   policyState,
   onLock,
+  onRestore,
 }: CodexDegradationPolicySectionProps) {
   const { t } = useTranslation();
   const degradedId = useId();
   const [locking, setLocking] = useState<string | null>(null);
+  const [restoring, setRestoring] = useState<string | null>(null);
   const set = (change: Partial<PolicyDraft>) => onChange({ ...draft, ...change });
   const toggle = (list: string[], id: string, on: boolean) =>
     on ? [...list.filter((v) => v !== id), id] : list.filter((v) => v !== id);
@@ -55,12 +60,21 @@ export function CodexDegradationPolicySection({
     (c) => c.id && !c.conflict && c.provider.toLowerCase() === 'codex'
   );
   const credentialName = (id: string) => board?.credentials.find((c) => c.id === id)?.name ?? id;
+  // Selections that no longer resolve stay listed, flagged, so they can be
+  // unticked; otherwise a stale ID would be kept and sent back invisibly.
+  const staleGroups = draft.managedGroups.filter((id) => !groups.some((g) => g.id === id));
+  const staleCanaries = draft.canaryCredentials.filter(
+    (id) => !credentials.some((c) => c.id === id)
+  );
+  const degradedStale =
+    draft.degradedGroup !== '' && !groups.some((g) => g.id === draft.degradedGroup);
   const daily = Number(intervalMinutes) === DAILY_PROBE_INTERVAL_MINUTES;
 
   const records = Object.entries(policyState.records).sort(([a], [b]) =>
     credentialName(a).localeCompare(credentialName(b))
   );
   const actions = policyState.actions.slice(-RECENT_ACTIONS).reverse();
+  const degradedCount = records.filter(([, r]) => r.tier === 'degraded').length;
 
   const recordSummary = (record: CodexDegradationRecord) => {
     const badge = policyBadge(record);
@@ -87,6 +101,13 @@ export function CodexDegradationPolicySection({
     setLocking(credentialId);
     await onLock(credentialId, locked);
     setLocking(null);
+  };
+
+  const RESTORE_ALL = '*';
+  const restore = async (credentialId?: string) => {
+    setRestoring(credentialId ?? RESTORE_ALL);
+    await onRestore(credentialId);
+    setRestoring(null);
   };
 
   return (
@@ -141,6 +162,19 @@ export function CodexDegradationPolicySection({
                 </span>
               </label>
             ))}
+          {staleGroups.map((id) => (
+            <label key={id} className={styles.choice}>
+              <input
+                type="checkbox"
+                checked
+                onChange={() => set({ managedGroups: toggle(draft.managedGroups, id, false) })}
+              />
+              <span>
+                {groupName(id)}
+                <small> · {t('auth_files.policy_stale_group')}</small>
+              </span>
+            </label>
+          ))}
         </div>
       </fieldset>
 
@@ -154,6 +188,14 @@ export function CodexDegradationPolicySection({
             ...groups
               .filter((g) => !draft.managedGroups.includes(g.id))
               .map((g) => ({ value: g.id, label: g.name })),
+            ...(degradedStale
+              ? [
+                  {
+                    value: draft.degradedGroup,
+                    label: `${groupName(draft.degradedGroup)} · ${t('auth_files.policy_stale_group')}`,
+                  },
+                ]
+              : []),
           ]}
           onChange={(degradedGroup) => set({ degradedGroup })}
           ariaLabel={t('auth_files.policy_degraded_group')}
@@ -178,6 +220,21 @@ export function CodexDegradationPolicySection({
                 }
               />
               <span>{c.name}</span>
+            </label>
+          ))}
+          {staleCanaries.map((id) => (
+            <label key={id} className={styles.choice}>
+              <input
+                type="checkbox"
+                checked
+                onChange={() =>
+                  set({ canaryCredentials: toggle(draft.canaryCredentials, id, false) })
+                }
+              />
+              <span>
+                {credentialName(id)}
+                <small> · {t('auth_files.policy_stale_canary')}</small>
+              </span>
             </label>
           ))}
         </div>
@@ -255,7 +312,20 @@ export function CodexDegradationPolicySection({
         </div>
       )}
 
-      <h4 className={styles.subtitle}>{t('auth_files.policy_state_title')}</h4>
+      <div className={styles.heading}>
+        <h4 className={styles.subtitle}>{t('auth_files.policy_state_title')}</h4>
+        {degradedCount > 1 && (
+          <Button
+            variant="secondary"
+            size="sm"
+            loading={restoring === RESTORE_ALL}
+            disabled={restoring !== null}
+            onClick={() => void restore()}
+          >
+            {t('auth_files.policy_restore_all')}
+          </Button>
+        )}
+      </div>
       {records.length === 0 ? (
         <p className="hint">{t('auth_files.policy_state_empty')}</p>
       ) : (
@@ -266,14 +336,27 @@ export function CodexDegradationPolicySection({
                 <strong>{credentialName(id)}</strong>
                 <small>{recordSummary(record)}</small>
               </span>
-              <Button
-                variant="ghost"
-                size="sm"
-                loading={locking === id}
-                onClick={() => void lock(id, !record.locked)}
-              >
-                {t(record.locked ? 'auth_files.policy_unlock' : 'auth_files.policy_lock')}
-              </Button>
+              <span className={styles.recordButtons}>
+                {record.tier === 'degraded' && (
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    loading={restoring === id}
+                    disabled={restoring !== null}
+                    onClick={() => void restore(id)}
+                  >
+                    {t('auth_files.policy_restore')}
+                  </Button>
+                )}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  loading={locking === id}
+                  onClick={() => void lock(id, !record.locked)}
+                >
+                  {t(record.locked ? 'auth_files.policy_unlock' : 'auth_files.policy_lock')}
+                </Button>
+              </span>
             </li>
           ))}
         </ul>

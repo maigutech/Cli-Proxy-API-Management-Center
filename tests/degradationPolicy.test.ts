@@ -35,11 +35,21 @@ const group = (id: string, archived = false) => ({
   keyVersion: 0,
   keyAvailable: false,
 });
+const credential = (id: string, name: string, provider = 'codex') => ({
+  id,
+  authId: id,
+  name,
+  provider,
+  disabled: false,
+  conflict: false,
+  models: [],
+  groups: [],
+});
 const board: GroupBoard = {
   version: 1,
   mode: 'grouped',
   groups: [group('customers'), group('degraded'), group('old', true)],
-  credentials: [],
+  credentials: [credential('cred-a', 'alice@x')],
   statuses: {},
 };
 
@@ -85,6 +95,12 @@ describe('degradation policy editor', () => {
     expect(policyIssues({ ...ok, managedGroups: ['old'] }, true, board)).toContain(
       'policy_issue_missing_group'
     );
+    expect(policyIssues({ ...ok, degradedGroup: 'old' }, true, board)).toContain(
+      'policy_issue_missing_degraded'
+    );
+    expect(policyIssues({ ...ok, canaryCredentials: ['gone'] }, true, board)).toContain(
+      'policy_issue_missing_canary'
+    );
     expect(policyIssues({ ...ok, quietEndHour: 24 }, true, board)).toContain(
       'policy_issue_quiet_hours'
     );
@@ -94,7 +110,8 @@ describe('degradation policy editor', () => {
     expect(policyIssues(ok, true, { ...board, mode: 'legacy' })).toContain(
       'policy_issue_groups_inactive'
     );
-    // A paused policy may be saved half configured.
+    // A paused policy may be saved half configured, and with references that
+    // no longer resolve, so it can be fixed after a group or account went away.
     expect(
       policyIssues(
         { ...ok, enabled: false, managedGroups: [], canaryCredentials: [] },
@@ -102,6 +119,23 @@ describe('degradation policy editor', () => {
         board
       )
     ).toEqual([]);
+    expect(
+      policyIssues(
+        {
+          ...ok,
+          enabled: false,
+          managedGroups: ['gone-group'],
+          degradedGroup: 'old',
+          canaryCredentials: ['gone'],
+        },
+        false,
+        board
+      )
+    ).toEqual([]);
+    // Values out of range are refused even when paused.
+    expect(policyIssues({ ...ok, enabled: false, quietStartHour: 30 }, false, board)).toEqual([
+      'policy_issue_quiet_hours',
+    ]);
   });
 
   test('cards show the furthest stage an account has reached', () => {
@@ -149,28 +183,7 @@ describe('degradation policy section', () => {
         { ...group('customers'), name: 'Customers' },
         { ...group('degraded'), name: '降智组' },
       ],
-      credentials: [
-        {
-          id: 'cred-a',
-          authId: 'a',
-          name: 'alice@x',
-          provider: 'codex',
-          disabled: false,
-          conflict: false,
-          models: [],
-          groups: [],
-        },
-        {
-          id: 'cred-k',
-          authId: 'k',
-          name: 'claude-key',
-          provider: 'claude',
-          disabled: false,
-          conflict: false,
-          models: [],
-          groups: [],
-        },
-      ],
+      credentials: [credential('cred-a', 'alice@x'), credential('cred-k', 'claude-key', 'claude')],
     };
     const html = renderToStaticMarkup(
       createElement(
@@ -179,8 +192,9 @@ describe('degradation policy section', () => {
         createElement(CodexDegradationPolicySection, {
           draft: {
             ...policyDraftFrom(undefined),
-            managedGroups: ['customers'],
+            managedGroups: ['customers', 'gone-group'],
             degradedGroup: 'degraded',
+            canaryCredentials: ['gone-canary'],
           },
           onChange: () => {},
           board: withCredentials,
@@ -201,6 +215,7 @@ describe('degradation policy section', () => {
             ],
           },
           onLock: async () => true,
+          onRestore: async () => true,
         })
       )
     );
@@ -213,5 +228,12 @@ describe('degradation policy section', () => {
     expect(html).toContain('auth_files.policy_badge_degraded');
     expect(html).toContain('auth_files.policy_action_demote');
     expect(html).toContain('left Customers');
+    expect(html).toContain('auth_files.policy_restore'); // the moved account can be moved back
+    expect(html).not.toContain('auth_files.policy_restore_all'); // only one moved
+    // Selections that no longer resolve stay visible so they can be unticked.
+    expect(html).toContain('gone-group');
+    expect(html).toContain('gone-canary');
+    expect(html).toContain('auth_files.policy_stale_group');
+    expect(html).toContain('auth_files.policy_stale_canary');
   });
 });

@@ -170,6 +170,30 @@ export function useCodexDegradationProbe() {
     [showNotification, t]
   );
 
+  const restorePolicy = useCallback(
+    async (credentialId?: string): Promise<boolean> => {
+      try {
+        const result = await codexDegradationProbeApi.restorePolicy(credentialId);
+        setPolicyState(result.policyState);
+        showNotification(
+          t('auth_files.policy_restore_done', { count: result.restored }),
+          'success'
+        );
+        return true;
+      } catch (error) {
+        const message = (error as { message?: string })?.message;
+        showNotification(
+          message
+            ? `${t('auth_files.policy_restore_failed')}: ${message}`
+            : t('auth_files.policy_restore_failed'),
+          'error'
+        );
+        return false;
+      }
+    },
+    [showNotification, t]
+  );
+
   const byAuth = useMemo(() => buildIndex(credentials), [credentials]);
   return {
     settings,
@@ -181,5 +205,6 @@ export function useCodexDegradationProbe() {
     updateSettings,
     policyState,
     setPolicyLock,
+    restorePolicy,
   };
 }

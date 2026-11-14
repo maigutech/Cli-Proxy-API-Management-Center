@@ -560,7 +560,16 @@
     "policy_issue_groups_inactive": "Önce hizmet gruplarını açın.",
     "policy_issue_probe_off": "Önce periyodik kontrolü açın.",
     "policy_issue_no_managed": "Açmadan önce en az bir yönetilen grup seçin.",
-    "policy_issue_no_canary": "Açmadan önce en az bir kanarya hesap seçin."
+    "policy_issue_no_canary": "Açmadan önce en az bir kanarya hesap seçin.",
+    "policy_action_abandon": "Takip bırakıldı",
+    "policy_issue_missing_canary": "Bir kanarya hesabı artık yok; işaretini kaldırın.",
+    "policy_issue_missing_degraded": "Bozulma grubu artık yok veya arşivlendi.",
+    "policy_restore": "Geri taşı",
+    "policy_restore_all": "Tümünü geri taşı",
+    "policy_restore_done": "{{count}} hesap geri taşındı",
+    "policy_restore_failed": "Hesaplar geri taşınamadı",
+    "policy_stale_group": "arşivlendi veya silindi",
+    "policy_stale_canary": "artık yok"
   },
   "antigravity_subscription": {
     "plan_unknown": "Bilinmiyor",

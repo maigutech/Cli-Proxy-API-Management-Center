@@ -563,7 +563,16 @@
     "policy_issue_groups_inactive": "Сначала включите сервисные группы.",
     "policy_issue_probe_off": "Сначала включите плановую проверку.",
     "policy_issue_no_managed": "Выберите хотя бы одну управляемую группу.",
-    "policy_issue_no_canary": "Выберите хотя бы один контрольный аккаунт."
+    "policy_issue_no_canary": "Выберите хотя бы один контрольный аккаунт.",
+    "policy_action_abandon": "Отслеживание прекращено",
+    "policy_issue_missing_canary": "Контрольного аккаунта больше нет; снимите отметку.",
+    "policy_issue_missing_degraded": "Группы деградации больше нет или она в архиве.",
+    "policy_restore": "Вернуть",
+    "policy_restore_all": "Вернуть все",
+    "policy_restore_done": "Возвращено аккаунтов: {{count}}",
+    "policy_restore_failed": "Не удалось вернуть аккаунты",
+    "policy_stale_group": "в архиве или удалена",
+    "policy_stale_canary": "больше не существует"
   },
   "antigravity_subscription": {
     "plan_unknown": "Неизвестно",

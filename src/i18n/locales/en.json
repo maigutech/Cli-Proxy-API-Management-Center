@@ -560,7 +560,16 @@
     "policy_issue_groups_inactive": "Enable service groups first.",
     "policy_issue_probe_off": "Turn on the periodic check first.",
     "policy_issue_no_managed": "Choose at least one managed group before enabling.",
-    "policy_issue_no_canary": "Choose at least one canary account before enabling."
+    "policy_issue_no_canary": "Choose at least one canary account before enabling.",
+    "policy_action_abandon": "Stopped tracking",
+    "policy_issue_missing_canary": "A canary account no longer exists; untick it.",
+    "policy_issue_missing_degraded": "The degraded group no longer exists or is archived.",
+    "policy_restore": "Move back",
+    "policy_restore_all": "Move all back",
+    "policy_restore_done": "Moved {{count}} account(s) back",
+    "policy_restore_failed": "Failed to move accounts back",
+    "policy_stale_group": "archived or deleted",
+    "policy_stale_canary": "no longer exists"
   },
   "antigravity_subscription": {
     "plan_unknown": "Unknown",

@@ -774,6 +774,7 @@ export function AuthFilesPage() {
           board={groupBoard}
           policyState={codexProbe.policyState}
           onPolicyLock={codexProbe.setPolicyLock}
+          onPolicyRestore={codexProbe.restorePolicy}
         />
 
         {error && (

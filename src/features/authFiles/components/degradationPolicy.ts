@@ -64,7 +64,10 @@ const intIn = (value: number, min: number, max: number) =>
 
 /**
  * Message keys (under `auth_files`) for what would make the server refuse the
- * policy, so the dialog can say so before saving. The server checks the same.
+ * policy, so the dialog can say so before saving. Values out of range are
+ * always refused; references to groups and accounts only matter once the
+ * policy is enabled, so a paused policy still saves after a group was archived
+ * or a canary deleted.
  */
 export function policyIssues(
   draft: PolicyDraft,
@@ -73,6 +76,10 @@ export function policyIssues(
 ): string[] {
   const issues: string[] = [];
   const groups = new Map((board?.groups ?? []).map((g) => [g.id, g]));
+  const usableGroup = (id: string) => groups.has(id) && !groups.get(id)?.archived;
+  const knownCredentials = new Set(
+    (board?.credentials ?? []).filter((c) => c.id && !c.conflict).map((c) => c.id)
+  );
   if (!intIn(draft.quietStartHour, 0, 23) || !intIn(draft.quietEndHour, 0, 23))
     issues.push('policy_issue_quiet_hours');
   if (!intIn(draft.confirmDelayMinutes, 5, 1440)) issues.push('policy_issue_confirm_delay');
@@ -80,8 +87,6 @@ export function policyIssues(
   if (!(draft.maxDegradedRatio > 0 && draft.maxDegradedRatio <= 1))
     issues.push('policy_issue_ratio');
   if (!intIn(draft.minRemainingAccounts, 0, 100)) issues.push('policy_issue_min_remaining');
-  if (draft.managedGroups.some((id) => !groups.has(id) || groups.get(id)?.archived))
-    issues.push('policy_issue_missing_group');
   if (draft.degradedGroup && draft.managedGroups.includes(draft.degradedGroup))
     issues.push('policy_issue_degraded_is_managed');
   if (draft.enabled) {
@@ -89,6 +94,12 @@ export function policyIssues(
     if (!probeEnabled) issues.push('policy_issue_probe_off');
     if (!draft.managedGroups.length) issues.push('policy_issue_no_managed');
     if (!draft.canaryCredentials.length) issues.push('policy_issue_no_canary');
+    if (draft.managedGroups.some((id) => !usableGroup(id)))
+      issues.push('policy_issue_missing_group');
+    if (draft.degradedGroup && !usableGroup(draft.degradedGroup))
+      issues.push('policy_issue_missing_degraded');
+    if (draft.canaryCredentials.some((id) => !knownCredentials.has(id)))
+      issues.push('policy_issue_missing_canary');
   }
   return issues;
 }
