@@ -23,6 +23,8 @@ export interface CodexDegradationProbeStatus {
   consecutive_healthy?: number;
   since?: string;
   last_checked_at?: string;
+  /** Last check that produced a verdict; a failed check leaves it unchanged. */
+  last_scored_at?: string;
   next_check_at?: string;
   held_until?: string;
   hold_applied?: boolean;
@@ -76,6 +78,8 @@ export interface CodexDegradationRecord {
   demoted_at?: string;
   removed_groups?: string[];
   added_to_degraded?: boolean;
+  /** The degraded group the policy put the account in. */
+  degraded_group?: string;
   healthy_streak?: number;
   locked?: boolean;
   last_verdict?: string;
@@ -174,5 +178,20 @@ export const codexDegradationProbeApi = {
       locked,
     });
     return normalizePolicyState(isRecord(response) ? response.policy_state : undefined);
+  },
+  /** Moves accounts the policy moved back to the groups they left: one, or all
+   * when credentialId is omitted. Works with the policy disabled. */
+  restorePolicy: async (
+    credentialId?: string
+  ): Promise<{ restored: number; policyState: CodexDegradationPolicyState }> => {
+    const response = await apiClient.post<unknown>(
+      '/routing/codex-degradation-probe/policy/restore',
+      credentialId ? { credential_id: credentialId } : {}
+    );
+    const record = isRecord(response) ? response : {};
+    return {
+      restored: typeof record.restored === 'number' ? record.restored : 0,
+      policyState: normalizePolicyState(record.policy_state),
+    };
   },
 };

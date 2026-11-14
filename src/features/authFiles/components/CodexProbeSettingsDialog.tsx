@@ -35,6 +35,7 @@ export interface CodexProbeSettingsDialogProps {
   board?: GroupBoard | null;
   policyState?: CodexDegradationPolicyState;
   onPolicyLock?: (credentialId: string, locked: boolean) => Promise<boolean>;
+  onPolicyRestore?: (credentialId?: string) => Promise<boolean>;
 }
 
 export function CodexProbeSettingsDialog({
@@ -46,6 +47,7 @@ export function CodexProbeSettingsDialog({
   board = null,
   policyState = { records: {}, actions: [] },
   onPolicyLock = async () => false,
+  onPolicyRestore = async () => false,
 }: CodexProbeSettingsDialogProps) {
   const { t } = useTranslation();
   const intervalId = useId();
@@ -151,6 +153,7 @@ export function CodexProbeSettingsDialog({
             issues={issues}
             policyState={policyState}
             onLock={onPolicyLock}
+            onRestore={onPolicyRestore}
           />
         )}
 

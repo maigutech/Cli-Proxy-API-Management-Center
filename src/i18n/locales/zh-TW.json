@@ -558,7 +558,16 @@
     "policy_issue_groups_inactive": "需要先啟用服務分組。",
     "policy_issue_probe_off": "需要先開啟定時檢測開關。",
     "policy_issue_no_managed": "啟用前請至少選擇一個受管分組。",
-    "policy_issue_no_canary": "啟用前請至少選擇一個哨兵帳號。"
+    "policy_issue_no_canary": "啟用前請至少選擇一個哨兵帳號。",
+    "policy_action_abandon": "停止追蹤",
+    "policy_issue_missing_canary": "有哨兵帳號已不存在，請取消勾選。",
+    "policy_issue_missing_degraded": "降智組已不存在或已封存。",
+    "policy_restore": "移回",
+    "policy_restore_all": "全部移回",
+    "policy_restore_done": "已移回 {{count}} 個帳號",
+    "policy_restore_failed": "移回失敗",
+    "policy_stale_group": "已封存或已刪除",
+    "policy_stale_canary": "已不存在"
   },
   "antigravity_subscription": {
     "plan_unknown": "未知",

@@ -560,7 +560,16 @@
     "policy_issue_groups_inactive": "Hãy bật nhóm dịch vụ trước.",
     "policy_issue_probe_off": "Hãy bật kiểm tra định kỳ trước.",
     "policy_issue_no_managed": "Chọn ít nhất một nhóm được quản lý trước khi bật.",
-    "policy_issue_no_canary": "Chọn ít nhất một tài khoản canh gác trước khi bật."
+    "policy_issue_no_canary": "Chọn ít nhất một tài khoản canh gác trước khi bật.",
+    "policy_action_abandon": "Ngừng theo dõi",
+    "policy_issue_missing_canary": "Có tài khoản canary không còn tồn tại; hãy bỏ chọn.",
+    "policy_issue_missing_degraded": "Nhóm suy giảm không còn tồn tại hoặc đã lưu trữ.",
+    "policy_restore": "Chuyển lại",
+    "policy_restore_all": "Chuyển lại tất cả",
+    "policy_restore_done": "Đã chuyển lại {{count}} tài khoản",
+    "policy_restore_failed": "Chuyển lại thất bại",
+    "policy_stale_group": "đã lưu trữ hoặc đã xóa",
+    "policy_stale_canary": "không còn tồn tại"
   },
   "antigravity_subscription": {
     "plan_unknown": "Không rõ",
