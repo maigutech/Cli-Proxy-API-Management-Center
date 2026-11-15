@@ -307,11 +307,14 @@ describe('503 cooldown guidance', () => {
   });
 
   test('expired 503 does not label a remaining quota cooldown', () => {
+    // Rendering reads a clock frozen when useNow first loads, which may be
+    // seconds before this file runs; keep the 503 long expired and the quota
+    // cooldown long active relative to any such instant.
     const value = normalize([
       { ...unavailable, remaining_seconds: 1 },
-      { ...modelRecord, model_key: 'model-b' },
+      { ...modelRecord, model_key: 'model-b', remaining_seconds: 7_200 },
     ])!;
-    const later = { ...value, receivedAtMs: receivedAtMs - 2_000 };
+    const later = { ...value, receivedAtMs: receivedAtMs - 600_000 };
     expect(summarizeCooldowns(later, receivedAtMs).serviceUnavailableSeconds).toBe(0);
     const markup = render(later);
     expect(markup.slice(markup.indexOf('<summary'), markup.indexOf('</summary>'))).not.toContain(

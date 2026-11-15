@@ -20,6 +20,7 @@ import { ProviderStatusBar } from '@/components/providers/ProviderStatusBar';
 import type { AuthFileItem } from '@/types';
 import { statusBarDataFromRecentRequests } from '@/utils/recentRequests';
 import { formatDateTimeValue, formatFileSize } from '@/utils/format';
+import { codexPlanLabel, resolveCodexPlanType } from '@/utils/quota';
 import {
   formatModified,
   getAuthFileStatusMessage,
@@ -134,6 +135,12 @@ export function AuthFileCard(props: AuthFileCardProps) {
   const isManualRefreshing = manualRefreshing[getAuthFileRefreshKey(file)] === true;
   const typeLabel = getTypeLabel(t, providerKey);
   const typeColor = getTypeColor(providerKey, resolvedTheme);
+  // The plan decides which models an account is entitled to, which matters
+  // when reading probe verdicts and choosing groups; the raw value is kept in
+  // the tooltip.
+  const planType = providerKey === 'codex' ? resolveCodexPlanType(file) : null;
+  const plan = codexPlanLabel(planType);
+  const planLabel = plan ? ('key' in plan ? t(`codex_quota.${plan.key}`) : plan.raw) : null;
 
   const quotaType = resolveAuthFileQuotaType(file, quotaFilterType);
   const showQuotaLayout = Boolean(quotaType) && !isRuntimeOnly && !compact;
@@ -259,6 +266,14 @@ export function AuthFileCard(props: AuthFileCardProps) {
           >
             {typeLabel}
           </span>
+          {planLabel && (
+            <span
+              className={styles.planBadge}
+              title={`${t('codex_quota.plan_label')}: ${planType ?? ''}`}
+            >
+              {planLabel}
+            </span>
+          )}
         </div>
         {!isRuntimeOnly && <AccountOccupancy snapshot={occupancy} />}
         {isRuntimeOnly && (

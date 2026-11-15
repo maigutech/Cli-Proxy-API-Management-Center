@@ -21,6 +21,25 @@ export const PRO_CODEX_PLAN_TYPE = 'pro';
 /** Business Premium：名字带 Premium，但档位与 Plus 相同。 */
 export const BUSINESS_PREMIUM_CODEX_PLAN_TYPE = 'self_serve_business_prolite';
 
+/**
+ * How to name a Codex plan: an i18n key under `codex_quota`, or the raw value
+ * when the plan is not one we know. Null when there is no plan.
+ */
+export function codexPlanLabel(
+  planType: string | null | undefined
+): { key: string } | { raw: string } | null {
+  const normalized = normalizePlanType(planType);
+  if (!normalized) return null;
+  if (normalized === BUSINESS_PREMIUM_CODEX_PLAN_TYPE) return { key: 'plan_business_premium' };
+  if (PRO_MAX_CODEX_PLAN_TYPES.has(normalized)) return { key: 'plan_promax' };
+  if (normalized === PRO_CODEX_PLAN_TYPE) return { key: 'plan_pro' };
+  if (PRO_LITE_CODEX_PLAN_TYPES.has(normalized)) return { key: 'plan_prolite' };
+  if (normalized === 'plus') return { key: 'plan_plus' };
+  if (normalized === 'team') return { key: 'plan_team' };
+  if (normalized === 'free') return { key: 'plan_free' };
+  return { raw: (planType ?? '').trim() || normalized };
+}
+
 export function resolvePlanTier(planType: string | null | undefined): CodexPlanTier {
   const normalized = normalizePlanType(planType);
   if (!normalized) return 'plain';
