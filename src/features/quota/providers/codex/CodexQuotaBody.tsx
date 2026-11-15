@@ -6,11 +6,7 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { CodexQuotaState } from '@/types';
 import {
-  normalizePlanType,
-  BUSINESS_PREMIUM_CODEX_PLAN_TYPE,
-  PRO_CODEX_PLAN_TYPE,
-  PRO_LITE_CODEX_PLAN_TYPES,
-  PRO_MAX_CODEX_PLAN_TYPES,
+  codexPlanLabel,
   buildResetDisplay,
   formatInstantShort,
   parseIsoToMs,
@@ -45,18 +41,9 @@ export function CodexQuotaBody({ quota, classes }: QuotaBodyProps<CodexQuotaStat
   const rateLimitResetCreditsError = quota.rateLimitResetCreditsError ?? '';
 
   const getPlanLabel = (pt?: string | null): string | null => {
-    const normalized = normalizePlanType(pt);
-    if (!normalized) return null;
-    if (normalized === BUSINESS_PREMIUM_CODEX_PLAN_TYPE) {
-      return t('codex_quota.plan_business_premium');
-    }
-    if (PRO_MAX_CODEX_PLAN_TYPES.has(normalized)) return t('codex_quota.plan_promax');
-    if (normalized === PRO_CODEX_PLAN_TYPE) return t('codex_quota.plan_pro');
-    if (PRO_LITE_CODEX_PLAN_TYPES.has(normalized)) return t('codex_quota.plan_prolite');
-    if (normalized === 'plus') return t('codex_quota.plan_plus');
-    if (normalized === 'team') return t('codex_quota.plan_team');
-    if (normalized === 'free') return t('codex_quota.plan_free');
-    return pt || normalized;
+    const label = codexPlanLabel(pt);
+    if (!label) return null;
+    return 'key' in label ? t(`codex_quota.${label.key}`) : label.raw;
   };
 
   const planLabel = getPlanLabel(planType);
